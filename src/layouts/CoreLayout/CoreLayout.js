@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react'
+import 'normalize.css'
+
 import '../../styles/core.scss'
 
 // Note: Stateless/function components *will not* hot reload!
