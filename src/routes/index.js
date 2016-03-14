@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRedirect } from 'react-router';
 
 // NOTE: here we're making use of the `resolve.root` configuration
 // option in webpack, which allows us to specify import paths as if
@@ -7,10 +7,16 @@ import { Route, IndexRoute } from 'react-router';
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
-import HomeView from 'views/HomeView/HomeView';
+import ThingsView from 'views/ThingsView/ThingsView';
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute component={HomeView} />
+    <IndexRedirect to='/things' />
+    <Route path='things' component={ThingsView}>
+      <IndexRedirect to='/things/assets' />
+      <Route path='assets' component={ThingsView} />
+      <Route path='locations' component={ThingsView} />
+      <Route path='people' component={ThingsView} />
+    </Route>
   </Route>
 );

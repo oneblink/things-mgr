@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import 'normalize.css';
 
 import AppBar from 'material-ui/lib/app-bar';
+import FlatButton from 'material-ui/lib/flat-button';
 
 import '../../styles/core.css';
 import classes from './CoreLayout.css';
@@ -19,6 +21,9 @@ function CoreLayout ({ children }) {
   return (
     <div className={classes.self}>
       <AppBar title='Things Manager' showMenuIconButton={false} />
+      <Link to='/things/assets'><FlatButton label='Assets' /></Link>
+      <Link to='/things/locations'><FlatButton label='Locations' /></Link>
+      <Link to='/things/people'><FlatButton label='People' /></Link>
       <div className={classes.view}>
         {children}
       </div>
