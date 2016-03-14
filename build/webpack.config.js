@@ -55,6 +55,9 @@ webpackConfig.plugins = [
     minify: {
       collapseWhitespace: true
     }
+  }),
+  new webpack.ProvidePlugin({
+    fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
   })
 ];
 

@@ -48,7 +48,8 @@ const config = {
     'react-tap-event-plugin',
     'redux',
     'redux-immutable',
-    'redux-thunk'
+    'redux-thunk',
+    'whatwg-fetch'
   ],
 
   // ----------------------------------
