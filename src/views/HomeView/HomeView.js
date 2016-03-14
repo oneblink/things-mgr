@@ -57,7 +57,7 @@ export class HomeView extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  counter: state.counter
+  counter: state.get('counter')
 });
 export default connect((mapStateToProps), {
   increment: () => increment(1),

@@ -29,7 +29,7 @@ export const doubleAsync = (): Function => {
   return (dispatch: Function, getState: Function): Promise => {
     return new Promise((resolve: Function): void => {
       setTimeout(() => {
-        dispatch(increment(getState().counter));
+        dispatch(increment(getState().get('counter')));
         resolve();
       }, 200);
     });

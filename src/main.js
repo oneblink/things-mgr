@@ -9,6 +9,19 @@ import makeRoutes from './routes';
 import Root from './containers/Root';
 import configureStore from './redux/configureStore';
 
+// https://github.com/reactjs/react-router-redux/issues/314#issuecomment-190678756
+const createRouterStateSelector = () => {
+  let prevState, prevStateJS;
+  return (state) => {
+    const currState = state.get('router');
+    if (typeof prevState === 'undefined' || prevState !== currState) {
+      prevState = currState;
+      prevStateJS = currState.toJS();
+    }
+    return prevStateJS;
+  };
+};
+
 // Configure history for react-router
 const browserHistory = useRouterHistory(createBrowserHistory)({
   basename: __BASENAME__
@@ -21,7 +34,7 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: (state) => state.router
+  selectLocationState: createRouterStateSelector()
 });
 
 // Now that we have the Redux store, we can create our routes. We provide
