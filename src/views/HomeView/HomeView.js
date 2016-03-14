@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 import { increment, doubleAsync } from '../../redux/modules/counter';
 
@@ -47,13 +48,9 @@ export class HomeView extends React.Component<void, Props, void> {
           {' '}
           <span className={classnames([classes.counter, classes.green])}>{this.props.counter}</span>
         </h2>
-        <button className='btn btn-default' onClick={this.props.increment}>
-          Increment
-        </button>
+        <RaisedButton label='Increment' onClick={this.props.increment} primary />
         {' '}
-        <button className='btn btn-default' onClick={this.props.doubleAsync}>
-          Double (Async)
-        </button>
+        <RaisedButton label='Double (Async)' onClick={this.props.doubleAsync} primary />
       </div>
     );
   }

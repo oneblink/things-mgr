@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
 import 'normalize.css';
 
+import AppBar from 'material-ui/lib/app-bar';
+
 import '../../styles/core.css';
+import classes from './CoreLayout.css';
 
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.
@@ -14,8 +17,9 @@ import '../../styles/core.css';
 // define it with a plain javascript function...
 function CoreLayout ({ children }) {
   return (
-    <div className='page-container'>
-      <div className='view-container'>
+    <div className={classes.self}>
+      <AppBar title='Things Manager' showMenuIconButton={false} />
+      <div className={classes.view}>
         {children}
       </div>
     </div>

@@ -66,7 +66,7 @@ describe('(View) Home', function () {
   it('Should render exactly two buttons.', function () {
     const wrapper = mount(<HomeView {..._props} />)
 
-    expect(wrapper).to.have.descendants('.btn')
+    expect(wrapper).to.have.descendants('button')
   })
 
   describe('An increment button...', function () {

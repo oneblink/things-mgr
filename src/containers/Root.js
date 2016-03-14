@@ -2,6 +2,13 @@ import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
+import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
+
+// override the theme here if necessary
+// https://github.com/callemall/material-ui/blob/master/examples/webpack-example/src/app/Main.jsx
+const muiTheme = getMuiTheme({});
+
 export default class Root extends React.Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
@@ -35,10 +42,12 @@ export default class Root extends React.Component {
   render () {
     return (
       <Provider store={this.props.store}>
-        <div style={{ height: '100%' }}>
-          {this.content}
-          {this.devTools}
-        </div>
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <div style={{ height: '100%' }}>
+            {this.content}
+            {this.devTools}
+          </div>
+        </MuiThemeProvider>
       </Provider>
     );
   }
