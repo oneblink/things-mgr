@@ -37,6 +37,7 @@ const config = {
     colors : true
   },
   compiler_vendor : [
+    'classnames',
     'history',
     'react',
     'react-redux',

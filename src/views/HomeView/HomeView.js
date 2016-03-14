@@ -1,9 +1,12 @@
 /* @flow */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
+
 import { increment, doubleAsync } from '../../redux/modules/counter';
+
 import DuckImage from './Duck.jpg';
-import classes from './HomeView.scss';
+import classes from './HomeView.css';
 
 // We can use Flow (http://flowtype.org/) to type our component's props
 // and state. For convenience we've included both regular propTypes and
@@ -42,7 +45,7 @@ export class HomeView extends React.Component<void, Props, void> {
         <h2>
           Sample Counter:
           {' '}
-          <span className={classes['counter--green']}>{this.props.counter}</span>
+          <span className={classnames([classes.counter, classes.green])}>{this.props.counter}</span>
         </h2>
         <button className='btn btn-default' onClick={this.props.increment}>
           Increment
