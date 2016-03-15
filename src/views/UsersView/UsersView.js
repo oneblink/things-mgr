@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 import {
   Table,
   TableBody,
@@ -13,37 +14,35 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/lib/table';
+import Paper from 'material-ui/lib/paper';
 
-import classes from './ThingsView.css';
+import { usersRequest } from '../../redux/modules/users';
 
-const sampleData = [
-  { id: 'a123', type: 'asset', name: 'Elder Wand' },
-  { id: 'a456', type: 'asset', name: 'Resurrection Stone' },
-  { id: 'a789', type: 'asset', name: 'Cloak of Invisibility' }
-];
+import classes from './UsersView.css';
 
-export class ThingsView extends React.Component {
+export class UsersView extends React.Component {
   static propTypes = {
-    things: PropTypes.instanceOf(Set)
+    users: PropTypes.instanceOf(Set),
+    usersRequest: PropTypes.func.isRequired
   };
 
   render () {
+    const { users, usersRequest } = this.props;
     return (
-      <div className={classnames([classes.self])}>
+      <Paper className={classnames([classes.self])}>
+        <RaisedButton label='Refresh' onMouseUp={usersRequest} />
         <Table multiSelectable>
           <TableHeader>
             <TableRow>
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Type</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sampleData.map((thing) => (
-              <TableRow key={thing.id}>
-                <TableRowColumn>{thing.id}</TableRowColumn>
-                <TableRowColumn>{thing.name}</TableRowColumn>
-                <TableRowColumn>{thing.type}</TableRowColumn>
+            {users.map((item) => (
+              <TableRow key={item.get('id')}>
+                <TableRowColumn>{item.get('id')}</TableRowColumn>
+                <TableRowColumn>{item.get('name')}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
@@ -52,12 +51,14 @@ export class ThingsView extends React.Component {
         <FloatingActionButton className={classes.add}>
           <ContentAdd />
         </FloatingActionButton>
-      </div>
+      </Paper>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  things: state.get('things')
+  users: state.get('users')
 });
-export default connect((mapStateToProps), {})(ThingsView);
+export default connect((mapStateToProps), {
+  usersRequest
+})(UsersView);

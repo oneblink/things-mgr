@@ -10,6 +10,7 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
 import ThingsView from 'views/ThingsView/ThingsView';
+import UsersView from 'views/UsersView/UsersView';
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
@@ -18,7 +19,7 @@ export default (store) => (
     <Route path='things'>
       <IndexRedirect to='/things/assets' />
       <Route path='assets' component={ThingsView} />
-      <Route path='people' component={ThingsView} />
+      <Route path='people' component={UsersView} />
       <Route path='readers' component={ReadersView} />
     </Route>
   </Route>

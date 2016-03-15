@@ -5,11 +5,12 @@ import { loginReducer as login } from './modules/login';
 import { readersReducer as readers } from './modules/readers';
 import { routerReducer as router } from './modules/router';
 import { thingsReducer as things } from './modules/things';
+import { usersReducer as users } from './modules/users';
 
 export default combineReducers({
   counter,
   login,
   readers,
   router,
-  things
+  users
 });
