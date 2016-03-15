@@ -16,18 +16,19 @@ import {
 } from 'material-ui/lib/table';
 import Paper from 'material-ui/lib/paper';
 
-import { usersRequest } from '../../redux/modules/users';
+import { usersNew, usersRequest } from '../../redux/modules/users';
 
 import classes from './UsersView.css';
 
 export class UsersView extends React.Component {
   static propTypes = {
     users: PropTypes.instanceOf(List),
+    usersNew: PropTypes.func.isRequired,
     usersRequest: PropTypes.func.isRequired
   };
 
   render () {
-    const { users, usersRequest } = this.props;
+    const { users, usersNew, usersRequest } = this.props;
     return (
       <Paper className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={usersRequest} />
@@ -48,7 +49,7 @@ export class UsersView extends React.Component {
           </TableBody>
         </Table>
 
-        <FloatingActionButton className={classes.add}>
+        <FloatingActionButton className={classes.add} onMouseUp={usersNew}>
           <ContentAdd />
         </FloatingActionButton>
       </Paper>
@@ -60,5 +61,6 @@ const mapStateToProps = (state) => ({
   users: state.get('users')
 });
 export default connect((mapStateToProps), {
+  usersNew,
   usersRequest
 })(UsersView);

@@ -1,5 +1,8 @@
 import { List, fromJS } from 'immutable';
 
+export const USERS_NEW = 'USERS_NEW';
+export const usersNew = () => ({ type: USERS_NEW });
+
 export const USERS_REQUEST = 'USERS_REQUEST';
 export const usersRequest = () => (dispatch, getState) => {
   dispatch({ type: USERS_REQUEST });
@@ -42,9 +45,9 @@ export const usersRequest = () => (dispatch, getState) => {
             'email': 'moe@blinkmobile.com.au'
           }
         },
-        { id: 'p123', name: 'Harry Potter' },
-        { id: 'p456', name: 'Hermione Granger' },
-        { id: 'p789', name: 'Ronald Weasley' }
+        { id: 'p123', name: 'Harry Potter', info: {} },
+        { id: 'p456', name: 'Hermione Granger', info: {} },
+        { id: 'p789', name: 'Ronald Weasley', info: {} }
       ]));
     }, 0);
   });
@@ -84,6 +87,17 @@ export const usersSubmitError = (error) => ({
 const initialState = new List();
 
 export const usersReducer = (state = initialState, action) => {
+  if (action.type === USERS_NEW) {
+    return state.push(fromJS({
+      id: `u${state.size}`,
+      name: '',
+      info: {
+        address: '',
+        email: '',
+        photo: ''
+      }
+    }));
+  }
   if (action.type === USERS_REQUEST_SUCCESS) {
     return fromJS(action.payload);
   }

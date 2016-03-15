@@ -1,5 +1,8 @@
 import { List, fromJS } from 'immutable';
 
+export const TAGS_NEW = 'TAGS_NEW';
+export const tagsNew = () => ({ type: TAGS_NEW });
+
 export const TAGS_REQUEST = 'TAGS_REQUEST';
 export const tagsRequest = () => (dispatch, getState) => {
   dispatch({ type: TAGS_REQUEST });
@@ -99,6 +102,18 @@ export const tagsSubmitError = (error) => ({
 const initialState = new List();
 
 export const tagsReducer = (state = initialState, action) => {
+  if (action.type === TAGS_NEW) {
+    return state.push(fromJS({
+      id: `t${state.size}`,
+      links: {
+        users: '',
+        readers: ''
+      },
+      name: '',
+      status: 'inactive',
+      type: 'RFID'
+    }));
+  }
   if (action.type === TAGS_REQUEST_SUCCESS) {
     return fromJS(action.payload);
   }

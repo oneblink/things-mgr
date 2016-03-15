@@ -16,18 +16,19 @@ import {
 } from 'material-ui/lib/table';
 import Paper from 'material-ui/lib/paper';
 
-import { readersRequest } from '../../redux/modules/readers';
+import { readersNew, readersRequest } from '../../redux/modules/readers';
 
 import classes from './ReadersView.css';
 
 export class ReadersView extends React.Component {
   static propTypes = {
     readers: PropTypes.instanceOf(List),
+    readersNew: PropTypes.func.isRequired,
     readersRequest: PropTypes.func.isRequired
   };
 
   render () {
-    const { readers, readersRequest } = this.props;
+    const { readers, readersNew, readersRequest } = this.props;
     return (
       <Paper className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={readersRequest} />
@@ -48,7 +49,7 @@ export class ReadersView extends React.Component {
           </TableBody>
         </Table>
 
-        <FloatingActionButton className={classes.add}>
+        <FloatingActionButton className={classes.add} onMouseUp={readersNew}>
           <ContentAdd />
         </FloatingActionButton>
       </Paper>
@@ -60,5 +61,6 @@ const mapStateToProps = (state) => ({
   readers: state.get('readers')
 });
 export default connect((mapStateToProps), {
+  readersNew,
   readersRequest
 })(ReadersView);

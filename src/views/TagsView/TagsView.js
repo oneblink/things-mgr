@@ -16,18 +16,19 @@ import {
 } from 'material-ui/lib/table';
 import Paper from 'material-ui/lib/paper';
 
-import { tagsRequest } from '../../redux/modules/tags';
+import { tagsNew, tagsRequest } from '../../redux/modules/tags';
 
 import classes from './TagsView.css';
 
 export class TagsView extends React.Component {
   static propTypes = {
     tags: PropTypes.instanceOf(List),
+    tagsNew: PropTypes.func.isRequired,
     tagsRequest: PropTypes.func.isRequired
   };
 
   render () {
-    const { tags, tagsRequest } = this.props;
+    const { tags, tagsNew, tagsRequest } = this.props;
     return (
       <Paper className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={tagsRequest} />
@@ -50,7 +51,7 @@ export class TagsView extends React.Component {
           </TableBody>
         </Table>
 
-        <FloatingActionButton className={classes.add}>
+        <FloatingActionButton className={classes.add} onMouseUp={tagsNew}>
           <ContentAdd />
         </FloatingActionButton>
       </Paper>
@@ -62,5 +63,6 @@ const mapStateToProps = (state) => ({
   tags: state.get('tags')
 });
 export default connect((mapStateToProps), {
+  tagsNew,
   tagsRequest
 })(TagsView);

@@ -3,6 +3,9 @@ import { List, fromJS } from 'immutable';
 
 // const apiUrl = process.env.ENTITY_HTTP_API;
 
+export const READERS_NEW = 'READERS_NEW';
+export const readersNew = () => ({ type: READERS_NEW });
+
 export const READERS_REQUEST = 'READERS_REQUEST';
 // export const readersRequest = () => (dispatch, getState) => {
 //   dispatch({ type: READERS_REQUEST });
@@ -77,6 +80,12 @@ export const readersSubmitError = (error) => ({
 const initialState = new List();
 
 export const readersReducer = (state = initialState, action) => {
+  if (action.type === READERS_NEW) {
+    return state.push(fromJS({
+      id: `r${state.size}`,
+      name: ''
+    }));
+  }
   if (action.type === READERS_REQUEST_SUCCESS) {
     return fromJS(action.payload);
   }
