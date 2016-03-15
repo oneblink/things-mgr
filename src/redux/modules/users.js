@@ -1,4 +1,4 @@
-import { Set, fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 export const USERS_REQUEST = 'USERS_REQUEST';
 export const usersRequest = () => (dispatch, getState) => {
@@ -81,11 +81,11 @@ export const usersSubmitError = (error) => ({
   error: true
 });
 
-const initialState = new Set();
+const initialState = new List();
 
 export const usersReducer = (state = initialState, action) => {
   if (action.type === USERS_REQUEST_SUCCESS) {
-    return fromJS(action.payload).toSet();
+    return fromJS(action.payload);
   }
   if (action.type === USERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);

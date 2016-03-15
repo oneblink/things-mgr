@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Set } from 'immutable';
+import { List } from 'immutable';
 import classnames from 'classnames';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
@@ -22,7 +22,7 @@ import classes from './UsersView.css';
 
 export class UsersView extends React.Component {
   static propTypes = {
-    users: PropTypes.instanceOf(Set),
+    users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
 

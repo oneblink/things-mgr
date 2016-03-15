@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Set } from 'immutable';
+import { List } from 'immutable';
 import classnames from 'classnames';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
@@ -22,7 +22,7 @@ import classes from './TagsView.css';
 
 export class TagsView extends React.Component {
   static propTypes = {
-    tags: PropTypes.instanceOf(Set),
+    tags: PropTypes.instanceOf(List),
     tagsRequest: PropTypes.func.isRequired
   };
 

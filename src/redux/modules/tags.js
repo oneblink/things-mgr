@@ -1,4 +1,4 @@
-import { Set, fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 export const TAGS_REQUEST = 'TAGS_REQUEST';
 export const tagsRequest = () => (dispatch, getState) => {
@@ -96,11 +96,11 @@ export const tagsSubmitError = (error) => ({
   error: true
 });
 
-const initialState = new Set();
+const initialState = new List();
 
 export const tagsReducer = (state = initialState, action) => {
   if (action.type === TAGS_REQUEST_SUCCESS) {
-    return fromJS(action.payload).toSet();
+    return fromJS(action.payload);
   }
   if (action.type === TAGS_REQUEST_ERROR) {
     console.log(action.type, action.payload);

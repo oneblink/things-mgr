@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Set } from 'immutable';
+import { List } from 'immutable';
 import classnames from 'classnames';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
@@ -22,7 +22,7 @@ import classes from './ReadersView.css';
 
 export class ReadersView extends React.Component {
   static propTypes = {
-    readers: PropTypes.instanceOf(Set),
+    readers: PropTypes.instanceOf(List),
     readersRequest: PropTypes.func.isRequired
   };
 

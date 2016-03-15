@@ -1,4 +1,4 @@
-import { Set, fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 // import md5 from 'md5';
 
 // const apiUrl = process.env.ENTITY_HTTP_API;
@@ -74,11 +74,11 @@ export const readersSubmitError = (error) => ({
   error: true
 });
 
-const initialState = new Set();
+const initialState = new List();
 
 export const readersReducer = (state = initialState, action) => {
   if (action.type === READERS_REQUEST_SUCCESS) {
-    return fromJS(action.payload).toSet();
+    return fromJS(action.payload);
   }
   if (action.type === READERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
