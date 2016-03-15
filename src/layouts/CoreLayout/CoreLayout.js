@@ -21,7 +21,7 @@ function CoreLayout ({ children }) {
   return (
     <div className={classes.self}>
       <AppBar title='Things Manager' showMenuIconButton={false} />
-      <Link to='/things/assets'><FlatButton label='Assets' /></Link>
+      <Link to='/things/tags'><FlatButton label='Tags' /></Link>
       <Link to='/things/people'><FlatButton label='People' /></Link>
       <Link to='/things/readers'><FlatButton label='Readers' /></Link>
       <Link to='/login'><FlatButton label='Login' /></Link>

@@ -9,7 +9,7 @@ import { Route, IndexRedirect } from 'react-router';
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
-import ThingsView from 'views/ThingsView/ThingsView';
+import TagsView from 'views/TagsView/TagsView';
 import UsersView from 'views/UsersView/UsersView';
 
 export default (store) => (
@@ -17,8 +17,8 @@ export default (store) => (
     <IndexRedirect to='/things' />
     <Route path='login' component={LoginView} />
     <Route path='things'>
-      <IndexRedirect to='/things/assets' />
-      <Route path='assets' component={ThingsView} />
+      <IndexRedirect to='/things/tags' />
+      <Route path='tags' component={TagsView} />
       <Route path='people' component={UsersView} />
       <Route path='readers' component={ReadersView} />
     </Route>
