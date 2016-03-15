@@ -1,5 +1,11 @@
 import { List, fromJS } from 'immutable';
 
+export const USERS_EDIT = 'USERS_EDIT';
+export const usersEdit = (index, changes) => ({
+  type: USERS_EDIT,
+  payload: { index, changes }
+});
+
 export const USERS_NEW = 'USERS_NEW';
 export const usersNew = () => ({ type: USERS_NEW });
 
@@ -87,6 +93,10 @@ export const usersSubmitError = (error) => ({
 const initialState = new List();
 
 export const usersReducer = (state = initialState, action) => {
+  if (action.type === USERS_EDIT) {
+    const { index, changes } = action.payload;
+    return state.mergeIn([index], changes);
+  }
   if (action.type === USERS_NEW) {
     return state.push(fromJS({
       id: `u${state.size}`,

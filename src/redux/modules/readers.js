@@ -3,6 +3,12 @@ import { List, fromJS } from 'immutable';
 
 // const apiUrl = process.env.ENTITY_HTTP_API;
 
+export const READERS_EDIT = 'READERS_EDIT';
+export const readersEdit = (index, changes) => ({
+  type: READERS_EDIT,
+  payload: { index, changes }
+});
+
 export const READERS_NEW = 'READERS_NEW';
 export const readersNew = () => ({ type: READERS_NEW });
 
@@ -80,6 +86,10 @@ export const readersSubmitError = (error) => ({
 const initialState = new List();
 
 export const readersReducer = (state = initialState, action) => {
+  if (action.type === READERS_EDIT) {
+    const { index, changes } = action.payload;
+    return state.mergeIn([index], changes);
+  }
   if (action.type === READERS_NEW) {
     return state.push(fromJS({
       id: `r${state.size}`,

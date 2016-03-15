@@ -3,56 +3,51 @@ import { connect } from 'react-redux';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
+import ReactDataGrid from 'react-data-grid/addons';
+
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from 'material-ui/lib/table';
-import Paper from 'material-ui/lib/paper';
 
-import { readersNew, readersRequest } from '../../redux/modules/readers';
+import {
+  readersEdit, readersNew, readersRequest
+} from '../../redux/modules/readers';
 
 import classes from './ReadersView.css';
 
 export class ReadersView extends React.Component {
   static propTypes = {
     readers: PropTypes.instanceOf(List),
+    readersEdit: PropTypes.func.isRequired,
     readersNew: PropTypes.func.isRequired,
     readersRequest: PropTypes.func.isRequired
   };
 
   render () {
-    const { readers, readersNew, readersRequest } = this.props;
+    const { readers, readersEdit, readersNew, readersRequest } = this.props;
+
+    const gridProps = {
+      columns: [
+        { key: 'id', name: 'ID', editable: true },
+        { key: 'name', name: 'Name', editable: true }
+      ],
+      enableCellSelect: true,
+      minHeight: document.documentElement.clientHeight - 150,
+      rowGetter: (index) => readers.get(index),
+      rowsCount: readers.size,
+      onRowUpdated: ({ rowIdx, updated }) => readersEdit(rowIdx, updated)
+    };
+
     return (
-      <Paper className={classnames([classes.self])}>
+      <div className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={readersRequest} />
-        <Table multiSelectable>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>ID</TableHeaderColumn>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {readers.map((item) => (
-              <TableRow key={item.get('id')}>
-                <TableRowColumn>{item.get('id')}</TableRowColumn>
-                <TableRowColumn>{item.get('name')}</TableRowColumn>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+
+        <ReactDataGrid {...gridProps} />
 
         <FloatingActionButton className={classes.add} onMouseUp={readersNew}>
           <ContentAdd />
         </FloatingActionButton>
-      </Paper>
+      </div>
     );
   }
 }
@@ -61,6 +56,7 @@ const mapStateToProps = (state) => ({
   readers: state.get('readers')
 });
 export default connect((mapStateToProps), {
+  readersEdit,
   readersNew,
   readersRequest
 })(ReadersView);

@@ -1,5 +1,11 @@
 import { List, fromJS } from 'immutable';
 
+export const TAGS_EDIT = 'TAGS_EDIT';
+export const tagsEdit = (index, changes) => ({
+  type: TAGS_EDIT,
+  payload: { index, changes }
+});
+
 export const TAGS_NEW = 'TAGS_NEW';
 export const tagsNew = () => ({ type: TAGS_NEW });
 
@@ -102,6 +108,19 @@ export const tagsSubmitError = (error) => ({
 const initialState = new List();
 
 export const tagsReducer = (state = initialState, action) => {
+  if (action.type === TAGS_EDIT) {
+    const { index, changes } = action.payload;
+    const resourceChanges = { links: {} };
+    Object.keys(changes).forEach((key) => {
+      if (key === 'id') {
+        resourceChanges[key] = changes[key];
+      }
+      if (key === 'users' || key === 'readers') {
+        resourceChanges.links[key] = changes[key];
+      }
+    });
+    return state.mergeDeepIn([index], resourceChanges);
+  }
   if (action.type === TAGS_NEW) {
     return state.push(fromJS({
       id: `t${state.size}`,
