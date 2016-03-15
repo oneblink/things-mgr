@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import classnames from 'classnames';
 
-import Divider from 'material-ui/lib/divider';
 import Paper from 'material-ui/lib/paper';
 import TextField from 'material-ui/lib/text-field';
 
@@ -38,7 +37,7 @@ export class LoginView extends React.Component {
     return (
       <Paper className={classnames([classes.self])}>
         <TextField {...usernameProps} />
-        <Divider />
+        <br />
         <TextField {...passwordProps} />
       </Paper>
     );
