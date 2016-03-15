@@ -8,17 +8,18 @@ import { Route, IndexRedirect } from 'react-router';
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import LoginView from 'views/LoginView/LoginView';
+import ReadersView from 'views/ReadersView/ReadersView';
 import ThingsView from 'views/ThingsView/ThingsView';
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
     <IndexRedirect to='/things' />
     <Route path='login' component={LoginView} />
-    <Route path='things' component={ThingsView}>
+    <Route path='things'>
       <IndexRedirect to='/things/assets' />
       <Route path='assets' component={ThingsView} />
-      <Route path='locations' component={ThingsView} />
       <Route path='people' component={ThingsView} />
+      <Route path='readers' component={ReadersView} />
     </Route>
   </Route>
 );

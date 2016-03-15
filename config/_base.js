@@ -41,6 +41,7 @@ const config = {
     'history',
     'immutable',
     'material-ui',
+    'md5',
     'react',
     'react-redux',
     'react-router',
@@ -77,7 +78,8 @@ Edit at Your Own Risk
 // N.B.: globals added here must _also_ be added to .eslintrc
 config.globals = {
   'process.env'  : {
-    'NODE_ENV' : JSON.stringify(config.env)
+    'NODE_ENV' : JSON.stringify(config.env),
+    'ENTITY_HTTP_API': JSON.stringify(process.env.ENTITY_HTTP_API)
   },
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',

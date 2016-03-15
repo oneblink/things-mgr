@@ -74,6 +74,7 @@
     "koa-proxy": "^0.5.0",
     "koa-static": "^2.0.0",
     "material-ui": "0.15.0-alpha.1",
+    "md5": "2.1.0",
     "normalize.css": "3.0.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
