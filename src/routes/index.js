@@ -7,11 +7,13 @@ import { Route, IndexRedirect } from 'react-router';
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
+import LoginView from 'views/LoginView/LoginView';
 import ThingsView from 'views/ThingsView/ThingsView';
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
     <IndexRedirect to='/things' />
+    <Route path='login' component={LoginView} />
     <Route path='things' component={ThingsView}>
       <IndexRedirect to='/things/assets' />
       <Route path='assets' component={ThingsView} />

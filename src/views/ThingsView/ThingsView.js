@@ -31,7 +31,7 @@ const sampleData = [
 export class ThingsView extends React.Component {
   static propTypes = {
     things: PropTypes.instanceOf(Set)
-  }
+  };
 
   render () {
     return (
