@@ -5,6 +5,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import Root from './containers/Root';
 
 import { history, routes, store } from './redux/store';
+import { syncLoginWithStorage } from './lib/storage';
+
+// keep login details persisted to storage
+syncLoginWithStorage(store);
 
 // required for Material UI components
 injectTapEventPlugin();

@@ -40,6 +40,8 @@ const config = {
     'classnames',
     'history',
     'immutable',
+    'localforage',
+    'lodash.debounce',
     'material-ui',
     'md5',
     'react',

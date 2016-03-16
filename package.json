@@ -73,6 +73,8 @@
     "koa-convert": "^1.2.0",
     "koa-proxy": "^0.5.0",
     "koa-static": "^2.0.0",
+    "localforage": "1.4.0",
+    "lodash.debounce": "4.0.3",
     "material-ui": "0.15.0-alpha.1",
     "md5": "2.1.0",
     "normalize.css": "3.0.3",
