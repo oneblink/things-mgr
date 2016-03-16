@@ -6,7 +6,6 @@ import { loginSetPassword, loginSetUsername } from '../redux/modules/login';
 const storage = localforage.createInstance({ name: 'login' });
 
 const fromStorage = (store) => {
-  console.log('fromStorage');
   return storage.getItem('username')
     .then((username) => store.dispatch(loginSetUsername(username)))
     .then(() => storage.getItem('password'))
@@ -14,7 +13,6 @@ const fromStorage = (store) => {
 };
 
 const toStorage = debounce((store, login) => {
-  console.log('toStorage');
   storage.setItem('username', login.get('username'));
   storage.setItem('password', login.get('password'));
 }, 500);
