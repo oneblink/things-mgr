@@ -25,6 +25,7 @@ function CoreLayout ({ children }) {
       <Link to='/things/tags'><FlatButton label='Tags' /></Link>
       <Link to='/things/people'><FlatButton label='People' /></Link>
       <Link to='/things/readers'><FlatButton label='Readers' /></Link>
+      <Link to='/subscriptions'><FlatButton label='Subscriptions' /></Link>
       <Link to='/login'><FlatButton label='Login' /></Link>
       <div className={classes.view}>
         {children}

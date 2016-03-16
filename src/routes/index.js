@@ -9,6 +9,7 @@ import { Route, IndexRedirect } from 'react-router';
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
+import SubscriptionsView from 'views/SubscriptionsView/SubscriptionsView';
 import TagsView from 'views/TagsView/TagsView';
 import UsersView from 'views/UsersView/UsersView';
 
@@ -22,5 +23,6 @@ export default (store) => (
       <Route path='people' component={UsersView} />
       <Route path='readers' component={ReadersView} />
     </Route>
+    <Route path='subscriptions' component={SubscriptionsView} />
   </Route>
 );
