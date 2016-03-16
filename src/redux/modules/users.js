@@ -1,5 +1,7 @@
 import { List, fromJS } from 'immutable';
 
+import { getEntitiesAndDispatch } from '../../lib/api';
+
 export const USERS_EDIT = 'USERS_EDIT';
 export const usersEdit = (index, changes) => ({
   type: USERS_EDIT,
@@ -12,50 +14,11 @@ export const usersNew = () => ({ type: USERS_NEW });
 export const USERS_REQUEST = 'USERS_REQUEST';
 export const usersRequest = () => (dispatch, getState) => {
   dispatch({ type: USERS_REQUEST });
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      dispatch(usersRequestSuccess([
-        {
-          'id': 'A0001',
-          'name': 'Homer Simpson',
-          'info': {
-            'photo': '',
-            'address': 'Evergreen Terrace, Springfield',
-            'email': 'maxpower@blinkmobile.com.au'
-          }
-        },
-        {
-          'id': 'B0020',
-          'name': 'Lenny Leonard',
-          'info': {
-            'photo': '',
-            'address': 'Kwik-e-mart',
-            'email': 'lenny@blinkmobile.com.au'
-          }
-        },
-        {
-          'id': 'C0300',
-          'name': 'Carl Carlson',
-          'info': {
-            'photo': '',
-            'address': 'Nuclear Power Plant',
-            'email': 'carl@blinkmobile.com.au'
-          }
-        },
-        {
-          'id': 'D4000',
-          'name': 'Moe Szyslak',
-          'info': {
-            'photo': '',
-            'address': "Moe's Tavern",
-            'email': 'moe@blinkmobile.com.au'
-          }
-        },
-        { id: 'p123', name: 'Harry Potter', info: {} },
-        { id: 'p456', name: 'Hermione Granger', info: {} },
-        { id: 'p789', name: 'Ronald Weasley', info: {} }
-      ]));
-    }, 0);
+  return getEntitiesAndDispatch({
+    actionError: usersRequestError,
+    actionSuccess: usersRequestSuccess,
+    dispatch,
+    type: 'users'
   });
 };
 

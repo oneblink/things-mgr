@@ -1,7 +1,6 @@
 import { List, fromJS } from 'immutable';
-// import md5 from 'md5';
 
-// const apiUrl = process.env.ENTITY_HTTP_API;
+import { getEntitiesAndDispatch } from '../../lib/api';
 
 export const READERS_EDIT = 'READERS_EDIT';
 export const readersEdit = (index, changes) => ({
@@ -13,42 +12,13 @@ export const READERS_NEW = 'READERS_NEW';
 export const readersNew = () => ({ type: READERS_NEW });
 
 export const READERS_REQUEST = 'READERS_REQUEST';
-// export const readersRequest = () => (dispatch, getState) => {
-//   dispatch({ type: READERS_REQUEST });
-//   const login = getState().get('login');
-//   const username = login.get('username');
-//   const password = login.get('password');
-
-//   return fetch(`${apiUrl}?ENTITY=readers`, {
-//     body: `args=${JSON.stringify({})}`,
-//     headers: {
-//       Authorisation: `bearer ${username} ${md5(password)}`
-//     },
-//     method: 'POST',
-//     mode: 'cors'
-//   })
-//     .then((res) => res.json())
-//     .then((data) => {
-//       if (data.errors) {
-//         dispatch(readersRequestError(new Error(data.errors)));
-//         return;
-//       }
-//       dispatch(readersRequestSuccess(data));
-//     })
-//     .catch((err) => dispatch(readersRequestError(err)));
-// };
 export const readersRequest = () => (dispatch, getState) => {
   dispatch({ type: READERS_REQUEST });
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      dispatch(readersRequestSuccess([
-        { id: 'ipx.reader', name: 'WARD A' },
-        { id: 'ipx.reader1', name: 'EXIT' },
-        { id: 'l123', name: 'Hogwarts Castle' },
-        { id: 'l456', name: 'Cupboard Under The Stairs' },
-        { id: 'l789', name: 'Diagon Alley' }
-      ]));
-    }, 0);
+  return getEntitiesAndDispatch({
+    actionError: readersRequestError,
+    actionSuccess: readersRequestSuccess,
+    dispatch,
+    type: 'readers'
   });
 };
 

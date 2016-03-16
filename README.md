@@ -14,9 +14,9 @@ Put these in a `.env` file in the project root for convenience.
 See: https://www.npmjs.com/package/better-npm-run
 
 
-#### ENTITY_HTTP_API
+#### ENTITY_HTTP_GET_API and ENTITY_HTTP_POST_API
 
-Specify a URL for the HTTP APIs used to manage entities.
+Specify a URLs for the HTTP APIs used to manage entities.
 
 
 ## Related Links

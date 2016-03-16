@@ -79,7 +79,8 @@ Edit at Your Own Risk
 config.globals = {
   'process.env'  : {
     'NODE_ENV' : JSON.stringify(config.env),
-    'ENTITY_HTTP_API': JSON.stringify(process.env.ENTITY_HTTP_API)
+    'ENTITY_HTTP_GET_API': JSON.stringify(process.env.ENTITY_HTTP_GET_API),
+    'ENTITY_HTTP_POST_API': JSON.stringify(process.env.ENTITY_HTTP_POST_API)
   },
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',

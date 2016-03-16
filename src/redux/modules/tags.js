@@ -1,5 +1,7 @@
 import { List, fromJS } from 'immutable';
 
+import { getEntitiesAndDispatch } from '../../lib/api';
+
 export const TAGS_EDIT = 'TAGS_EDIT';
 export const tagsEdit = (index, changes) => ({
   type: TAGS_EDIT,
@@ -12,65 +14,11 @@ export const tagsNew = () => ({ type: TAGS_NEW });
 export const TAGS_REQUEST = 'TAGS_REQUEST';
 export const tagsRequest = () => (dispatch, getState) => {
   dispatch({ type: TAGS_REQUEST });
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      dispatch(tagsRequestSuccess([
-        {
-          'id': 'UNIQ_ID_1',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        },
-        {
-          'id': 'UNIQ_ID_2',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        },
-        {
-          'id': 'UNIQ_ID_3',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        },
-        {
-          'id': 'UNIQ_ID_4',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        },
-        {
-          'id': 'UNIQ_ID_5',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        },
-        {
-          'id': 'UNIQ_ID_6',
-          'type': 'RFID',
-          'links': {
-            'users': '',
-            'readers': ''
-          },
-          'status': 'inactive'
-        }
-      ]));
-    }, 0);
+  return getEntitiesAndDispatch({
+    actionError: tagsRequestError,
+    actionSuccess: tagsRequestSuccess,
+    dispatch,
+    type: 'tags'
   });
 };
 
