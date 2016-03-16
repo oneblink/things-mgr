@@ -9,7 +9,9 @@ import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
-import { tagsEdit, tagsNew, tagsRequest } from '../../redux/modules/tags';
+import {
+  tagsEdit, tagsNew, tagsRequest, tagsSubmit
+} from '../../redux/modules/tags';
 
 import classes from './TagsView.css';
 
@@ -18,11 +20,14 @@ export class TagsView extends React.Component {
     tags: PropTypes.instanceOf(List),
     tagsEdit: PropTypes.func.isRequired,
     tagsNew: PropTypes.func.isRequired,
-    tagsRequest: PropTypes.func.isRequired
+    tagsRequest: PropTypes.func.isRequired,
+    tagsSubmit: PropTypes.func.isRequired
   };
 
   render () {
-    const { tags, tagsEdit, tagsNew, tagsRequest } = this.props;
+    const {
+      tags, tagsEdit, tagsNew, tagsRequest, tagsSubmit
+    } = this.props;
 
     const gridProps = {
       columns: [
@@ -43,6 +48,7 @@ export class TagsView extends React.Component {
     return (
       <div className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={tagsRequest} />
+        <RaisedButton label='Submit' onMouseUp={tagsSubmit} />
 
         <ReactDataGrid {...gridProps} />
 
@@ -60,5 +66,6 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   tagsEdit,
   tagsNew,
-  tagsRequest
+  tagsRequest,
+  tagsSubmit
 })(TagsView);

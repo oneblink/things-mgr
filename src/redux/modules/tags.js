@@ -1,6 +1,6 @@
 import { List, fromJS } from 'immutable';
 
-import { getEntitiesAndDispatch } from '../../lib/api';
+import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
 
 export const TAGS_EDIT = 'TAGS_EDIT';
 export const tagsEdit = (index, changes) => ({
@@ -36,9 +36,16 @@ export const tagsRequestError = (error) => ({
 });
 
 export const TAGS_SUBMIT = 'TAGS_SUBMIT';
-export const tagsSubmit = () => ({
-  type: TAGS_SUBMIT
-});
+export const tagsSubmit = () => (dispatch, getState) => {
+  dispatch({ type: TAGS_SUBMIT });
+  return postEntitiesAndDispatch({
+    actionError: tagsSubmitError,
+    actionSuccess: tagsSubmitSuccess,
+    data: getState().get('tags').toJS(),
+    dispatch,
+    type: 'tags'
+  });
+};
 
 export const TAGS_SUBMIT_SUCCESS = 'TAGS_SUBMIT_SUCCESS';
 export const tagsSubmitSuccess = (tags) => ({
@@ -76,7 +83,6 @@ export const tagsReducer = (state = initialState, action) => {
         users: '',
         readers: ''
       },
-      name: '',
       status: 'inactive',
       type: 'RFID'
     }));

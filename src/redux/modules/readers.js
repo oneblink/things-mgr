@@ -1,6 +1,6 @@
 import { List, fromJS } from 'immutable';
 
-import { getEntitiesAndDispatch } from '../../lib/api';
+import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
 
 export const READERS_EDIT = 'READERS_EDIT';
 export const readersEdit = (index, changes) => ({
@@ -36,9 +36,16 @@ export const readersRequestError = (error) => ({
 });
 
 export const READERS_SUBMIT = 'READERS_SUBMIT';
-export const readersSubmit = () => ({
-  type: READERS_SUBMIT
-});
+export const readersSubmit = () => (dispatch, getState) => {
+  dispatch({ type: READERS_SUBMIT });
+  return postEntitiesAndDispatch({
+    actionError: readersSubmitError,
+    actionSuccess: readersSubmitSuccess,
+    data: getState().get('readers').toJS(),
+    dispatch,
+    type: 'readers'
+  });
+};
 
 export const READERS_SUBMIT_SUCCESS = 'READERS_SUBMIT_SUCCESS';
 export const readersSubmitSuccess = (readers) => ({

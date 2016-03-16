@@ -10,7 +10,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
-  readersEdit, readersNew, readersRequest
+  readersEdit, readersNew, readersRequest, readersSubmit
 } from '../../redux/modules/readers';
 
 import classes from './ReadersView.css';
@@ -20,11 +20,14 @@ export class ReadersView extends React.Component {
     readers: PropTypes.instanceOf(List),
     readersEdit: PropTypes.func.isRequired,
     readersNew: PropTypes.func.isRequired,
-    readersRequest: PropTypes.func.isRequired
+    readersRequest: PropTypes.func.isRequired,
+    readersSubmit: PropTypes.func.isRequired
   };
 
   render () {
-    const { readers, readersEdit, readersNew, readersRequest } = this.props;
+    const {
+      readers, readersEdit, readersNew, readersRequest, readersSubmit
+    } = this.props;
 
     const gridProps = {
       columns: [
@@ -41,6 +44,7 @@ export class ReadersView extends React.Component {
     return (
       <div className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={readersRequest} />
+        <RaisedButton label='Submit' onMouseUp={readersSubmit} />
 
         <ReactDataGrid {...gridProps} />
 
@@ -58,5 +62,6 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   readersEdit,
   readersNew,
-  readersRequest
+  readersRequest,
+  readersSubmit
 })(ReadersView);

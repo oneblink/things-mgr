@@ -1,6 +1,6 @@
 import { List, fromJS } from 'immutable';
 
-import { getEntitiesAndDispatch } from '../../lib/api';
+import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
 
 export const USERS_EDIT = 'USERS_EDIT';
 export const usersEdit = (index, changes) => ({
@@ -36,9 +36,16 @@ export const usersRequestError = (error) => ({
 });
 
 export const USERS_SUBMIT = 'USERS_SUBMIT';
-export const usersSubmit = () => ({
-  type: USERS_SUBMIT
-});
+export const usersSubmit = () => (dispatch, getState) => {
+  dispatch({ type: USERS_SUBMIT });
+  return postEntitiesAndDispatch({
+    actionError: usersSubmitError,
+    actionSuccess: usersSubmitSuccess,
+    data: getState().get('users').toJS(),
+    dispatch,
+    type: 'users'
+  });
+};
 
 export const USERS_SUBMIT_SUCCESS = 'USERS_SUBMIT_SUCCESS';
 export const usersSubmitSuccess = (users) => ({

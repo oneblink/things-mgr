@@ -9,7 +9,9 @@ import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
-import { usersEdit, usersNew, usersRequest } from '../../redux/modules/users';
+import {
+  usersEdit, usersNew, usersRequest, usersSubmit
+} from '../../redux/modules/users';
 
 import classes from './UsersView.css';
 
@@ -18,11 +20,14 @@ export class UsersView extends React.Component {
     users: PropTypes.instanceOf(List),
     usersEdit: PropTypes.func.isRequired,
     usersNew: PropTypes.func.isRequired,
-    usersRequest: PropTypes.func.isRequired
+    usersRequest: PropTypes.func.isRequired,
+    usersSubmit: PropTypes.func.isRequired
   };
 
   render () {
-    const { users, usersEdit, usersNew, usersRequest } = this.props;
+    const {
+      users, usersEdit, usersNew, usersRequest, usersSubmit
+    } = this.props;
 
     const gridProps = {
       columns: [
@@ -39,6 +44,7 @@ export class UsersView extends React.Component {
     return (
       <div className={classnames([classes.self])}>
         <RaisedButton label='Refresh' onMouseUp={usersRequest} />
+        <RaisedButton label='Submit' onMouseUp={usersSubmit} />
 
         <ReactDataGrid {...gridProps} />
 
@@ -56,5 +62,6 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   usersEdit,
   usersNew,
-  usersRequest
+  usersRequest,
+  usersSubmit
 })(UsersView);
