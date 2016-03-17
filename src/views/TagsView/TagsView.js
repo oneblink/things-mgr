@@ -47,8 +47,8 @@ export class TagsView extends React.Component {
 
     return (
       <div className={classnames([classes.self])}>
-        <RaisedButton label='Refresh' onMouseUp={tagsRequest} />
-        <RaisedButton label='Submit' onMouseUp={tagsSubmit} />
+        <RaisedButton label='Refresh' onMouseUp={tagsRequest} secondary />
+        <RaisedButton label='Submit' onMouseUp={tagsSubmit} primary />
 
         <ReactDataGrid {...gridProps} />
 

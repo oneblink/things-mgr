@@ -43,8 +43,8 @@ export class UsersView extends React.Component {
 
     return (
       <div className={classnames([classes.self])}>
-        <RaisedButton label='Refresh' onMouseUp={usersRequest} />
-        <RaisedButton label='Submit' onMouseUp={usersSubmit} />
+        <RaisedButton label='Refresh' onMouseUp={usersRequest} secondary />
+        <RaisedButton label='Submit' onMouseUp={usersSubmit} primary />
 
         <ReactDataGrid {...gridProps} />
 

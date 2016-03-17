@@ -71,7 +71,7 @@ export class SubscriptionView extends React.Component {
 
     return (
       <Paper className={classnames([classes.self])}>
-        <label>Subject</label>
+        <label>Invitation to follow</label>
         <DropDownMenu ref='subject' onChange={this.handleSubjectChange} value={subject}>
           <MenuItem value='' primaryText='Pick someone' />
           {users.map((item) => {
