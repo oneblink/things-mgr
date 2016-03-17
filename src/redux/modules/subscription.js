@@ -18,6 +18,11 @@ export const subscriptionEditRecipient = (index, recipient) => ({
   payload: { index, recipient }
 });
 
+export const SUBSCRIPTION_TRIM_RECIPIENTS = 'SUBSCRIPTION_TRIM_RECIPIENTS';
+export const subscriptionTrimRecipients = () => ({
+  type: SUBSCRIPTION_TRIM_RECIPIENTS
+});
+
 const recipientsReducer = (state = new List(), action) => {
   if (action.type === SUBSCRIPTION_EDIT_RECIPIENT) {
     const { index, recipient } = action.payload;
@@ -25,6 +30,9 @@ const recipientsReducer = (state = new List(), action) => {
   }
   if (action.type === SUBSCRIPTION_NEW_RECIPIENT) {
     return state.push('');
+  }
+  if (action.type === SUBSCRIPTION_TRIM_RECIPIENTS) {
+    return state.filter((recipient) => !!recipient.trim());
   }
   return state;
 };

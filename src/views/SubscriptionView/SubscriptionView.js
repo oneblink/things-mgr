@@ -16,7 +16,8 @@ import TextField from 'material-ui/lib/text-field';
 import {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
-  subscriptionSetSubject
+  subscriptionSetSubject,
+  subscriptionTrimRecipients
 } from '../../redux/modules/subscription';
 import { usersRequest } from '../../redux/modules/users';
 
@@ -29,6 +30,7 @@ export class SubscriptionView extends React.Component {
     subscriptionNewRecipient: PropTypes.func.isRequired,
     subscriptionEditRecipient: PropTypes.func.isRequired,
     subscriptionSetSubject: PropTypes.func.isRequired,
+    subscriptionTrimRecipients: PropTypes.func.isRequired,
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
@@ -54,14 +56,15 @@ export class SubscriptionView extends React.Component {
 
   render () {
     const {
-      recipients, subject, subscriptionNewRecipient, users
+      recipients, subject, users,
+      subscriptionNewRecipient, subscriptionTrimRecipients
     } = this.props;
 
     return (
       <Paper className={classnames([classes.self])}>
         <label>Subject</label>
         <DropDownMenu ref='subject' onChange={this.handleSubjectChange} value={subject}>
-          <MenuItem value='' primaryText='Select a subscription subject' />
+          <MenuItem value='' primaryText='Pick someone' />
           {users.map((item) => {
             const id = item.get('id');
             const name = item.get('name');
@@ -82,9 +85,18 @@ export class SubscriptionView extends React.Component {
           })}
         </MDList>
 
-        {recipients.size ? <FloatingActionButton className={classes.send} onMouseUp={subscriptionNewRecipient} secondary>
-          <ContentSend />
-        </FloatingActionButton> : <p>Add recipients, they will be invited to subscribe</p>}
+        {(() => {
+          if (subject && recipients.size) {
+            return (
+              <FloatingActionButton className={classes.send} onMouseUp={subscriptionTrimRecipients} secondary>
+                <ContentSend />
+              </FloatingActionButton>
+            );
+          }
+          if (!recipients.size) {
+            return <p>Add recipients, they will be invited to subscribe</p>;
+          }
+        })()}
 
         <FloatingActionButton className={classes.add} onMouseUp={subscriptionNewRecipient}>
           <ContentAdd />
@@ -102,6 +114,7 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
+  subscriptionTrimRecipients,
   subscriptionSetSubject,
   usersRequest
 })(SubscriptionView);
