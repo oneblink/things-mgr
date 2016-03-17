@@ -62,3 +62,25 @@ export const postEntities = (type, data) => {
   })
     .then((res) => res.json());
 };
+
+/*
+interface PostDispatchOptions {
+  actionError: Function,
+  actionSuccess: Function,
+  dispatch: Function,
+  data: Object[],
+  type: String
+}
+*/
+// getEntities (options: PostDispatchOptions) => Promise
+export const postEntitiesAndDispatch = ({ actionSuccess, actionError, data, dispatch, type }) => {
+  return postEntities(type, data)
+    .then((data) => {
+      if (data.error || data.errors) {
+        dispatch(actionError(new Error(data.error || data.errors)));
+        return;
+      }
+      dispatch(actionSuccess(data[type]));
+    })
+    .catch((err) => dispatch(actionError(err)));
+};
