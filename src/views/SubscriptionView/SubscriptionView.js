@@ -18,7 +18,6 @@ import {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
   subscriptionSetSubject,
-  subscriptionTrimRecipients,
   subscriptionsSubmit
 } from '../../redux/modules/subscription';
 import { usersRequest } from '../../redux/modules/users';
@@ -32,7 +31,6 @@ export class SubscriptionView extends React.Component {
     subscriptionNewRecipient: PropTypes.func.isRequired,
     subscriptionEditRecipient: PropTypes.func.isRequired,
     subscriptionSetSubject: PropTypes.func.isRequired,
-    subscriptionTrimRecipients: PropTypes.func.isRequired,
     subscriptionsSubmit: PropTypes.func.isRequired,
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
@@ -54,7 +52,6 @@ export class SubscriptionView extends React.Component {
   }
 
   handleSendClick () {
-    this.props.subscriptionTrimRecipients();
     this.props.subscriptionsSubmit();
   }
 
@@ -131,7 +128,6 @@ export default connect((mapStateToProps), {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
   subscriptionSetSubject,
-  subscriptionTrimRecipients,
   subscriptionsSubmit,
   usersRequest
 })(SubscriptionView);

@@ -32,6 +32,7 @@ export const subscriptionTrimRecipients = () => ({
 
 export const SUBSCRIPTIONS_SUBMIT = 'SUBSCRIPTIONS_SUBMIT';
 export const subscriptionsSubmit = () => (dispatch, getState) => {
+  dispatch({ type: SUBSCRIPTION_TRIM_RECIPIENTS });
   dispatch({ type: SUBSCRIPTIONS_SUBMIT });
   return postSubscriptionsAndDispatch({
     actionError: subscriptionsSubmitError,
@@ -54,9 +55,9 @@ export const subscriptionsSubmitError = (error) => ({
   error: true
 });
 
-const recipientsReducer = (state = new List(), action) => {
+const recipientsReducer = (state = List.of(''), action) => {
   if (action.type === SUBSCRIPTION_CLEAR_RECIPIENTS) {
-    return new List();
+    return List.of('');
   }
   if (action.type === SUBSCRIPTION_EDIT_RECIPIENT) {
     const { index, recipient } = action.payload;

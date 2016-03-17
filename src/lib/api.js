@@ -93,6 +93,9 @@ interface SubscriptionsData {
 // postSubscription (data: SubscriptionsData) => Promise
 export const postSubscriptions = (data) => {
   const TYPE = 'subscriptions';
+  if (!Array.isArray(data.recipients) || !data.recipients.length) {
+    return Promise.resolve({});
+  }
   const resources = {
     [TYPE]: data.recipients.map((recipient) => ({
       type: isTelephone(data.recipient) ? 'SMS' : 'EMAIL',
