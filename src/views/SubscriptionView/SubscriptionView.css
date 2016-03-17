@@ -1,0 +1,17 @@
+.self {
+  margin: 2rem auto;
+  max-width: 30rem;
+  padding: 2rem;
+}
+
+.add {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+}
+
+.send {
+  position: fixed;
+  bottom: 8rem;
+  right: 3rem;
+}
