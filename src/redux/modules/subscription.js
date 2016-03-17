@@ -26,7 +26,7 @@ export const subscriptionTrimRecipients = () => ({
 const recipientsReducer = (state = new List(), action) => {
   if (action.type === SUBSCRIPTION_EDIT_RECIPIENT) {
     const { index, recipient } = action.payload;
-    return state.set(index, recipient);
+    return state.set(index, recipient.trim());
   }
   if (action.type === SUBSCRIPTION_NEW_RECIPIENT) {
     return state.push('');

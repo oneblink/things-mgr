@@ -13,6 +13,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import Paper from 'material-ui/lib/paper';
 import TextField from 'material-ui/lib/text-field';
 
+import { isTelephone } from '../../lib/string';
 import {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
@@ -76,10 +77,17 @@ export class SubscriptionView extends React.Component {
 
         <MDList>
           {recipients.map((recipient, index) => {
-            const onChange = (event) => this.handleReceipientChange(event, index);
+            const type = isTelephone(recipient) ? 'tel' : 'email';
+            const textProps = {
+              fullWidth: true,
+              hintText: 'recipient phone or email',
+              onChange: (event) => this.handleReceipientChange(event, index),
+              type,
+              value: recipient
+            };
             return (
               <ListItem key={index}>
-                <TextField fullWidth hintText='recipient phone or email' value={recipient} onChange={onChange} />
+                <TextField {...textProps} />
               </ListItem>
             );
           })}
