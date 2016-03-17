@@ -1,10 +1,12 @@
 import md5 from 'md5';
 
 import { store } from '../redux/store';
+import { isTelephone } from './string';
 
 // register environment variables in config/_base.js
 const getUrl = process.env.ENTITY_HTTP_GET_API;
 const postUrl = process.env.ENTITY_HTTP_POST_API;
+const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
 
 // getAuthorisation () => String
 const getAuthorisation = () => {
@@ -65,11 +67,8 @@ export const postEntities = (type, data) => {
 
 /*
 interface PostDispatchOptions {
-  actionError: Function,
-  actionSuccess: Function,
-  dispatch: Function,
   data: Object[],
-  type: String
+  ...GetDispatchOptions
 }
 */
 // getEntities (options: PostDispatchOptions) => Promise
@@ -81,6 +80,58 @@ export const postEntitiesAndDispatch = ({ actionSuccess, actionError, data, disp
         return;
       }
       dispatch(actionSuccess(data[type]));
+    })
+    .catch((err) => dispatch(actionError(err)));
+};
+
+/*
+interface SubscriptionsData {
+  subject: String,
+  recipients: String[]
+}
+*/
+// postSubscription (data: SubscriptionsData) => Promise
+export const postSubscriptions = (data) => {
+  const TYPE = 'subscriptions';
+  const resources = {
+    [TYPE]: data.recipients.map((recipient) => ({
+      type: isTelephone(data.recipient) ? 'SMS' : 'EMAIL',
+      address: data.recipient,
+      links: {
+        users: data.subject
+      }
+    }))
+  };
+  const formData = new FormData();
+  formData.append('args', JSON.stringify(resources));
+  return fetch(`${subscribeUrl}?`, {
+    body: formData,
+    headers: {
+      Authorisation: getAuthorisation()
+    },
+    method: 'POST',
+    mode: 'cors'
+  })
+    .then((res) => res.json());
+};
+
+/*
+interface PostSubscriptionOptions {
+  actionError: Function,
+  actionSuccess: Function,
+  data: SubscriptionsData,
+  dispatch: Function
+}
+*/
+// postSubscriptionAndDispatch (options: PostSubscriptionOptions) => Promise
+export const postSubscriptionsAndDispatch = ({ actionSuccess, actionError, data, dispatch }) => {
+  return postSubscriptions(data)
+    .then((data) => {
+      // if (data.error || data.errors) {
+      //   dispatch(actionError(new Error(data.error || data.errors)));
+      //   return;
+      // }
+      dispatch(actionSuccess(data.subscriptions));
     })
     .catch((err) => dispatch(actionError(err)));
 };

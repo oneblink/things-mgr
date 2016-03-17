@@ -1,6 +1,13 @@
 import { List } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
+import { postSubscriptionsAndDispatch } from '../../lib/api';
+
+export const SUBSCRIPTION_CLEAR_RECIPIENTS = 'SUBSCRIPTION_CLEAR_RECIPIENTS';
+export const subscriptionClearRecipients = () => ({
+  type: SUBSCRIPTION_CLEAR_RECIPIENTS
+});
+
 export const SUBSCRIPTION_SET_SUBJECT = 'SUBSCRIPTION_SET_SUBJECT';
 export const subscriptionSetSubject = (user) => ({
   type: SUBSCRIPTION_SET_SUBJECT,
@@ -23,7 +30,34 @@ export const subscriptionTrimRecipients = () => ({
   type: SUBSCRIPTION_TRIM_RECIPIENTS
 });
 
+export const SUBSCRIPTIONS_SUBMIT = 'SUBSCRIPTIONS_SUBMIT';
+export const subscriptionsSubmit = () => (dispatch, getState) => {
+  dispatch({ type: SUBSCRIPTIONS_SUBMIT });
+  return postSubscriptionsAndDispatch({
+    actionError: subscriptionsSubmitError,
+    actionSuccess: subscriptionsSubmitSuccess,
+    data: getState().get('subscription').toJS(),
+    dispatch
+  });
+};
+
+export const SUBSCRIPTIONS_SUBMIT_SUCCESS = 'SUBSCRIPTIONS_SUBMIT_SUCCESS';
+export const subscriptionsSubmitSuccess = () => (dispatch, getState) => {
+  dispatch({ type: SUBSCRIPTIONS_SUBMIT_SUCCESS });
+  dispatch({ type: SUBSCRIPTION_CLEAR_RECIPIENTS });
+};
+
+export const SUBSCRIPTIONS_SUBMIT_ERROR = 'SUBSCRIPTIONS_SUBMIT_ERROR';
+export const subscriptionsSubmitError = (error) => ({
+  type: SUBSCRIPTIONS_SUBMIT_ERROR,
+  payload: error,
+  error: true
+});
+
 const recipientsReducer = (state = new List(), action) => {
+  if (action.type === SUBSCRIPTION_CLEAR_RECIPIENTS) {
+    return new List();
+  }
   if (action.type === SUBSCRIPTION_EDIT_RECIPIENT) {
     const { index, recipient } = action.payload;
     return state.set(index, recipient.trim());

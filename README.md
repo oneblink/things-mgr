@@ -19,6 +19,11 @@ See: https://www.npmjs.com/package/better-npm-run
 Specify a URLs for the HTTP APIs used to manage entities.
 
 
+#### SUBSCRIBE_HTTP_POST_API
+
+Specify a URL for the HTTP APIs used to manage subscriptions.
+
+
 ## Related Links
 
 - https://github.com/davezuko/react-redux-starter-kit

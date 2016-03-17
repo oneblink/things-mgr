@@ -18,7 +18,8 @@ import {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
   subscriptionSetSubject,
-  subscriptionTrimRecipients
+  subscriptionTrimRecipients,
+  subscriptionsSubmit
 } from '../../redux/modules/subscription';
 import { usersRequest } from '../../redux/modules/users';
 
@@ -32,14 +33,16 @@ export class SubscriptionView extends React.Component {
     subscriptionEditRecipient: PropTypes.func.isRequired,
     subscriptionSetSubject: PropTypes.func.isRequired,
     subscriptionTrimRecipients: PropTypes.func.isRequired,
+    subscriptionsSubmit: PropTypes.func.isRequired,
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
 
   constructor () {
     super();
-    this.handleSubjectChange = this.handleSubjectChange.bind(this);
     this.handleReceipientChange = this.handleReceipientChange.bind(this);
+    this.handleSendClick = this.handleSendClick.bind(this);
+    this.handleSubjectChange = this.handleSubjectChange.bind(this);
   }
 
   handleReceipientChange (event, index) {
@@ -50,6 +53,11 @@ export class SubscriptionView extends React.Component {
     this.props.subscriptionSetSubject(value);
   }
 
+  handleSendClick () {
+    this.props.subscriptionTrimRecipients();
+    this.props.subscriptionsSubmit();
+  }
+
   componentDidMount () {
     // automatically refresh user listing
     this.props.usersRequest();
@@ -58,7 +66,7 @@ export class SubscriptionView extends React.Component {
   render () {
     const {
       recipients, subject, users,
-      subscriptionNewRecipient, subscriptionTrimRecipients
+      subscriptionNewRecipient
     } = this.props;
 
     return (
@@ -96,7 +104,7 @@ export class SubscriptionView extends React.Component {
         {(() => {
           if (subject && recipients.size) {
             return (
-              <FloatingActionButton className={classes.send} onMouseUp={subscriptionTrimRecipients} secondary>
+              <FloatingActionButton className={classes.send} onMouseUp={this.handleSendClick} secondary>
                 <ContentSend />
               </FloatingActionButton>
             );
@@ -122,7 +130,8 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   subscriptionNewRecipient,
   subscriptionEditRecipient,
-  subscriptionTrimRecipients,
   subscriptionSetSubject,
+  subscriptionTrimRecipients,
+  subscriptionsSubmit,
   usersRequest
 })(SubscriptionView);
