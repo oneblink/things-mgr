@@ -19,13 +19,36 @@ import classes from './CoreLayout.css';
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
 function CoreLayout ({ children }) {
+  if (process.env.USE_CASE === 'app') {
+    return (
+      <div className={classes.self}>
+        <AppBar title='Things Manager' showMenuIconButton={false} />
+        <Link to='/subscription'><FlatButton label='Subscription' /></Link>
+        <Link to='/login'><FlatButton label='Login' /></Link>
+        <div className={classes.view}>
+          {children}
+        </div>
+      </div>
+    );
+  }
+  if (process.env.USE_CASE === 'manager') {
+    return (
+      <div className={classes.self}>
+        <AppBar title='Things Manager' showMenuIconButton={false} />
+        <Link to='/things/tags'><FlatButton label='Tags' /></Link>
+        <Link to='/things/people'><FlatButton label='People' /></Link>
+        <Link to='/things/readers'><FlatButton label='Readers' /></Link>
+        <Link to='/subscription'><FlatButton label='Subscription' /></Link>
+        <Link to='/login'><FlatButton label='Login' /></Link>
+        <div className={classes.view}>
+          {children}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={classes.self}>
       <AppBar title='Things Manager' showMenuIconButton={false} />
-      <Link to='/things/tags'><FlatButton label='Tags' /></Link>
-      <Link to='/things/people'><FlatButton label='People' /></Link>
-      <Link to='/things/readers'><FlatButton label='Readers' /></Link>
-      <Link to='/subscription'><FlatButton label='Subscription' /></Link>
       <Link to='/login'><FlatButton label='Login' /></Link>
       <div className={classes.view}>
         {children}

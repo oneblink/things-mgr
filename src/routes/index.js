@@ -13,16 +13,35 @@ import SubscriptionView from 'views/SubscriptionView/SubscriptionView';
 import TagsView from 'views/TagsView/TagsView';
 import UsersView from 'views/UsersView/UsersView';
 
-export default (store) => (
-  <Route path='/' component={CoreLayout}>
-    <IndexRedirect to='/things' />
-    <Route path='login' component={LoginView} />
-    <Route path='things'>
-      <IndexRedirect to='/things/tags' />
-      <Route path='tags' component={TagsView} />
-      <Route path='people' component={UsersView} />
-      <Route path='readers' component={ReadersView} />
+export default (store) => {
+  if (process.env.USE_CASE === 'app') {
+    return (
+      <Route path='/' component={CoreLayout}>
+        <IndexRedirect to='/login' />
+        <Route path='login' component={LoginView} />
+        <Route path='subscription' component={SubscriptionView} />
+      </Route>
+    );
+  }
+  if (process.env.USE_CASE === 'manager') {
+    return (
+      <Route path='/' component={CoreLayout}>
+        <IndexRedirect to='/login' />
+        <Route path='login' component={LoginView} />
+        <Route path='things'>
+          <IndexRedirect to='/things/tags' />
+          <Route path='tags' component={TagsView} />
+          <Route path='people' component={UsersView} />
+          <Route path='readers' component={ReadersView} />
+        </Route>
+        <Route path='subscription' component={SubscriptionView} />
+      </Route>
+    );
+  }
+  return (
+    <Route path='/' component={CoreLayout}>
+      <IndexRedirect to='/login' />
+      <Route path='login' component={LoginView} />
     </Route>
-    <Route path='subscription' component={SubscriptionView} />
-  </Route>
-);
+  );
+};
