@@ -9,7 +9,9 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import Paper from 'material-ui/lib/paper';
 import TextField from 'material-ui/lib/text-field';
 
-import { registerSetTag, registerSetUser } from '../../redux/modules/register';
+import {
+  registerSetTag, registerSetUser, registerSubmit
+} from '../../redux/modules/register';
 import { usersRequest } from '../../redux/modules/users';
 
 import classes from './RegisterView.css';
@@ -18,6 +20,7 @@ export class RegisterView extends React.Component {
   static propTypes = {
     registerSetTag: PropTypes.func.isRequired,
     registerSetUser: PropTypes.func.isRequired,
+    registerSubmit: PropTypes.func.isRequired,
     tag: PropTypes.string,
     userName: PropTypes.string,
     users: PropTypes.instanceOf(List),
@@ -31,9 +34,11 @@ export class RegisterView extends React.Component {
 
   render () {
     const {
-      registerSetTag, registerSetUser,
+      registerSetTag, registerSetUser, registerSubmit,
       tag, userName, users
     } = this.props;
+
+    console.log('RegisterView', userName);
 
     const tagProps = {
       floatingLabelText: 'Tag ID',
@@ -57,7 +62,7 @@ export class RegisterView extends React.Component {
       },
       onUpdateInput: (value) => registerSetUser('', value),
       ref: 'person',
-      value: userName
+      searchText: userName
     };
 
     return (
@@ -67,7 +72,7 @@ export class RegisterView extends React.Component {
         <AutoComplete {...personProps} />
         <br />
         <div className={classes.buttons}>
-          <FlatButton className={classes.register} label='Register' primary />
+          <FlatButton className={classes.register} label='Register' onMouseUp={registerSubmit} primary />
         </div>
       </Paper>
     );
@@ -82,5 +87,6 @@ const mapStateToProps = (state) => ({
 export default connect((mapStateToProps), {
   registerSetTag,
   registerSetUser,
+  registerSubmit,
   usersRequest
 })(RegisterView);
