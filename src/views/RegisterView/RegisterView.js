@@ -38,8 +38,6 @@ export class RegisterView extends React.Component {
       tag, userName, users
     } = this.props;
 
-    console.log('RegisterView', userName);
-
     const tagProps = {
       floatingLabelText: 'Tag ID',
       fullWidth: true,
