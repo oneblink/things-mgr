@@ -23,6 +23,7 @@ function CoreLayout ({ children }) {
     return (
       <div className={classes.self}>
         <AppBar title='Things Manager' showMenuIconButton={false} />
+        <Link to='/register'><FlatButton label='Register' /></Link>
         <Link to='/subscription'><FlatButton label='Subscription' /></Link>
         <Link to='/login'><FlatButton label='Login' /></Link>
         <div className={classes.view}>
@@ -35,6 +36,7 @@ function CoreLayout ({ children }) {
     return (
       <div className={classes.self}>
         <AppBar title='Things Manager' showMenuIconButton={false} />
+        <Link to='/register'><FlatButton label='Register' /></Link>
         <Link to='/things/tags'><FlatButton label='Tags' /></Link>
         <Link to='/things/people'><FlatButton label='People' /></Link>
         <Link to='/things/readers'><FlatButton label='Readers' /></Link>

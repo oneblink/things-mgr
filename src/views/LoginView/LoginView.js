@@ -22,12 +22,14 @@ export class LoginView extends React.Component {
 
     const usernameProps = {
       floatingLabelText: 'Username',
+      fullWidth: true,
       onChange: () => loginSetUsername(this.refs.username.getValue()),
       ref: 'username',
       value: login.get('username')
     };
     const passwordProps = {
       floatingLabelText: 'Password',
+      fullWidth: true,
       onChange: () => loginSetPassword(this.refs.password.getValue()),
       ref: 'password',
       type: 'password',

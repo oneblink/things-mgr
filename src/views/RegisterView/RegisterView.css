@@ -1,0 +1,13 @@
+.self {
+  max-width: 30em;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.buttons {
+  text-align: right;
+}
+
+.register {
+  margin: 1rem;
+}
