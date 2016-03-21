@@ -70,7 +70,8 @@ export const usersReducer = (state = initialState, action) => {
   if (action.type === USERS_NEW) {
     return state.push(fromJS({
       id: `u${state.size}`,
-      name: '',
+      firstname: '',
+      lastname: '',
       info: {
         address: '',
         email: '',

@@ -32,7 +32,8 @@ export class UsersView extends React.Component {
     const gridProps = {
       columns: [
         { key: 'id', name: 'ID', editable: true },
-        { key: 'name', name: 'Name', editable: true }
+        { key: 'firstname', name: 'First Name', editable: true },
+        { key: 'lastname', name: 'Surname', editable: true }
       ],
       enableCellSelect: true,
       minHeight: document.documentElement.clientHeight - 150,

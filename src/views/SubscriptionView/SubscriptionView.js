@@ -73,7 +73,7 @@ export class SubscriptionView extends React.Component {
           <MenuItem value='' primaryText='Pick someone' />
           {users.map((item) => {
             const id = item.get('id');
-            const name = item.get('name');
+            const name = `${item.get('firstname')} ${item.get('lastname')}`;
             return <MenuItem key={id} value={id} primaryText={name} />;
           })}
         </DropDownMenu>
