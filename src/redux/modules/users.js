@@ -87,3 +87,5 @@ export const usersReducer = (state = initialState, action) => {
   }
   return state;
 };
+
+export const getUsers = (state) => state.get('users');

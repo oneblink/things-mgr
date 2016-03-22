@@ -10,7 +10,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
-  tagsEdit, tagsNew, tagsRequest, tagsSubmit
+  getTags, tagsEdit, tagsNew, tagsRequest, tagsSubmit
 } from '../../redux/modules/tags';
 
 import classes from './TagsView.css';
@@ -61,7 +61,7 @@ export class TagsView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  tags: state.get('tags')
+  tags: getTags(state)
 });
 export default connect((mapStateToProps), {
   tagsEdit,

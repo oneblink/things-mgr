@@ -10,7 +10,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
-  readersEdit, readersNew, readersRequest, readersSubmit
+  getReaders, readersEdit, readersNew, readersRequest, readersSubmit
 } from '../../redux/modules/readers';
 
 import classes from './ReadersView.css';
@@ -57,7 +57,7 @@ export class ReadersView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  readers: state.get('readers')
+  readers: getReaders(state)
 });
 export default connect((mapStateToProps), {
   readersEdit,

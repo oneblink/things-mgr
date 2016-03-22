@@ -95,3 +95,5 @@ export const tagsReducer = (state = initialState, action) => {
   }
   return state;
 };
+
+export const getTags = (state) => state.get('tags');

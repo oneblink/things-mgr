@@ -13,7 +13,7 @@ import {
   registerSetFirstname, registerSetLastname,
   registerSetTag, registerSubmit
 } from '../../redux/modules/register';
-import { usersRequest } from '../../redux/modules/users';
+import { getUsers, usersRequest } from '../../redux/modules/users';
 
 import classes from './RegisterView.css';
 
@@ -101,7 +101,7 @@ const mapStateToProps = (state) => ({
   tag: state.getIn(['register', 'tag']),
   firstname: state.getIn(['register', 'user', 'firstname']),
   lastname: state.getIn(['register', 'user', 'lastname']),
-  users: state.get('users')
+  users: getUsers(state)
 });
 export default connect((mapStateToProps), {
   registerSetFirstname,

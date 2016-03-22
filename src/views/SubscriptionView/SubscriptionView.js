@@ -20,7 +20,7 @@ import {
   subscriptionSetSubject,
   subscriptionsSubmit
 } from '../../redux/modules/subscription';
-import { usersRequest } from '../../redux/modules/users';
+import { getUsers, usersRequest } from '../../redux/modules/users';
 
 import classes from './SubscriptionView.css';
 
@@ -122,7 +122,7 @@ export class SubscriptionView extends React.Component {
 const mapStateToProps = (state) => ({
   recipients: state.getIn(['subscription', 'recipients']),
   subject: state.getIn(['subscription', 'subject']),
-  users: state.get('users')
+  users: getUsers(state)
 });
 export default connect((mapStateToProps), {
   subscriptionNewRecipient,

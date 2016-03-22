@@ -81,3 +81,5 @@ export const readersReducer = (state = initialState, action) => {
   }
   return state;
 };
+
+export const getReaders = (state) => state.get('readers');

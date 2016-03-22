@@ -10,7 +10,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
-  usersEdit, usersNew, usersRequest, usersSubmit
+  getUsers, usersEdit, usersNew, usersRequest, usersSubmit
 } from '../../redux/modules/users';
 
 import classes from './UsersView.css';
@@ -58,7 +58,7 @@ export class UsersView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  users: state.get('users')
+  users: getUsers(state)
 });
 export default connect((mapStateToProps), {
   usersEdit,
