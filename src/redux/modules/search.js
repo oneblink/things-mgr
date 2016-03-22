@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import { createSelector } from 'reselect';
 
@@ -42,9 +41,9 @@ const directionReducer = (state = SORT_NONE, action) => {
   return state;
 };
 
-const filterReducer = (state = new Map(), action) => {
+const filterReducer = (state = '', action) => {
   if (action.type === SEARCH_SET_FILTER) {
-    return Map(action.payload);
+    return action.payload;
   }
   return state;
 };
@@ -95,14 +94,19 @@ const makeComparer = (column, direction) => (a, b) => {
   }
 };
 
+const FILTER_COLUMNS = ['firstname', 'lastname', 'location'];
+
 export const getFilteredRows = createSelector(
   [getFilter, getRows],
   (filter, rows) => {
-    if (!filter.size) {
+    if (filter.trim() === '') {
       return rows;
     }
-    return rows.filter((row) => filter.entries().every(([key, value]) => {
-      return !value || row.get(key).toLowerCase().includes(value.toLowerCase());
+    return rows.filter((row) => row.some((value, key) => {
+      if (!FILTER_COLUMNS.includes(key)) {
+        return false; // skip columns that we don't use
+      }
+      return value.toLowerCase().includes(filter.toLowerCase());
     }));
   }
 );

@@ -4,10 +4,12 @@ import { List } from 'immutable';
 import classnames from 'classnames';
 
 import ReactDataGrid from 'react-data-grid/addons';
+import TextField from 'material-ui/lib/text-field';
 
 import {
   SORT_ASCENDING, SORT_DESCENDING, SORT_NONE,
-  getFilteredSortedRows, searchSetSortColumn, searchSetSortDirection
+  getFilter, getFilteredSortedRows,
+  searchSetFilter, searchSetSortColumn, searchSetSortDirection
 } from '../../redux/modules/search';
 
 import classes from './SearchView.css';
@@ -21,7 +23,9 @@ const DIRECTION = {
 
 export class SearchView extends React.Component {
   static propTypes = {
+    filter: PropTypes.string,
     rows: PropTypes.instanceOf(List),
+    searchSetFilter: PropTypes.func.isRequired,
     searchSetSortColumn: PropTypes.func.isRequired,
     searchSetSortDirection: PropTypes.func.isRequired
   };
@@ -40,7 +44,7 @@ export class SearchView extends React.Component {
   }
 
   render () {
-    const { rows } = this.props;
+    const { filter, rows, searchSetFilter } = this.props;
 
     const columnProps = {
       filterable: true,
@@ -54,15 +58,24 @@ export class SearchView extends React.Component {
         Object.assign({ key: 'location', name: 'Location' }, columnProps)
       ],
       enableCellSelect: true,
-      minHeight: document.documentElement.clientHeight - 150,
-      onAddFilter: this.handleFilterChange,
+      minHeight: document.documentElement.clientHeight - 220,
       onGridSort: this.handleGridSort,
       rowGetter: (index) => rows.get(index),
       rowsCount: rows.size
     };
 
+    const filterProps = {
+      className: classes.filter,
+      floatingLabelText: 'Filter',
+      type: 'search',
+      onChange: () => searchSetFilter(this.refs.search.getValue()),
+      ref: 'search',
+      value: filter
+    };
+
     return (
       <div className={classnames([classes.self])}>
+        <TextField {...filterProps} />
         <ReactDataGrid {...gridProps} />
       </div>
     );
@@ -70,9 +83,11 @@ export class SearchView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  getFilter: getFilter(state),
   rows: getFilteredSortedRows(state)
 });
 export default connect((mapStateToProps), {
+  searchSetFilter,
   searchSetSortColumn,
   searchSetSortDirection
 })(SearchView);
