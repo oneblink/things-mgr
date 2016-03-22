@@ -12,10 +12,16 @@ export const registerSetTag = (tag) => ({
   payload: tag
 });
 
-export const REGISTER_SET_USER = 'REGISTER_SET_USER';
-export const registerSetUser = (id, name) => ({
-  type: REGISTER_SET_USER,
-  payload: { id, name }
+export const REGISTER_SET_FIRSTNAME = 'REGISTER_SET_FIRSTNAME';
+export const registerSetFirstname = (firstname) => ({
+  type: REGISTER_SET_FIRSTNAME,
+  payload: firstname
+});
+
+export const REGISTER_SET_LASTNAME = 'REGISTER_SET_LASTNAME';
+export const registerSetLastname = (lastname) => ({
+  type: REGISTER_SET_LASTNAME,
+  payload: lastname
 });
 
 export const REGISTER_SUBMIT = 'REGISTER_SUBMIT';
@@ -23,12 +29,18 @@ export const registerSubmit = () => (dispatch, getState) => {
   dispatch({ type: REGISTER_SUBMIT });
   let user = getState().getIn(['register', 'user']);
   // ensure the user record exists locally
-  if (user.get('id') === '') {
+  let existingUser = getState().get('users').find((u) => {
+    return ['firstname', 'lastname'].every((key) => u.get(key) === user.get(key));
+  });
+  if (!existingUser) {
     dispatch(usersNew());
     dispatch(usersEdit(getState().get('users').size - 1, {
-      name: user.get('name')
+      firstname: user.get('firstname'),
+      lastname: user.get('lastname')
     }));
     user = getState().get('users').last();
+  } else {
+    user = existingUser;
   }
   // submit it to the service
   return usersSubmit()(dispatch, getState)
@@ -75,29 +87,29 @@ const tagReducer = (state = '', action) => {
   return state;
 };
 
-const userIdReducer = (state = '', action) => {
+const firstNameReducer = (state = '', action) => {
   if (action.type === REGISTER_CLEAR) {
     return '';
   }
-  if (action.type === REGISTER_SET_USER) {
-    return action.payload.id;
+  if (action.type === REGISTER_SET_FIRSTNAME) {
+    return action.payload;
   }
   return state;
 };
 
-const userNameReducer = (state = '', action) => {
+const lastNameReducer = (state = '', action) => {
   if (action.type === REGISTER_CLEAR) {
     return '';
   }
-  if (action.type === REGISTER_SET_USER) {
-    return action.payload.name;
+  if (action.type === REGISTER_SET_LASTNAME) {
+    return action.payload;
   }
   return state;
 };
 
 export const userReducer = combineReducers({
-  id: userIdReducer,
-  name: userNameReducer
+  firstname: firstNameReducer,
+  lastname: lastNameReducer
 });
 
 export const registerReducer = combineReducers({

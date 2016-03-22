@@ -10,7 +10,8 @@ import Paper from 'material-ui/lib/paper';
 import TextField from 'material-ui/lib/text-field';
 
 import {
-  registerSetTag, registerSetUser, registerSubmit
+  registerSetFirstname, registerSetLastname,
+  registerSetTag, registerSubmit
 } from '../../redux/modules/register';
 import { usersRequest } from '../../redux/modules/users';
 
@@ -18,14 +19,20 @@ import classes from './RegisterView.css';
 
 export class RegisterView extends React.Component {
   static propTypes = {
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+    registerSetFirstname: PropTypes.func.isRequired,
+    registerSetLastname: PropTypes.func.isRequired,
     registerSetTag: PropTypes.func.isRequired,
-    registerSetUser: PropTypes.func.isRequired,
     registerSubmit: PropTypes.func.isRequired,
     tag: PropTypes.string,
-    userName: PropTypes.string,
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
+
+  static filterIgnoreCase (search, key) {
+    return search !== '' && key.toLowerCase().includes(search.toLowerCase());
+  }
 
   componentDidMount () {
     // automatically refresh user listing
@@ -34,8 +41,9 @@ export class RegisterView extends React.Component {
 
   render () {
     const {
-      registerSetTag, registerSetUser, registerSubmit,
-      tag, userName, users
+      registerSetFirstname, registerSetLastname,
+      registerSetTag, registerSubmit,
+      firstname, lastname, tag, users
     } = this.props;
 
     const tagProps = {
@@ -46,28 +54,40 @@ export class RegisterView extends React.Component {
       value: tag
     };
     const personProps = {
-      dataSource: users.toJS().map((user) => ({
-        text: user.name,
-        value: <MenuItem primaryText={user.name} value={user.id} />
-      })),
-      filter: (search, key) => {
-        return search !== '' && key.toLowerCase().includes(search.toLowerCase());
-      },
-      floatingLabelText: 'Person',
+      filter: RegisterView.filterIgnoreCase,
       fullWidth: true,
       onNewRequest: (value, index) => {
-        registerSetUser(users.get(index).get('id'), value);
-      },
-      onUpdateInput: (value) => registerSetUser('', value),
-      ref: 'person',
-      searchText: userName
+        const user = users.get(index);
+        registerSetFirstname(user.get('firstname'));
+        registerSetLastname(user.get('lastname'));
+      }
+    };
+    const firstnameProps = {
+      dataSource: users.toJS().map((user) => ({
+        text: user.firstname,
+        value: <MenuItem primaryText={user.firstname} value={user.id} />
+      })),
+      floatingLabelText: 'First Name',
+      onUpdateInput: (value) => registerSetFirstname(value),
+      searchText: firstname
+    };
+    const lastnameProps = {
+      dataSource: users.toJS().map((user) => ({
+        text: user.lastname,
+        value: <MenuItem primaryText={user.lastname} value={user.id} />
+      })),
+      floatingLabelText: 'Surname',
+      onUpdateInput: (value) => registerSetLastname(value),
+      searchText: lastname
     };
 
     return (
       <Paper className={classnames([classes.self])}>
         <TextField {...tagProps} />
         <br />
-        <AutoComplete {...personProps} />
+        <AutoComplete {...firstnameProps} {...personProps} />
+        <br />
+        <AutoComplete {...lastnameProps} {...personProps} />
         <br />
         <div className={classes.buttons}>
           <FlatButton className={classes.register} label='Register' onMouseUp={registerSubmit} primary />
@@ -79,12 +99,14 @@ export class RegisterView extends React.Component {
 
 const mapStateToProps = (state) => ({
   tag: state.getIn(['register', 'tag']),
-  userName: state.getIn(['register', 'user', 'name']),
+  firstname: state.getIn(['register', 'user', 'firstname']),
+  lastname: state.getIn(['register', 'user', 'lastname']),
   users: state.get('users')
 });
 export default connect((mapStateToProps), {
+  registerSetFirstname,
+  registerSetLastname,
   registerSetTag,
-  registerSetUser,
   registerSubmit,
   usersRequest
 })(RegisterView);
