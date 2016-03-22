@@ -11,6 +11,9 @@ import {
   getFilter, getFilteredSortedRows,
   searchSetFilter, searchSetSortColumn, searchSetSortDirection
 } from '../../redux/modules/search';
+import { readersRequest } from '../../redux/modules/readers';
+import { tagsRequest } from '../../redux/modules/tags';
+import { usersRequest } from '../../redux/modules/users';
 
 import classes from './SearchView.css';
 
@@ -24,16 +27,38 @@ const DIRECTION = {
 export class SearchView extends React.Component {
   static propTypes = {
     filter: PropTypes.string,
+    readersRequest: PropTypes.func.isRequired,
     rows: PropTypes.instanceOf(List),
     searchSetFilter: PropTypes.func.isRequired,
     searchSetSortColumn: PropTypes.func.isRequired,
-    searchSetSortDirection: PropTypes.func.isRequired
+    searchSetSortDirection: PropTypes.func.isRequired,
+    tagsRequest: PropTypes.func.isRequired,
+    usersRequest: PropTypes.func.isRequired
   };
 
   constructor () {
     super();
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleGridSort = this.handleGridSort.bind(this);
+  }
+
+  componentDidMount () {
+    // automatically refresh user listing
+    this.props.readersRequest();
+    this.props.tagsRequest();
+    this.props.usersRequest();
+    // automatically refresh user listing every 30 seconds
+    this.setState({
+      timer: setInterval(() => {
+        this.props.readersRequest();
+        this.props.tagsRequest();
+        this.props.usersRequest();
+      }, 30e3)
+    });
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.state.timer);
   }
 
   handleFilterChange () {}
@@ -87,7 +112,10 @@ const mapStateToProps = (state) => ({
   rows: getFilteredSortedRows(state)
 });
 export default connect((mapStateToProps), {
+  readersRequest,
   searchSetFilter,
   searchSetSortColumn,
-  searchSetSortDirection
+  searchSetSortDirection,
+  tagsRequest,
+  usersRequest
 })(SearchView);
