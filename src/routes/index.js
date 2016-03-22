@@ -10,6 +10,7 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
 import RegisterView from 'views/RegisterView/RegisterView';
+import SearchView from 'views/SearchView/SearchView';
 import SubscriptionView from 'views/SubscriptionView/SubscriptionView';
 import TagsView from 'views/TagsView/TagsView';
 import UsersView from 'views/UsersView/UsersView';
@@ -21,6 +22,7 @@ export default (store) => {
         <IndexRedirect to='/login' />
         <Route path='login' component={LoginView} />
         <Route path='register' component={RegisterView} />
+        <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
       </Route>
     );
@@ -37,6 +39,7 @@ export default (store) => {
           <Route path='readers' component={ReadersView} />
         </Route>
         <Route path='register' component={RegisterView} />
+        <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
       </Route>
     );

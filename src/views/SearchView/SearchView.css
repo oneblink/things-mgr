@@ -1,0 +1,11 @@
+.self {}
+
+.add {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+}
+
+.card {
+  padding: 1rem;
+}

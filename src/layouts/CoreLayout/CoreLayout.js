@@ -25,6 +25,7 @@ function CoreLayout ({ children }) {
         <AppBar title='Things Manager' showMenuIconButton={false} />
         <Link to='/register'><FlatButton label='Register' /></Link>
         <Link to='/subscription'><FlatButton label='Subscription' /></Link>
+        <Link to='/search'><FlatButton label='Search' /></Link>
         <Link to='/login'><FlatButton label='Login' /></Link>
         <div className={classes.view}>
           {children}
@@ -41,6 +42,7 @@ function CoreLayout ({ children }) {
         <Link to='/things/people'><FlatButton label='People' /></Link>
         <Link to='/things/readers'><FlatButton label='Readers' /></Link>
         <Link to='/subscription'><FlatButton label='Subscription' /></Link>
+        <Link to='/search'><FlatButton label='Search' /></Link>
         <Link to='/login'><FlatButton label='Login' /></Link>
         <div className={classes.view}>
           {children}
