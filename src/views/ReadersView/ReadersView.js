@@ -6,8 +6,8 @@ import classnames from 'classnames';
 import ReactDataGrid from 'react-data-grid/addons';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import ContentSave from 'material-ui/lib/svg-icons/content/save';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
-import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
   getReaders, readersEdit, readersNew, readersRequest, readersSubmit
@@ -24,9 +24,14 @@ export class ReadersView extends React.Component {
     readersSubmit: PropTypes.func.isRequired
   };
 
+  componentDidMount () {
+    // automatically refresh listing
+    this.props.readersRequest();
+  }
+
   render () {
     const {
-      readers, readersEdit, readersNew, readersRequest, readersSubmit
+      readers, readersEdit, readersNew, readersSubmit
     } = this.props;
 
     const gridProps = {
@@ -35,7 +40,7 @@ export class ReadersView extends React.Component {
         { key: 'name', name: 'Name', editable: true }
       ],
       enableCellSelect: true,
-      minHeight: document.documentElement.clientHeight - 150,
+      minHeight: document.documentElement.clientHeight - 120,
       rowGetter: (index) => readers.get(index),
       rowsCount: readers.size,
       onRowUpdated: ({ rowIdx, updated }) => readersEdit(rowIdx, updated)
@@ -43,10 +48,11 @@ export class ReadersView extends React.Component {
 
     return (
       <div className={classnames([classes.self])}>
-        <RaisedButton label='Refresh' onMouseUp={readersRequest} secondary />
-        <RaisedButton label='Submit' onMouseUp={readersSubmit} primary />
-
         <ReactDataGrid {...gridProps} />
+
+        <FloatingActionButton className={classes.save} onMouseUp={readersSubmit} secondary>
+          <ContentSave />
+        </FloatingActionButton>
 
         <FloatingActionButton className={classes.add} onMouseUp={readersNew}>
           <ContentAdd />

@@ -6,8 +6,8 @@ import classnames from 'classnames';
 import ReactDataGrid from 'react-data-grid/addons';
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import ContentSave from 'material-ui/lib/svg-icons/content/save';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
-import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
   getUsers, usersEdit, usersNew, usersRequest, usersSubmit
@@ -24,9 +24,14 @@ export class UsersView extends React.Component {
     usersSubmit: PropTypes.func.isRequired
   };
 
+  componentDidMount () {
+    // automatically refresh listing
+    this.props.usersRequest();
+  }
+
   render () {
     const {
-      users, usersEdit, usersNew, usersRequest, usersSubmit
+      users, usersEdit, usersNew, usersSubmit
     } = this.props;
 
     const gridProps = {
@@ -36,7 +41,7 @@ export class UsersView extends React.Component {
         { key: 'lastname', name: 'Surname', editable: true }
       ],
       enableCellSelect: true,
-      minHeight: document.documentElement.clientHeight - 150,
+      minHeight: document.documentElement.clientHeight - 120,
       rowGetter: (index) => users.get(index),
       rowsCount: users.size,
       onRowUpdated: ({ rowIdx, updated }) => usersEdit(rowIdx, updated)
@@ -44,10 +49,11 @@ export class UsersView extends React.Component {
 
     return (
       <div className={classnames([classes.self])}>
-        <RaisedButton label='Refresh' onMouseUp={usersRequest} secondary />
-        <RaisedButton label='Submit' onMouseUp={usersSubmit} primary />
-
         <ReactDataGrid {...gridProps} />
+
+        <FloatingActionButton className={classes.save} onMouseUp={usersSubmit} secondary>
+          <ContentSave />
+        </FloatingActionButton>
 
         <FloatingActionButton className={classes.add} onMouseUp={usersNew}>
           <ContentAdd />

@@ -9,3 +9,9 @@
 .card {
   padding: 1rem;
 }
+
+.save {
+  position: fixed;
+  bottom: 8rem;
+  right: 3rem;
+}
