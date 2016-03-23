@@ -6,6 +6,8 @@ import 'react-data-grid/themes/react-data-grid.css';
 import AppBar from 'material-ui/lib/app-bar';
 import FlatButton from 'material-ui/lib/flat-button';
 
+import NavTabs from '../../components/NavTabs/NavTabs';
+
 import '../../styles/core.css';
 import classes from './CoreLayout.css';
 
@@ -25,39 +27,10 @@ function CoreLayout ({ children }) {
     showMenuIconButton: false,
     title: 'Royal Western Hospital'
   };
-
-  if (process.env.USE_CASE === 'app') {
-    return (
-      <div className={classes.self}>
-        <AppBar {...appProps} />
-        <Link to='/register'><FlatButton label='Register' /></Link>
-        <Link to='/subscription'><FlatButton label='Subscription' /></Link>
-        <Link to='/search'><FlatButton label='Search' /></Link>
-        <div className={classes.view}>
-          {children}
-        </div>
-      </div>
-    );
-  }
-  if (process.env.USE_CASE === 'manager') {
-    return (
-      <div className={classes.self}>
-        <AppBar {...appProps} />
-        <Link to='/register'><FlatButton label='Register' /></Link>
-        <Link to='/things/tags'><FlatButton label='Tags' /></Link>
-        <Link to='/things/people'><FlatButton label='People' /></Link>
-        <Link to='/things/readers'><FlatButton label='Readers' /></Link>
-        <Link to='/subscription'><FlatButton label='Subscription' /></Link>
-        <Link to='/search'><FlatButton label='Search' /></Link>
-        <div className={classes.view}>
-          {children}
-        </div>
-      </div>
-    );
-  }
   return (
     <div className={classes.self}>
       <AppBar {...appProps} />
+      <NavTabs />
       <div className={classes.view}>
         {children}
       </div>
