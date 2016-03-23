@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
-import ReactDataGrid from 'react-data-grid/addons';
+import {
+  Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
+} from 'material-ui/lib/table';
 import TextField from 'material-ui/lib/text-field';
 
 import {
@@ -23,6 +25,23 @@ const DIRECTION = {
   DESC: SORT_DESCENDING,
   NONE: SORT_NONE
 };
+
+const TABLE_PROPS = {
+  className: classes.table,
+  selectable: false
+};
+
+const TH_PROPS = {
+  style: {
+    fontSize: '16px'
+  }
+};
+const TD_PROPS = {
+  style: {
+    fontSize: '16px'
+  }
+};
+
 
 export class SearchView extends React.Component {
   static propTypes = {
@@ -71,27 +90,9 @@ export class SearchView extends React.Component {
   render () {
     const { filter, rows, searchSetFilter } = this.props;
 
-    const columnProps = {
-      filterable: true,
-      sortable: true
-    };
-
-    const gridProps = {
-      columns: [
-        Object.assign({ key: 'firstname', name: 'First Name' }, columnProps),
-        Object.assign({ key: 'lastname', name: 'Surname' }, columnProps),
-        Object.assign({ key: 'location', name: 'Location' }, columnProps)
-      ],
-      enableCellSelect: true,
-      minHeight: document.documentElement.clientHeight - 220,
-      onGridSort: this.handleGridSort,
-      rowGetter: (index) => rows.get(index),
-      rowsCount: rows.size
-    };
-
     const filterProps = {
       className: classes.filter,
-      floatingLabelText: 'Filter',
+      floatingLabelText: 'Search for',
       type: 'search',
       onChange: () => searchSetFilter(this.refs.search.getValue()),
       ref: 'search',
@@ -101,7 +102,25 @@ export class SearchView extends React.Component {
     return (
       <div className={classnames([classes.self])}>
         <TextField {...filterProps} />
-        <ReactDataGrid {...gridProps} />
+
+        <Table {...TABLE_PROPS}>
+          <TableHeader displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn {...TH_PROPS}>Surname</TableHeaderColumn>
+              <TableHeaderColumn {...TH_PROPS}>First Name</TableHeaderColumn>
+              <TableHeaderColumn {...TH_PROPS}>Location</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {rows.map((row) => (
+              <TableRow key={row.get('id')}>
+                <TableRowColumn {...TD_PROPS}>{row.get('lastname')}</TableRowColumn>
+                <TableRowColumn {...TD_PROPS}>{row.get('firstname')}</TableRowColumn>
+                <TableRowColumn {...TD_PROPS}>{row.get('location')}</TableRowColumn>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     );
   }
