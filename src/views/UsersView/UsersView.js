@@ -4,13 +4,15 @@ import { List } from 'immutable';
 import classnames from 'classnames';
 
 import ReactDataGrid from 'react-data-grid/addons';
+const { DropDownEditor } = ReactDataGrid.Editors;
 
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import ContentSave from 'material-ui/lib/svg-icons/content/save';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 
 import {
-  getUsers, usersEdit, usersNew, usersRequest, usersSubmit
+  USERS_TYPES,
+  getFlatUsers, usersEdit, usersNew, usersRequest, usersSubmit
 } from '../../redux/modules/users';
 
 import classes from './UsersView.css';
@@ -37,8 +39,13 @@ export class UsersView extends React.Component {
     const gridProps = {
       columns: [
         { key: 'id', name: 'ID', editable: true },
-        { key: 'firstname', name: 'First Name', editable: true },
-        { key: 'lastname', name: 'Surname', editable: true }
+        {
+          key: 'type',
+          name: 'Type',
+          editor: <DropDownEditor options={USERS_TYPES} />
+        },
+        { key: 'lastname', name: 'Surname', editable: true },
+        { key: 'firstname', name: 'First Name', editable: true }
       ],
       enableCellSelect: true,
       minHeight: document.documentElement.clientHeight - 120,
@@ -64,7 +71,7 @@ export class UsersView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  users: getUsers(state)
+  users: getFlatUsers(state)
 });
 export default connect((mapStateToProps), {
   usersEdit,

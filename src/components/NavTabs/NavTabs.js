@@ -37,7 +37,7 @@ export class LoginView extends React.Component {
         <Tabs {...tabsProps}>
           <Tab label='Register' value='register' />
           <Tab label='Tags' value='things/tags' />
-          <Tab label='People' value='things/people' />
+          <Tab label='Things' value='things/people' />
           <Tab label='Readers' value='things/readers' />
           <Tab label='Invite' value='subscription' />
           <Tab label='Locator' value='search' />

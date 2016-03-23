@@ -1,4 +1,5 @@
-import { List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
+import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
 
@@ -60,9 +61,31 @@ export const usersSubmitError = (error) => ({
   error: true
 });
 
+export const USERS_TYPE_ASSET = 'asset';
+export const USERS_TYPE_PATIENT = 'patient';
+export const USERS_TYPE_STAFF = 'staff';
+export const USERS_TYPES = [
+  USERS_TYPE_ASSET, USERS_TYPE_PATIENT, USERS_TYPE_STAFF
+];
+
+
+const INFO_KEYS = ['address', 'email', 'photo', 'type'];
+
 const initialState = new List();
 
 export const usersReducer = (state = initialState, action) => {
+  if (action.type === USERS_EDIT) {
+    const { index, changes } = action.payload;
+    const resourceChanges = { info: {} };
+    Object.keys(changes).forEach((key) => {
+      if (INFO_KEYS.includes(key)) {
+        resourceChanges.info[key] = changes[key];
+      } else {
+        resourceChanges[key] = changes[key];
+      }
+    });
+    return state.mergeDeepIn([index], resourceChanges);
+  }
   if (action.type === USERS_EDIT) {
     const { index, changes } = action.payload;
     return state.mergeIn([index], changes);
@@ -75,7 +98,8 @@ export const usersReducer = (state = initialState, action) => {
       info: {
         address: '',
         email: '',
-        photo: ''
+        photo: '',
+        type: USERS_TYPE_ASSET
       }
     }));
   }
@@ -89,3 +113,8 @@ export const usersReducer = (state = initialState, action) => {
 };
 
 export const getUsers = (state) => state.get('users');
+
+export const getFlatUsers = createSelector(
+  [getUsers],
+  (users) => users.map((user) => user.delete('info').merge(user.get('info')))
+);
