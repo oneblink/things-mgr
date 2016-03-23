@@ -11,8 +11,8 @@ const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
 // getAuthorisation () => String
 const getAuthorisation = () => {
   const login = store.getState().get('login');
-  const username = login.get('username');
-  const password = login.get('password');
+  const username = login.get('username') || '';
+  const password = login.get('password') || '';
 
   return `bearer ${username} ${md5(password)}`;
 };
