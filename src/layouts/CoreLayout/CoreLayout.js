@@ -19,14 +19,20 @@ import classes from './CoreLayout.css';
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
 function CoreLayout ({ children }) {
+  const appProps = {
+    className: classes.appbar,
+    iconElementRight: <Link to='/login'><FlatButton label='Login' /></Link>,
+    showMenuIconButton: false,
+    title: 'Royal Western Hospital'
+  };
+
   if (process.env.USE_CASE === 'app') {
     return (
       <div className={classes.self}>
-        <AppBar title='Things Manager' showMenuIconButton={false} />
+        <AppBar {...appProps} />
         <Link to='/register'><FlatButton label='Register' /></Link>
         <Link to='/subscription'><FlatButton label='Subscription' /></Link>
         <Link to='/search'><FlatButton label='Search' /></Link>
-        <Link to='/login'><FlatButton label='Login' /></Link>
         <div className={classes.view}>
           {children}
         </div>
@@ -36,14 +42,13 @@ function CoreLayout ({ children }) {
   if (process.env.USE_CASE === 'manager') {
     return (
       <div className={classes.self}>
-        <AppBar title='Things Manager' showMenuIconButton={false} />
+        <AppBar {...appProps} />
         <Link to='/register'><FlatButton label='Register' /></Link>
         <Link to='/things/tags'><FlatButton label='Tags' /></Link>
         <Link to='/things/people'><FlatButton label='People' /></Link>
         <Link to='/things/readers'><FlatButton label='Readers' /></Link>
         <Link to='/subscription'><FlatButton label='Subscription' /></Link>
         <Link to='/search'><FlatButton label='Search' /></Link>
-        <Link to='/login'><FlatButton label='Login' /></Link>
         <div className={classes.view}>
           {children}
         </div>
@@ -52,8 +57,7 @@ function CoreLayout ({ children }) {
   }
   return (
     <div className={classes.self}>
-      <AppBar title='Things Manager' showMenuIconButton={false} />
-      <Link to='/login'><FlatButton label='Login' /></Link>
+      <AppBar {...appProps} />
       <div className={classes.view}>
         {children}
       </div>
