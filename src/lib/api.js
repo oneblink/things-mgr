@@ -99,7 +99,7 @@ export const postSubscriptions = (data) => {
   const resources = {
     [TYPE]: data.recipients.map((recipient) => ({
       type: isTelephone(data.recipient) ? 'SMS' : 'EMAIL',
-      address: data.recipient,
+      address: recipient,
       links: {
         users: data.subject
       }
