@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { getReaders } from './readers';
 import { getTags } from './tags';
-import { getUsers } from './users';
+import { USERS_TYPE_ASSET, getUsers } from './users';
 
 export const SEARCH_SET_SORT_COLUMN = 'SEARCH_SET_SORT_COLUMN';
 export const searchSetSortColumn = (column) => ({
@@ -21,6 +21,12 @@ export const SEARCH_SET_FILTER = 'SEARCH_SET_FILTER';
 export const searchSetFilter = (filter) => ({
   type: SEARCH_SET_FILTER,
   payload: filter
+});
+
+export const SEARCH_SET_FILTER_TYPE = 'SEARCH_SET_FILTER_TYPE';
+export const searchSetFilterType = (type) => ({
+  type: SEARCH_SET_FILTER_TYPE,
+  payload: type
 });
 
 const columnReducer = (state = '', action) => {
@@ -48,6 +54,13 @@ const filterReducer = (state = '', action) => {
   return state;
 };
 
+const filterTypeReducer = (state = USERS_TYPE_ASSET, action) => {
+  if (action.type === SEARCH_SET_FILTER_TYPE) {
+    return action.payload;
+  }
+  return state;
+};
+
 const sortReducer = combineReducers({
   column: columnReducer,
   direction: directionReducer
@@ -55,10 +68,13 @@ const sortReducer = combineReducers({
 
 export const searchReducer = combineReducers({
   filter: filterReducer,
+  filterType: filterTypeReducer,
   sort: sortReducer
 });
 
 export const getFilter = (state) => state.getIn(['search', 'filter']);
+
+export const getFilterType = (state) => state.getIn(['search', 'filterType']);
 
 export const getSortColumn = (state) => state.getIn(['search', 'sort', 'column']);
 
@@ -97,12 +113,13 @@ const makeComparer = (column, direction) => (a, b) => {
 const FILTER_COLUMNS = ['firstname', 'lastname', 'location'];
 
 export const getFilteredRows = createSelector(
-  [getFilter, getRows],
-  (filter, rows) => {
+  [getFilter, getFilterType, getRows],
+  (filter, type, rows) => {
+    const typeMatches = rows.filter((row) => row.getIn(['info', 'type']) === type);
     if (filter.trim() === '') {
-      return rows;
+      return typeMatches;
     }
-    return rows.filter((row) => row.some((value, key) => {
+    return typeMatches.filter((row) => row.some((value, key) => {
       if (!FILTER_COLUMNS.includes(key)) {
         return false; // skip columns that we don't use
       }

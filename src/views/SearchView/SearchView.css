@@ -1,7 +1,12 @@
 .self {}
 
+.filters {
+  margin: 0.5em;
+  text-align: center;
+}
+
 .filter {
-  margin: 1em;
+  margin: 0 1em;
 }
 
 .table {}
