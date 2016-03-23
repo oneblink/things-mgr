@@ -68,7 +68,6 @@ export const USERS_TYPES = [
   USERS_TYPE_ASSET, USERS_TYPE_PATIENT, USERS_TYPE_STAFF
 ];
 
-
 const INFO_KEYS = ['address', 'email', 'photo', 'type'];
 
 const initialState = new List();

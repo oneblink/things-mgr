@@ -44,7 +44,6 @@ const TD_PROPS = {
   }
 };
 
-
 export class SearchView extends React.Component {
   static propTypes = {
     filter: PropTypes.string,
