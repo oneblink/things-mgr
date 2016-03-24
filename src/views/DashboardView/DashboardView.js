@@ -5,8 +5,9 @@ import { List } from 'immutable';
 
 import Paper from 'material-ui/lib/paper';
 
-import { eventsRequest, getEvents } from '../../redux/modules/events';
-import { countBeacons, countWifi } from '../../redux/modules/nearby';
+import {
+  countBeacons, countWifi, eventsRequest, getEvents
+} from '../../redux/modules/events';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
 import {

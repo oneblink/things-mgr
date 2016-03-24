@@ -1,7 +1,7 @@
 import { List, fromJS } from 'immutable';
+import { createSelector } from 'reselect';
 
 import { getEventsAndDispatch } from '../../lib/api';
-import { nearbySetBeacons, nearbySetWifi } from './nearby';
 
 export const EVENTS_REQUEST = 'EVENTS_REQUEST';
 export const eventsRequest = () => (dispatch, getState) => {
@@ -14,17 +14,10 @@ export const eventsRequest = () => (dispatch, getState) => {
 };
 
 export const EVENTS_REQUEST_SUCCESS = 'EVENTS_REQUEST_SUCCESS';
-export const eventsRequestSuccess = (events) => (dispatch, getState) => {
-  dispatch({ type: EVENTS_REQUEST_SUCCESS, payload: events });
-  const beacon = events.filter(({ tags: { type } }) => type === 'beacon')[0];
-  if (beacon) {
-    dispatch(nearbySetBeacons(beacon.tags.payload || []));
-  }
-  const wifi = events.filter(({ tags: { type } }) => type === 'wifi')[0];
-  if (wifi) {
-    dispatch(nearbySetWifi(wifi.tags.payload || []));
-  }
-};
+export const eventsRequestSuccess = (events) => ({
+  type: EVENTS_REQUEST_SUCCESS,
+  payload: events
+});
 
 export const EVENTS_REQUEST_ERROR = 'EVENTS_REQUEST_ERROR';
 export const eventsRequestError = (error) => ({
@@ -44,3 +37,58 @@ export const eventsReducer = (state = new List(), action) => {
 };
 
 export const getEvents = (state) => state.get('events');
+
+export const getEventsByTagsType = createSelector(
+  [getEvents],
+  (events) => events.groupBy((event) => event.getIn(['tags', 'type']))
+);
+
+export const getBeaconEvents = createSelector(
+  [getEventsByTagsType],
+  (eventGroups) => eventGroups.get('beacon') || new List()
+);
+
+export const getWifiEvents = createSelector(
+  [getEventsByTagsType],
+  (eventGroups) => eventGroups.get('wifi') || new List()
+);
+
+export const getRecentBeaconEvent = createSelector(
+  [getBeaconEvents],
+  (events) => {
+    const event = events.first();
+    if (event) {
+      const date = new Date(event.get('date'));
+      const now = new Date();
+      if (date > now - 1 * 60 * 1e3) {
+        return event;
+      }
+    }
+    return null;
+  }
+);
+
+export const getRecentWifiEvent = createSelector(
+  [getWifiEvents],
+  (events) => {
+    const event = events.first();
+    if (event) {
+      const date = new Date(event.get('date'));
+      const now = new Date();
+      if (date > now - 5 * 60 * 1e3) {
+        return event;
+      }
+    }
+    return null;
+  }
+);
+
+export const countBeacons = createSelector(
+  [getRecentBeaconEvent],
+  (event) => event ? event.getIn(['tags', 'payload']).count() : 0
+);
+
+export const countWifi = createSelector(
+  [getRecentWifiEvent],
+  (event) => event ? event.getIn(['tags', 'payload']).count() : 0
+);
