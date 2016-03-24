@@ -13,7 +13,7 @@ import {
   usersRequest
 } from '../../redux/modules/users';
 
-import { Event } from '../../components/Event/Event';
+import Event from '../../components/Event/Event';
 
 import classes from './DashboardView.css';
 

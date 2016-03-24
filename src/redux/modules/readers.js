@@ -1,4 +1,5 @@
-import { List, fromJS } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
+import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
 
@@ -83,3 +84,10 @@ export const readersReducer = (state = initialState, action) => {
 };
 
 export const getReaders = (state) => state.get('readers');
+
+export const getReadersMap = createSelector(
+  [getReaders],
+  (readers) => readers.reduce((map, reader) => {
+    return map.set(reader.get('id'), reader.get('name'));
+  }, new Map())
+);
