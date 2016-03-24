@@ -35,13 +35,17 @@
   text-align: center;
 }
 
-.indicatorName {}
+.indicatorName {
+  font-size: x-large;
+}
 
-.indicatorValue {}
+.indicatorValue {
+  color: #4285bc;
+  font-size: 500%;
+}
 
 .indicatorName,
 .indicatorValue {
-  font-size: xx-large;
   margin: 0.2em;
 }
 

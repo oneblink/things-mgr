@@ -22,20 +22,20 @@ export const Event = ({ event, readersMap, tagsMap }) => {
     msg = `${messages.length} notifications triggered by RFID scan`;
     const thing = tagsMap.get(tag);
     if (thing) {
-      msg = `${messages.length} notifications triggered by scanning ${thing}`;
+      msg = `${messages.length} notifications sent on behalf of ${thing}`;
     }
   } else if (type === 'RFID' && host) {
     msg = `reader ${host} scanned ${devices} tags`;
     const readerName = readersMap.get(host);
     if (readerName) {
-      msg = `${devices} tags scanned at ${readerName}`;
+      msg = `${devices} tags arrived at ${readerName}`;
     }
     const things = (payload || [])
       .map((p) => tagsMap.get(p.data))
       .filter((x) => !!x)
       .join(', ');
     if (things) {
-      msg = `${things} scanned at ${readerName}`;
+      msg = `${things} arrived at ${readerName}`;
     }
   }
   return (
