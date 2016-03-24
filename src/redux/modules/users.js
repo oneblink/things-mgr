@@ -113,6 +113,14 @@ export const usersReducer = (state = initialState, action) => {
 
 export const getUsers = (state) => state.get('users');
 
+export const getUsersMap = createSelector(
+  [getUsers],
+  (users) => users.reduce((map, user) => {
+    const name = `${user.get('firstname')} ${user.get('lastname')}`.trim();
+    return map.set(user.get('id'), name);
+  }, new Map())
+);
+
 export const getFlatUsers = createSelector(
   [getUsers],
   (users) => users.map((user) => user.delete('info').merge(user.get('info')))

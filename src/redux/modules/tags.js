@@ -1,6 +1,8 @@
 import { List, fromJS } from 'immutable';
+import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
+import { getUsersMap } from './users';
 
 export const TAGS_EDIT = 'TAGS_EDIT';
 export const tagsEdit = (index, changes) => ({
@@ -97,3 +99,11 @@ export const tagsReducer = (state = initialState, action) => {
 };
 
 export const getTags = (state) => state.get('tags');
+
+export const getTagsMap = createSelector(
+  [getTags, getUsersMap],
+  (tags, usersMap) => tags.reduce((map, tag) => {
+    const name = usersMap.get(tag.getIn(['links', 'users']));
+    return map.set(tag.get('id'), name);
+  }, new Map())
+);
