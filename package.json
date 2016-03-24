@@ -65,6 +65,8 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "2.2.3",
+    "counterpart": "0.17.2",
+    "damals": "0.9.4",
     "debug": "^2.2.0",
     "history": "^2.0.0",
     "immutable": "3.7.6",

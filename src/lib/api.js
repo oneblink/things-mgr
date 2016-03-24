@@ -4,6 +4,7 @@ import { store } from '../redux/store';
 import { isTelephone } from './string';
 
 // register environment variables in config/_base.js
+const eventsUrl = process.env.EVENTS_HTTP_GET_API;
 const getUrl = process.env.ENTITY_HTTP_GET_API;
 const postUrl = process.env.ENTITY_HTTP_POST_API;
 const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
@@ -15,6 +16,38 @@ const getAuthorisation = () => {
   const password = login.get('password') || '';
 
   return `bearer ${username} ${md5(password)}`;
+};
+
+// getEvents () => Promise
+export const getEvents = () => {
+  return fetch(eventsUrl, {
+    headers: {
+      Authorisation: getAuthorisation()
+    },
+    method: 'GET',
+    mode: 'cors'
+  })
+    .then((res) => res.json());
+};
+
+/*
+interface GetEventsDispatchOptions {
+  actionError: Function,
+  actionSuccess: Function,
+  dispatch: Function
+}
+*/
+// getEventsAndDispatch (options: GetEventsDispatchOptions) => Promise
+export const getEventsAndDispatch = ({ actionSuccess, actionError, dispatch }) => {
+  return getEvents()
+    .then((data) => {
+      if (data.error || data.errors) {
+        dispatch(actionError(new Error(data.error || data.errors)));
+        return;
+      }
+      dispatch(actionSuccess(data.activities));
+    })
+    .catch((err) => dispatch(actionError(err)));
 };
 
 // getEntities (type: String) => Promise
@@ -31,13 +64,11 @@ export const getEntities = (type) => {
 
 /*
 interface GetDispatchOptions {
-  actionError: Function,
-  actionSuccess: Function,
-  dispatch: Function,
-  type: String
+  type: String,
+  ...GetEventsDispatchOptions
 }
 */
-// getEntities (options: GetDispatchOptions) => Promise
+// getEntitiesAndDispatch (options: GetDispatchOptions) => Promise
 export const getEntitiesAndDispatch = ({ actionSuccess, actionError, dispatch, type }) => {
   return getEntities(type)
     .then((data) => {
@@ -50,7 +81,7 @@ export const getEntitiesAndDispatch = ({ actionSuccess, actionError, dispatch, t
     .catch((err) => dispatch(actionError(err)));
 };
 
-// getEntities (type: String, data: Object[]) => Promise
+// postEntities (type: String, data: Object[]) => Promise
 export const postEntities = (type, data) => {
   const formData = new FormData();
   formData.append('args', JSON.stringify({ [type]: data }));
@@ -71,7 +102,7 @@ interface PostDispatchOptions {
   ...GetDispatchOptions
 }
 */
-// getEntities (options: PostDispatchOptions) => Promise
+// postEntitiesAndDispatch (options: PostDispatchOptions) => Promise
 export const postEntitiesAndDispatch = ({ actionSuccess, actionError, data, dispatch, type }) => {
   return postEntities(type, data)
     .then((data) => {
@@ -90,7 +121,7 @@ interface SubscriptionsData {
   recipients: String[]
 }
 */
-// postSubscription (data: SubscriptionsData) => Promise
+// postSubscriptions (data: SubscriptionsData) => Promise
 export const postSubscriptions = (data) => {
   const TYPE = 'subscriptions';
   if (!Array.isArray(data.recipients) || !data.recipients.length) {
@@ -126,7 +157,7 @@ interface PostSubscriptionOptions {
   dispatch: Function
 }
 */
-// postSubscriptionAndDispatch (options: PostSubscriptionOptions) => Promise
+// postSubscriptionsAndDispatch (options: PostSubscriptionOptions) => Promise
 export const postSubscriptionsAndDispatch = ({ actionSuccess, actionError, data, dispatch }) => {
   return postSubscriptions(data)
     .then((data) => {

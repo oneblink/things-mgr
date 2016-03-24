@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row;
   flex: 1 0 auto;
+  max-width: 100vw;
 }
 
 @media (orientation: portrait) {
@@ -46,5 +47,5 @@
 
 .logs {
   flex: 1 1 auto;
-  font-size: xx-large;
+  overflow: hidden;
 }

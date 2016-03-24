@@ -29,12 +29,14 @@ function CoreLayout ({ children }) {
     title: 'Royal Western Hospital'
   };
 
+  const selfClasses = [classes.self];
   const viewClasses = [classes.view];
   if (process.env.USE_CASE === 'dashboard') {
+    selfClasses.push(classes.flexSelf);
     viewClasses.push(classes.flexView);
   }
   return (
-    <div className={classes.self}>
+    <div className={classnames(selfClasses)}>
       <AppBar {...appProps} />
       {process.env.USE_CASE !== 'dashboard' ? <NavTabs /> : null}
       <div className={classnames(viewClasses)}>

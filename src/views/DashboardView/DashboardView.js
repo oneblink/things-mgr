@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { List } from 'immutable';
 
 import Paper from 'material-ui/lib/paper';
 
+import { eventsRequest, getEvents } from '../../redux/modules/events';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
 import {
@@ -11,10 +13,14 @@ import {
   usersRequest
 } from '../../redux/modules/users';
 
+import { Event } from '../../components/Event/Event';
+
 import classes from './DashboardView.css';
 
 export class DashboardView extends React.Component {
   static propTypes = {
+    events: PropTypes.instanceOf(List),
+    eventsRequest: PropTypes.func.isRequired,
     numAssets: PropTypes.number,
     numPatients: PropTypes.number,
     numStaff: PropTypes.number,
@@ -25,12 +31,14 @@ export class DashboardView extends React.Component {
 
   componentDidMount () {
     // automatically refresh user listing
+    this.props.eventsRequest();
     this.props.readersRequest();
     this.props.tagsRequest();
     this.props.usersRequest();
     // automatically refresh user listing every 30 seconds
     this.setState({
       timer: setInterval(() => {
+        this.props.eventsRequest();
         this.props.readersRequest();
         this.props.tagsRequest();
         this.props.usersRequest();
@@ -43,7 +51,7 @@ export class DashboardView extends React.Component {
   }
 
   render () {
-    const { numAssets, numPatients, numStaff } = this.props;
+    const { events, numAssets, numPatients, numStaff } = this.props;
 
     return (
       <div className={classnames([classes.self])}>
@@ -62,9 +70,9 @@ export class DashboardView extends React.Component {
           </Paper>
         </div>
         <div className={classes.logs}>
-          <p>logs</p>
-          <p>and logs</p>
-          <p>and more logs</p>
+          {events.toJS().map((event) => (
+            <Event key={event._id} event={event} />
+          ))}
         </div>
         <div className={classes.indicators}>
           <Paper className={classes.indicator}>
@@ -86,11 +94,13 @@ export class DashboardView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  events: getEvents(state),
   numAssets: countUsersAssets(state),
   numStaff: countUsersStaff(state),
   numPatients: countUsersPatients(state)
 });
 export default connect((mapStateToProps), {
+  eventsRequest,
   readersRequest,
   tagsRequest,
   usersRequest

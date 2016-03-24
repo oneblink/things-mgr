@@ -83,6 +83,7 @@ config.globals = {
     'NODE_ENV' : JSON.stringify(config.env),
     'ENTITY_HTTP_GET_API': JSON.stringify(process.env.ENTITY_HTTP_GET_API),
     'ENTITY_HTTP_POST_API': JSON.stringify(process.env.ENTITY_HTTP_POST_API),
+    'EVENTS_HTTP_GET_API': JSON.stringify(process.env.EVENTS_HTTP_GET_API),
     'SUBSCRIBE_HTTP_POST_API': JSON.stringify(process.env.SUBSCRIBE_HTTP_POST_API),
     USE_CASE: JSON.stringify(process.env.USE_CASE)
   },
