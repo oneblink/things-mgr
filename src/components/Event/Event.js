@@ -8,6 +8,13 @@ import { getTagsMap } from '../../redux/modules/tags';
 
 import classes from './Event.css';
 
+const SECOND = 1e3;
+const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
+
+const ELAPSED_MIN = MINUTE;
+const ELAPSED_MAX = HOUR;
+
 const TYPES = {
   beacon: 'Beacons',
   RFID: 'RFID tags',
@@ -38,11 +45,24 @@ export const Event = ({ event, readersMap, tagsMap }) => {
       msg = `${things} arrived at ${readerName}`;
     }
   }
+
+  const date = new Date(event.date);
+  const elapsed = (new Date()) - date;
+  // clamp elapsed between 1 minute and 1 hour
+  const clampedElapsed = Math.max(Math.min(elapsed, ELAPSED_MAX), ELAPSED_MIN);
+  const timeProps = {
+    className: classes.time,
+    dateTime: event.date,
+    style: {
+      opacity: 1 - clampedElapsed / ELAPSED_MAX
+    }
+  };
+
   return (
-    <div className={classes.self} title={JSON.stringify(event)}>
+    <div className={classes.self}>
       <span>{msg}</span>
       {' '}
-      <time className={classes.time} dateTime={event.date}>{timeAgo(new Date(event.date))}</time>
+      <time {...timeProps}>{timeAgo(date)}</time>
     </div>
   );
 };

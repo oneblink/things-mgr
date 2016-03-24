@@ -51,5 +51,6 @@
 
 .logs {
   flex: 1 1 auto;
+  margin: 0.5em;
   overflow: hidden;
 }

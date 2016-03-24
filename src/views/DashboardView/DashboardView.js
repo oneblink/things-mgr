@@ -82,7 +82,7 @@ export class DashboardView extends React.Component {
         </div>
         <div className={classes.indicators}>
           <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Beacons<br />nearby</label>
+            <label className={classes.indicatorName}>Staff<br />nearby</label>
             <label className={classes.indicatorValue}>{numBeacons}</label>
           </Paper>
           <Paper className={classes.indicator}>
