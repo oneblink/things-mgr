@@ -117,3 +117,23 @@ export const getFlatUsers = createSelector(
   [getUsers],
   (users) => users.map((user) => user.delete('info').merge(user.get('info')))
 );
+
+export const countUsersByType = createSelector(
+  [getFlatUsers],
+  (users) => users.countBy((user) => user.get('type'))
+);
+
+export const countUsersAssets = createSelector(
+  [countUsersByType],
+  (counts) => counts.get('asset') || 0
+);
+
+export const countUsersStaff = createSelector(
+  [countUsersByType],
+  (counts) => counts.get('staff') || 0
+);
+
+export const countUsersPatients = createSelector(
+  [countUsersByType],
+  (counts) => counts.get('patient') || 0
+);

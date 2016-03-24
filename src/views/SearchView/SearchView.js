@@ -80,7 +80,7 @@ export class SearchView extends React.Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.state.timer);
+    clearTimeout((this.state || {}).timer);
   }
 
   handleFilterChange () {}
