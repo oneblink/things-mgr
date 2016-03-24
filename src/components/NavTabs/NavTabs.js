@@ -32,6 +32,13 @@ export class LoginView extends React.Component {
         </Tabs>
       );
     }
+    if (process.env.USE_CASE === 'dashboard') {
+      return (
+        <Tabs {...tabsProps}>
+          <Tab label='Dashboard' value='dashboard' />
+        </Tabs>
+      );
+    }
     if (process.env.USE_CASE === 'manager') {
       return (
         <Tabs {...tabsProps}>

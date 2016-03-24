@@ -7,6 +7,7 @@ import { Route, IndexRedirect } from 'react-router';
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
+import DashboardView from 'views/DashboardView/DashboardView';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
 import RegisterView from 'views/RegisterView/RegisterView';
@@ -24,6 +25,15 @@ export default (store) => {
         <Route path='register' component={RegisterView} />
         <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
+      </Route>
+    );
+  }
+  if (process.env.USE_CASE === 'dashboard') {
+    return (
+      <Route path='/' component={CoreLayout}>
+        <IndexRedirect to='/login' />
+        <Route path='login' component={LoginView} />
+        <Route path='dashboard' component={DashboardView} />
       </Route>
     );
   }

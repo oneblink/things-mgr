@@ -1,0 +1,50 @@
+.self {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 auto;
+}
+
+@media (orientation: portrait) {
+  .self {
+    flex-direction: column;
+  }
+}
+
+.indicators {
+  display: flex;
+  flex: 0 0 35vh;
+  flex-direction: column;
+}
+
+@media (orientation: portrait) {
+  .indicators {
+    flex: 0 0 30vw;
+    flex-direction: row;
+  }
+}
+
+.indicator {
+  align-items: center;
+  display: flex;
+  flex: 1 1 10em;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 1em;
+  padding: 2em;
+  text-align: center;
+}
+
+.indicatorName {}
+
+.indicatorValue {}
+
+.indicatorName,
+.indicatorValue {
+  font-size: xx-large;
+  margin: 0.2em;
+}
+
+.logs {
+  flex: 1 1 auto;
+  font-size: xx-large;
+}

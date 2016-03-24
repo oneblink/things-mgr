@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { Map } from 'immutable';
 import classnames from 'classnames';
 
@@ -37,6 +38,11 @@ export class LoginView extends React.Component {
           <br />
           <div className={classes.buttons}>
             <FlatButton className={classes.logout} label='Logout' onMouseUp={loginClear} primary />
+            {(() => {
+              if (process.env.USE_CASE === 'dashboard') {
+                return <Link to='/dashboard'><FlatButton label='Dashboard' /></Link>;
+              }
+            })()}
           </div>
         </Paper>
       );

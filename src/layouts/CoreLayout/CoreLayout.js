@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 import 'normalize.css';
 import 'react-data-grid/themes/react-data-grid.css';
 
@@ -27,11 +28,16 @@ function CoreLayout ({ children }) {
     showMenuIconButton: false,
     title: 'Royal Western Hospital'
   };
+
+  const viewClasses = [classes.view];
+  if (process.env.USE_CASE === 'dashboard') {
+    viewClasses.push(classes.flexView);
+  }
   return (
     <div className={classes.self}>
       <AppBar {...appProps} />
-      <NavTabs />
-      <div className={classes.view}>
+      {process.env.USE_CASE !== 'dashboard' ? <NavTabs /> : null}
+      <div className={classnames(viewClasses)}>
         {children}
       </div>
     </div>

@@ -43,7 +43,7 @@ export default class Root extends React.Component {
     return (
       <Provider store={this.props.store}>
         <MuiThemeProvider muiTheme={muiTheme}>
-          <div style={{ height: '100%' }}>
+          <div style={{ minHeight: '100vh' }}>
             {this.content}
             {this.devTools}
           </div>

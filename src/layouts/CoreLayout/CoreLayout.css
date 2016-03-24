@@ -1,7 +1,13 @@
-.self {}
+.self {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 100vw;
+}
 
 .appbar {
   background-color: #fff !important;
+  flex: 0 0 auto;
 }
 
 .appbar > h1 {
@@ -10,3 +16,8 @@
 }
 
 .view {}
+
+.flexView {
+  display: flex;
+  flex: 1 0 auto;
+}
