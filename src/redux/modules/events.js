@@ -1,6 +1,7 @@
 import { List, fromJS } from 'immutable';
 
 import { getEventsAndDispatch } from '../../lib/api';
+import { nearbySetBeacons, nearbySetWifi } from './nearby';
 
 export const EVENTS_REQUEST = 'EVENTS_REQUEST';
 export const eventsRequest = () => (dispatch, getState) => {
@@ -13,10 +14,17 @@ export const eventsRequest = () => (dispatch, getState) => {
 };
 
 export const EVENTS_REQUEST_SUCCESS = 'EVENTS_REQUEST_SUCCESS';
-export const eventsRequestSuccess = (events) => ({
-  type: EVENTS_REQUEST_SUCCESS,
-  payload: events
-});
+export const eventsRequestSuccess = (events) => (dispatch, getState) => {
+  dispatch({ type: EVENTS_REQUEST_SUCCESS, payload: events });
+  const beacon = events.filter(({ tags: { type } }) => type === 'beacon')[0];
+  if (beacon) {
+    dispatch(nearbySetBeacons(beacon.tags.payload || []));
+  }
+  const wifi = events.filter(({ tags: { type } }) => type === 'wifi')[0];
+  if (wifi) {
+    dispatch(nearbySetWifi(wifi.tags.payload || []));
+  }
+};
 
 export const EVENTS_REQUEST_ERROR = 'EVENTS_REQUEST_ERROR';
 export const eventsRequestError = (error) => ({

@@ -6,6 +6,7 @@ import { List } from 'immutable';
 import Paper from 'material-ui/lib/paper';
 
 import { eventsRequest, getEvents } from '../../redux/modules/events';
+import { countBeacons, countWifi } from '../../redux/modules/nearby';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
 import {
@@ -22,8 +23,10 @@ export class DashboardView extends React.Component {
     events: PropTypes.instanceOf(List),
     eventsRequest: PropTypes.func.isRequired,
     numAssets: PropTypes.number,
+    numBeacons: PropTypes.number,
     numPatients: PropTypes.number,
     numStaff: PropTypes.number,
+    numWifi: PropTypes.number,
     readersRequest: PropTypes.func.isRequired,
     tagsRequest: PropTypes.func.isRequired,
     usersRequest: PropTypes.func.isRequired
@@ -51,7 +54,9 @@ export class DashboardView extends React.Component {
   }
 
   render () {
-    const { events, numAssets, numPatients, numStaff } = this.props;
+    const {
+      events, numAssets, numBeacons, numPatients, numStaff, numWifi
+    } = this.props;
 
     return (
       <div className={classnames([classes.self])}>
@@ -76,12 +81,12 @@ export class DashboardView extends React.Component {
         </div>
         <div className={classes.indicators}>
           <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Beacons<br />detected</label>
-            <label className={classes.indicatorValue}>1</label>
+            <label className={classes.indicatorName}>Beacons<br />nearby</label>
+            <label className={classes.indicatorValue}>{numBeacons}</label>
           </Paper>
           <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>WiFi Devices<br />detected</label>
-            <label className={classes.indicatorValue}>1</label>
+            <label className={classes.indicatorName}>WiFi Devices<br />nearby</label>
+            <label className={classes.indicatorValue}>{numWifi}</label>
           </Paper>
           <Paper className={classes.indicator}>
             <label className={classes.indicatorName}>WiFi Devices<br />dwelling</label>
@@ -96,8 +101,10 @@ export class DashboardView extends React.Component {
 const mapStateToProps = (state) => ({
   events: getEvents(state),
   numAssets: countUsersAssets(state),
+  numBeacons: countBeacons(state),
   numStaff: countUsersStaff(state),
-  numPatients: countUsersPatients(state)
+  numPatients: countUsersPatients(state),
+  numWifi: countWifi(state)
 });
 export default connect((mapStateToProps), {
   eventsRequest,

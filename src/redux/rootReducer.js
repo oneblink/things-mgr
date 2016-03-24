@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 import counter from './modules/counter';
 import { eventsReducer as events } from './modules/events';
 import { loginReducer as login } from './modules/login';
+import { nearbyReducer as nearby } from './modules/nearby';
 import { readersReducer as readers } from './modules/readers';
 import { registerReducer as register } from './modules/register';
 import { routerReducer as router } from './modules/router';
@@ -15,6 +16,7 @@ export default combineReducers({
   counter,
   events,
   login,
+  nearby,
   readers,
   register,
   router,
