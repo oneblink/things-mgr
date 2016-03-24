@@ -9,15 +9,15 @@ import { getTagsMap } from '../../redux/modules/tags';
 import classes from './Event.css';
 
 const TYPES = {
-  beacon: 'Beacon',
-  RFID: 'RFID',
-  wifi: 'WiFi'
+  beacon: 'Beacons',
+  RFID: 'RFID tags',
+  wifi: 'WiFi devices'
 };
 
 export const Event = ({ event, readersMap, tagsMap }) => {
   const { name, tags: { devices, host, messages, payload, tag, type } } = event;
   let msg = '';
-  msg = `found ${devices} ${TYPES[type]} devices nearby`;
+  msg = `found ${devices} ${TYPES[type]} nearby`;
   if (name === 'rfid-scan' && Array.isArray(messages) && messages.length) {
     msg = `${messages.length} notifications triggered by RFID scan`;
     const thing = tagsMap.get(tag);
