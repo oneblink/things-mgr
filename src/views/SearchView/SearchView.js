@@ -12,7 +12,7 @@ import TextField from 'material-ui/lib/text-field';
 
 import {
   SORT_ASCENDING, SORT_DESCENDING, SORT_NONE,
-  getFilter, getFilterType, getFilteredSortedRows,
+  getFilter, getFilterType, getFilteredRows,
   searchSetFilter, searchSetFilterType, searchSetSortColumn, searchSetSortDirection
 } from '../../redux/modules/search';
 import { readersRequest } from '../../redux/modules/readers';
@@ -146,7 +146,7 @@ export class SearchView extends React.Component {
 const mapStateToProps = (state) => ({
   filter: getFilter(state),
   filterType: getFilterType(state),
-  rows: getFilteredSortedRows(state)
+  rows: getFilteredRows(state)
 });
 export default connect((mapStateToProps), {
   readersRequest,

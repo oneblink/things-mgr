@@ -111,7 +111,24 @@ export const usersReducer = (state = initialState, action) => {
   return state;
 };
 
-export const getUsers = (state) => state.get('users');
+const compareStrings = (a, b) => {
+  a = a.toLowerCase().trim();
+  b = b.toLowerCase().trim();
+  if (a === b) {
+    return 0;
+  }
+  return a > b ? 1 : -1;
+};
+
+const compareNames = (a, b) => {
+  const last = compareStrings(a.get('lastname'), b.get('lastname'));
+  if (last !== 0) {
+    return last;
+  }
+  return compareStrings(a.get('firstname'), b.get('firstname'));
+};
+
+export const getUsers = (state) => state.get('users').sort(compareNames);
 
 export const getUsersMap = createSelector(
   [getUsers],

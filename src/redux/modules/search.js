@@ -99,17 +99,6 @@ export const getRows = createSelector(
   })
 );
 
-// http://adazzle.github.io/react-data-grid/examples.html#/filterable-sortable
-const makeComparer = (column, direction) => (a, b) => {
-  if (direction === SORT_ASCENDING) {
-    return (a.get(column) > b.get(column)) ? 1 : -1;
-  } else if (direction === SORT_DESCENDING) {
-    return (a.get(column) < b.get(column)) ? 1 : -1;
-  } else {
-    return 0;
-  }
-};
-
 const FILTER_COLUMNS = ['firstname', 'lastname', 'location'];
 
 export const getFilteredRows = createSelector(
@@ -125,16 +114,6 @@ export const getFilteredRows = createSelector(
       }
       return value.toLowerCase().includes(filter.toLowerCase());
     }));
-  }
-);
-
-export const getFilteredSortedRows = createSelector(
-  [getSortColumn, getSortDirection, getFilteredRows],
-  (column, direction, rows) => {
-    if (direction === SORT_ASCENDING || direction === SORT_DESCENDING) {
-      return rows.sort(makeComparer(column, direction));
-    }
-    return rows;
   }
 );
 
