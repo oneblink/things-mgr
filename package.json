@@ -79,7 +79,7 @@
     "lodash.debounce": "4.0.3",
     "material-ui": "0.15.0-alpha.2",
     "md5": "2.1.0",
-    "normalize.css": "4.0.0",
+    "normalize.css": "3.0.3",
     "react": "^0.14.0",
     "react-data-grid": "0.14.16",
     "react-dom": "^0.14.0",
