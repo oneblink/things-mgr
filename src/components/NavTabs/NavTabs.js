@@ -26,7 +26,6 @@ export class LoginView extends React.Component {
     if (process.env.USE_CASE === 'app') {
       return (
         <Tabs {...tabsProps}>
-          <Tab label='Register' value='register' />
           <Tab label='Invite' value='subscription' />
           <Tab label='Locator' value='search' />
         </Tabs>
@@ -42,7 +41,6 @@ export class LoginView extends React.Component {
     if (process.env.USE_CASE === 'manager') {
       return (
         <Tabs {...tabsProps}>
-          <Tab label='Register' value='register' />
           <Tab label='Tags' value='things/tags' />
           <Tab label='Things' value='things/people' />
           <Tab label='Readers' value='things/readers' />
