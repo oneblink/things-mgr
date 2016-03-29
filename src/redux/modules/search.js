@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { getReaders } from './readers';
 import { getTags } from './tags';
-import { USERS_TYPE_ASSET, getUsers } from './users';
+import { USERS_TYPE_PATIENT, getUsers } from './users';
 
 export const SEARCH_SET_SORT_COLUMN = 'SEARCH_SET_SORT_COLUMN';
 export const searchSetSortColumn = (column) => ({
@@ -54,7 +54,7 @@ const filterReducer = (state = '', action) => {
   return state;
 };
 
-const filterTypeReducer = (state = USERS_TYPE_ASSET, action) => {
+const filterTypeReducer = (state = USERS_TYPE_PATIENT, action) => {
   if (action.type === SEARCH_SET_FILTER_TYPE) {
     return action.payload;
   }
