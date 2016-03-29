@@ -128,7 +128,12 @@ const compareNames = (a, b) => {
   return compareStrings(a.get('firstname'), b.get('firstname'));
 };
 
-export const getUsers = (state) => state.get('users').sort(compareNames);
+export const getUsers = (state) => state.get('users');
+
+export const getSortedUsers = createSelector(
+  [getUsers],
+  (users) => users.sort(compareNames)
+);
 
 export const getUsersMap = createSelector(
   [getUsers],
