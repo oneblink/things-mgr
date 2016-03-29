@@ -35,8 +35,12 @@
   text-align: center;
 }
 
+.logHeading,
 .indicatorName {
+  color: #555;
   font-size: x-large;
+  font-weight: normal;
+  text-align: center;
 }
 
 .indicatorValue {

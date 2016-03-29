@@ -19,6 +19,11 @@ import Event from '../../components/Event/Event';
 
 import classes from './DashboardView.css';
 
+const filterEvents = (event) => {
+  const { name, tags: { messages, type } } = event;
+  return type !== 'wifi' && !(name === 'rfid-scan' && Array.isArray(messages) && !messages.length);
+};
+
 export class DashboardView extends React.Component {
   static propTypes = {
     events: PropTypes.instanceOf(List),
@@ -67,7 +72,7 @@ export class DashboardView extends React.Component {
             <label className={classes.indicatorValue}>{numAssets}</label>
           </Paper>
           <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Patients<br />on-site</label>
+            <label className={classes.indicatorName}>Patients<br />registered</label>
             <label className={classes.indicatorValue}>{numPatients}</label>
           </Paper>
           <Paper className={classes.indicator}>
@@ -76,7 +81,8 @@ export class DashboardView extends React.Component {
           </Paper>
         </div>
         <div className={classes.logs}>
-          {events.toJS().map((event) => (
+          <h1 className={classes.logHeading}>Recent Events</h1>
+          {events.toJS().filter(filterEvents).map((event) => (
             <Event key={event._id} event={event} />
           ))}
         </div>
@@ -91,7 +97,7 @@ export class DashboardView extends React.Component {
           </Paper>
           <Paper className={classes.indicator}>
             <label className={classes.indicatorName}>WiFi Devices<br />dwelling</label>
-            <label className={classes.indicatorValue}>1</label>
+            <label className={classes.indicatorValue}>{numWifi}</label>
           </Paper>
         </div>
       </div>

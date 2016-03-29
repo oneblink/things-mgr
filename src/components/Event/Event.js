@@ -5,6 +5,7 @@ import timeAgo from 'damals';
 
 import { getReadersMap } from '../../redux/modules/readers';
 import { getTagsMap } from '../../redux/modules/tags';
+import { getUsersMap } from '../../redux/modules/users';
 
 import classes from './Event.css';
 
@@ -21,8 +22,8 @@ const TYPES = {
   wifi: 'WiFi devices'
 };
 
-export const Event = ({ event, readersMap, tagsMap }) => {
-  const { name, tags: { devices, host, messages, payload, tag, type } } = event;
+export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
+  const { name, tags: { devices, host, messages, payload, tag, type, user } } = event;
   let msg = '';
   msg = `found ${devices} ${TYPES[type]} nearby`;
   if (name === 'rfid-scan' && Array.isArray(messages) && messages.length) {
@@ -45,6 +46,13 @@ export const Event = ({ event, readersMap, tagsMap }) => {
       msg = `${things} arrived at ${readerName}`;
     }
   }
+  if (name === 'subscription-invite') {
+    msg = `${type} invitation to monitor a tag`;
+    const thing = usersMap.get(user);
+    if (thing) {
+      msg = `${type} invitation to monitor ${thing}`;
+    }
+  }
 
   const date = new Date(event.date);
   const elapsed = (new Date()) - date;
@@ -59,7 +67,7 @@ export const Event = ({ event, readersMap, tagsMap }) => {
   };
 
   return (
-    <div className={classes.self}>
+    <div className={classes.self} title={JSON.stringify(event)}>
       <span>{msg}</span>
       {' '}
       <time {...timeProps}>{timeAgo(date)}</time>
@@ -75,6 +83,7 @@ Event.propTypes = {
 
 const mapStateToProps = (state) => ({
   readersMap: getReadersMap(state),
-  tagsMap: getTagsMap(state)
+  tagsMap: getTagsMap(state),
+  usersMap: getUsersMap(state)
 });
 export default connect((mapStateToProps), {})(Event);
