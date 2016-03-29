@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import 'normalize.css';
+import 'normalize.css/normalize.css';
 import 'react-data-grid/themes/react-data-grid.css';
 
 import AppBar from 'material-ui/lib/app-bar';
