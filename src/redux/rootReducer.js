@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 
 import counter from './modules/counter';
+import { dischargeReducer as discharge } from './modules/discharge';
 import { eventsReducer as events } from './modules/events';
 import { loginReducer as login } from './modules/login';
 import { readersReducer as readers } from './modules/readers';
@@ -13,6 +14,7 @@ import { usersReducer as users } from './modules/users';
 
 export default combineReducers({
   counter,
+  discharge,
   events,
   login,
   readers,

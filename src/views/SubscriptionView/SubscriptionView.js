@@ -20,7 +20,7 @@ import {
   subscriptionSetSubject,
   subscriptionsSubmit
 } from '../../redux/modules/subscription';
-import { getUsers, usersRequest } from '../../redux/modules/users';
+import { getUsersPatients, usersRequest } from '../../redux/modules/users';
 
 import classes from './SubscriptionView.css';
 
@@ -73,7 +73,7 @@ export class SubscriptionView extends React.Component {
           <MenuItem value='' primaryText='Pick someone' />
           {users.map((item) => {
             const id = item.get('id');
-            const name = `${item.get('firstname')} ${item.get('lastname')}`;
+            const name = `${item.get('lastname')}, ${item.get('firstname')}`;
             return <MenuItem key={id} value={id} primaryText={name} />;
           })}
         </DropDownMenu>
@@ -122,7 +122,7 @@ export class SubscriptionView extends React.Component {
 const mapStateToProps = (state) => ({
   recipients: state.getIn(['subscription', 'recipients']),
   subject: state.getIn(['subscription', 'subject']),
-  users: getUsers(state)
+  users: getUsersPatients(state)
 });
 export default connect((mapStateToProps), {
   subscriptionNewRecipient,

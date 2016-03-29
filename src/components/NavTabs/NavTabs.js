@@ -28,6 +28,7 @@ export class LoginView extends React.Component {
         <Tabs {...tabsProps}>
           <Tab label='Invite' value='subscription' />
           <Tab label='Locator' value='search' />
+          <Tab label='Discharge' value='discharge' />
         </Tabs>
       );
     }
@@ -46,6 +47,7 @@ export class LoginView extends React.Component {
           <Tab label='Readers' value='things/readers' />
           <Tab label='Invite' value='subscription' />
           <Tab label='Locator' value='search' />
+          <Tab label='Discharge' value='discharge' />
         </Tabs>
       );
     }

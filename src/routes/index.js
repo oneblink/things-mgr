@@ -8,6 +8,7 @@ import { Route, IndexRedirect } from 'react-router';
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import DashboardView from 'views/DashboardView/DashboardView';
+import DischargeView from 'views/DischargeView/DischargeView';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
 import SearchView from 'views/SearchView/SearchView';
@@ -23,6 +24,7 @@ export default (store) => {
         <Route path='login' component={LoginView} />
         <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
+        <Route path='discharge' component={DischargeView} />
       </Route>
     );
   }
@@ -48,6 +50,7 @@ export default (store) => {
         </Route>
         <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
+        <Route path='discharge' component={DischargeView} />
       </Route>
     );
   }

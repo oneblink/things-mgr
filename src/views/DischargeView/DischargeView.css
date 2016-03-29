@@ -1,0 +1,9 @@
+.self {
+  margin: 2rem auto;
+  max-width: 30rem;
+  padding: 2rem;
+}
+
+.buttons {
+  text-align: right;
+}

@@ -98,6 +98,7 @@ export class SearchView extends React.Component {
     const filterProps = {
       className: classes.filter,
       type: 'search',
+      name: 'search',
       onChange: () => searchSetFilter(this.refs.search.getValue()),
       ref: 'search',
       value: filter
