@@ -78,7 +78,8 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
 Event.propTypes = {
   event: PropTypes.object,
   readersMap: PropTypes.instanceOf(Map),
-  tagsMap: PropTypes.instanceOf(Map)
+  tagsMap: PropTypes.instanceOf(Map),
+  usersMap: PropTypes.instanceOf(Map)
 };
 
 const mapStateToProps = (state) => ({
