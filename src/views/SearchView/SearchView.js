@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import classnames from 'classnames';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -41,6 +42,15 @@ const TH_PROPS = {
 const TD_PROPS = {
   style: {
     fontSize: '18px'
+  }
+};
+
+const TRANSITION_PROPS = {
+  transitionEnterTimeout: 1000,
+  transitionLeave: false,
+  transitionName: {
+    enter: classes.locationEnter,
+    enterActive: classes.locationEnterActive
   }
 };
 
@@ -134,7 +144,11 @@ export class SearchView extends React.Component {
               <TableRow key={row.get('id')}>
                 <TableRowColumn {...TD_PROPS}>{row.get('lastname')}</TableRowColumn>
                 <TableRowColumn {...TD_PROPS}>{row.get('firstname')}</TableRowColumn>
-                <TableRowColumn {...TD_PROPS}>{row.get('location')}</TableRowColumn>
+                <TableRowColumn {...TD_PROPS}>
+                  <ReactCSSTransitionGroup {...TRANSITION_PROPS}>
+                    <span key={row.get('location')}>{row.get('location')}</span>
+                  </ReactCSSTransitionGroup>
+                </TableRowColumn>
               </TableRow>
             ))}
           </TableBody>

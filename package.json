@@ -81,6 +81,7 @@
     "md5": "2.1.0",
     "normalize.css": "3.0.3",
     "react": "^0.14.0",
+    "react-addons-css-transition-group": "^0.14.8",
     "react-data-grid": "0.14.16",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
