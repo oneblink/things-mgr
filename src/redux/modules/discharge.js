@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux-immutable';
 
+import { getTags, tagsRequest } from './tags';
+import { postDischarge } from '../../lib/api';
+
 export const DISCHARGE_SET_RECIPIENT = 'DISCHARGE_SET_RECIPIENT';
 export const dischargeSetRecipient = (email) => ({
   type: DISCHARGE_SET_RECIPIENT,
@@ -13,7 +16,16 @@ export const dischargeSetUser = (user) => ({
 });
 
 export const DISCHARGE_SUBMIT = 'DISCHARGE_SUBMIT';
-export const dischargeSubmit = () => ({ type: DISCHARGE_SUBMIT });
+export const dischargeSubmit = () => (dispatch, getState) => {
+  dispatch({ type: DISCHARGE_SUBMIT });
+  const userId = getUser(getState());
+  const tags = getTags(getState());
+  const tag = tags.find((t) => t.getIn(['links', 'users']) === userId);
+  if (userId && tag) {
+    postDischarge(tag.get('id'))
+      .then(() => dispatch(tagsRequest()));
+  }
+};
 
 const recipientReducer = (state = '', action) => {
   if (action.type === DISCHARGE_SET_RECIPIENT) {

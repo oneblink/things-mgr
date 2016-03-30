@@ -5,6 +5,7 @@ import { isTelephone } from './string';
 
 // register environment variables in config/_base.js
 const eventsUrl = process.env.EVENTS_HTTP_GET_API;
+const triggerUrl = process.env.EVENT_HTTP_POST_API;
 const getUrl = process.env.ENTITY_HTTP_GET_API;
 const postUrl = process.env.ENTITY_HTTP_POST_API;
 const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
@@ -168,4 +169,35 @@ export const postSubscriptionsAndDispatch = ({ actionSuccess, actionError, data,
       dispatch(actionSuccess(data.subscriptions));
     })
     .catch((err) => dispatch(actionError(err)));
+};
+
+// postDischarge (rfid: String) => Promise
+export const postDischarge = (rfid) => {
+  const data = {
+    host: 'D3',
+    key: '6281ABC1-6108-49FE-B58A-16E53C01D0D6',
+    type: 'RFID',
+    subtype: 'scan',
+    action: 'store',
+    visit: '300',
+    payload: JSON.stringify([{
+      deviceid: 'NNYC',
+      data: rfid
+    }]),
+    latitude: '-33.427380',
+    longitude: '151.342950'
+  };
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key]);
+  });
+  return fetch(triggerUrl, {
+    body: formData,
+    headers: {
+      Authorisation: getAuthorisation()
+    },
+    method: 'POST',
+    mode: 'cors'
+  })
+    .then((res) => res.json());
 };

@@ -28,9 +28,9 @@ Specify the scenario so build process tailors the output:
 Specify URLs for the HTTP APIs used to manage entities.
 
 
-#### EVENTS_HTTP_GET_API
+#### EVENTS_HTTP_GET_API and EVENT_HTTP_POST_API
 
-Specify a URL for the HTTP APIs used to retrieve events.
+Specify a URL for the HTTP APIs used to retrieve and trigger events.
 
 
 #### SUBSCRIBE_HTTP_POST_API
