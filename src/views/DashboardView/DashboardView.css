@@ -58,3 +58,14 @@
   margin: 0.5em;
   overflow: hidden;
 }
+
+.eventEnter {
+  color: rgb(255, 64, 129);
+  opacity: 0.01;
+}
+.eventEnterActive {
+  color: #000;
+  opacity: 1.0;
+  transition: color 1s ease-in,
+              opacity 1s ease-in;
+}

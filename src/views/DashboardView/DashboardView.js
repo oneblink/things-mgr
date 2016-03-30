@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { List } from 'immutable';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import Paper from 'material-ui/lib/paper';
 
@@ -22,6 +23,15 @@ import classes from './DashboardView.css';
 const filterEvents = (event) => {
   const { name, tags: { messages, type } } = event;
   return type !== 'wifi' && !(name === 'rfid-scan' && Array.isArray(messages) && !messages.length);
+};
+
+const TRANSITION_PROPS = {
+  transitionEnterTimeout: 1000,
+  transitionLeave: false,
+  transitionName: {
+    enter: classes.eventEnter,
+    enterActive: classes.eventEnterActive
+  }
 };
 
 export class DashboardView extends React.Component {
@@ -84,9 +94,11 @@ export class DashboardView extends React.Component {
         </div>
         <div className={classes.logs}>
           <h1 className={classes.logHeading}>Recent Events</h1>
-          {events.toJS().filter(filterEvents).map((event) => (
-            <Event key={event._id} event={event} />
-          ))}
+          <ReactCSSTransitionGroup {...TRANSITION_PROPS}>
+            {events.toJS().filter(filterEvents).map((event) => (
+              <Event key={event._id} event={event} />
+            ))}
+          </ReactCSSTransitionGroup>
         </div>
         <div className={classes.indicators}>
           <Paper className={classes.indicator}>
