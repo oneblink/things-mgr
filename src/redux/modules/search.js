@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { getReaders } from './readers';
 import { getTags } from './tags';
-import { USERS_TYPE_PATIENT, getUsers } from './users';
+import { USERS_TYPE_PATIENT, getSortedUsers } from './users';
 
 export const SEARCH_SET_SORT_COLUMN = 'SEARCH_SET_SORT_COLUMN';
 export const searchSetSortColumn = (column) => ({
@@ -82,7 +82,7 @@ export const getSortDirection = (state) => state.getIn(['search', 'sort', 'direc
 
 // combine tags and readers data with users
 export const getRows = createSelector(
-  [getReaders, getTags, getUsers],
+  [getReaders, getTags, getSortedUsers],
   (readers, tags, users) => users.map((user) => {
     const tag = tags.find((t) => t.getIn(['links', 'users']) === user.get('id'));
     let reader;

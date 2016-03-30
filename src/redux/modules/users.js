@@ -148,6 +148,11 @@ export const getUsersPatients = createSelector(
   (users) => users.filter((user) => user.getIn(['info', 'type']) === 'patient')
 );
 
+export const getSortedUsersPatients = createSelector(
+  [getSortedUsers],
+  (users) => users.filter((user) => user.getIn(['info', 'type']) === 'patient')
+);
+
 export const getFlatUsers = createSelector(
   [getUsers],
   (users) => users.map((user) => user.delete('info').merge(user.get('info')))

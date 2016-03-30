@@ -16,7 +16,7 @@ import {
 } from '../../redux/modules/discharge';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
-import { getUsersPatients, usersRequest } from '../../redux/modules/users';
+import { getSortedUsersPatients, usersRequest } from '../../redux/modules/users';
 
 import classes from './DischargeView.css';
 
@@ -109,7 +109,7 @@ export class SubscriptionView extends React.Component {
 const mapStateToProps = (state) => ({
   recipient: getRecipient(state),
   user: getUser(state),
-  users: getUsersPatients(state)
+  users: getSortedUsersPatients(state)
 });
 export default connect((mapStateToProps), {
   dischargeSetRecipient,
