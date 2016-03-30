@@ -35,12 +35,12 @@ const TABLE_PROPS = {
 
 const TH_PROPS = {
   style: {
-    fontSize: '16px'
+    fontSize: '18px'
   }
 };
 const TD_PROPS = {
   style: {
-    fontSize: '16px'
+    fontSize: '18px'
   }
 };
 

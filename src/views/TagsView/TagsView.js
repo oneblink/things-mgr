@@ -1,77 +1,87 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { List } from 'immutable';
+import { Map } from 'immutable';
 import classnames from 'classnames';
 
-import ReactDataGrid from 'react-data-grid/addons';
-
-import ContentAdd from 'material-ui/lib/svg-icons/content/add';
-import ContentSave from 'material-ui/lib/svg-icons/content/save';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
-
 import {
-  getTags, tagsEdit, tagsNew, tagsRequest, tagsSubmit
-} from '../../redux/modules/tags';
+  Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
+} from 'material-ui/lib/table';
+
+import { getTagsMap, tagsRequest } from '../../redux/modules/tags';
+import { usersRequest } from '../../redux/modules/users';
 
 import classes from './TagsView.css';
 
+const TABLE_PROPS = {
+  className: classes.table,
+  selectable: false
+};
+
+const TH_PROPS = {
+  style: {
+    fontSize: '18px'
+  }
+};
+const TD_PROPS = {
+  style: {
+    fontSize: '18px'
+  }
+};
+
 export class TagsView extends React.Component {
   static propTypes = {
-    tags: PropTypes.instanceOf(List),
-    tagsEdit: PropTypes.func.isRequired,
-    tagsNew: PropTypes.func.isRequired,
+    tagsMap: PropTypes.instanceOf(Map),
     tagsRequest: PropTypes.func.isRequired,
-    tagsSubmit: PropTypes.func.isRequired
+    usersRequest: PropTypes.func.isRequired
   };
 
   componentDidMount () {
     // automatically refresh listing
     this.props.tagsRequest();
+    this.props.usersRequest();
+    // automatically refresh listing every 30 seconds
+    this.setState({
+      timer: setInterval(() => {
+        this.props.tagsRequest();
+        this.props.usersRequest();
+      }, 30e3)
+    });
+  }
+
+  componentWillUnmount () {
+    clearTimeout((this.state || {}).timer);
   }
 
   render () {
-    const {
-      tags, tagsEdit, tagsNew, tagsSubmit
-    } = this.props;
-
-    const gridProps = {
-      columns: [
-        { key: 'id', name: 'ID', editable: true },
-        { key: 'users', name: 'Person', editable: true },
-        { key: 'readers', name: 'Reader', editable: true }
-      ],
-      enableCellSelect: true,
-      minHeight: document.documentElement.clientHeight - 120,
-      rowGetter: (index) => {
-        const { id, links: { users, readers } } = tags.get(index).toJS();
-        return { id, users, readers };
-      },
-      rowsCount: tags.size,
-      onRowUpdated: ({ rowIdx, updated }) => tagsEdit(rowIdx, updated)
-    };
+    const { tagsMap } = this.props;
 
     return (
       <div className={classnames([classes.self])}>
-        <ReactDataGrid {...gridProps} />
-
-        <FloatingActionButton className={classes.save} onMouseUp={tagsSubmit} secondary>
-          <ContentSave />
-        </FloatingActionButton>
-
-        <FloatingActionButton className={classes.add} onMouseUp={tagsNew}>
-          <ContentAdd />
-        </FloatingActionButton>
+        <Table {...TABLE_PROPS}>
+          <TableHeader displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn {...TH_PROPS}>Tag</TableHeaderColumn>
+              <TableHeaderColumn {...TH_PROPS}>Thing</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {tagsMap.map((name, id) => (
+              <TableRow key={id}>
+                <TableRowColumn {...TD_PROPS}>{id}</TableRowColumn>
+                <TableRowColumn {...TD_PROPS}>{name}</TableRowColumn>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  tags: getTags(state)
+  tagsMap: getTagsMap(state)
 });
 export default connect((mapStateToProps), {
-  tagsEdit,
-  tagsNew,
   tagsRequest,
-  tagsSubmit
+  usersRequest
 })(TagsView);
