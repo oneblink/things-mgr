@@ -53,6 +53,13 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
       msg = `${type} invitation to monitor ${thing}`;
     }
   }
+  if (name === 'subscribed' && type) {
+    msg = `confirmed ${type} subscription to monitor a tag`;
+    const thing = usersMap.get(user);
+    if (thing) {
+      msg = `confirmed ${type} subscription to monitor ${thing}`;
+    }
+  }
 
   const date = new Date(event.date);
   const elapsed = (new Date()) - date;
@@ -62,7 +69,7 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
     className: classes.time,
     dateTime: event.date,
     style: {
-      opacity: 1 - clampedElapsed / ELAPSED_MAX
+      opacity: Math.max(0.2, 1 - (clampedElapsed / ELAPSED_MAX))
     }
   };
 
@@ -71,6 +78,7 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
       <span>{msg}</span>
       {' '}
       <time {...timeProps}>{timeAgo(date)}</time>
+      <div className={classes.clearfix}></div>
     </div>
   );
 };
