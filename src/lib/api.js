@@ -8,6 +8,7 @@ const eventsUrl = process.env.EVENTS_HTTP_GET_API;
 const triggerUrl = process.env.EVENT_HTTP_POST_API;
 const getUrl = process.env.ENTITY_HTTP_GET_API;
 const postUrl = process.env.ENTITY_HTTP_POST_API;
+const pdfUrl = process.env.PDF_HTTP_GET_API;
 const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
 
 // getAuthorisation () => String
@@ -198,6 +199,15 @@ export const postDischarge = (rfid) => {
     },
     method: 'POST',
     mode: 'cors'
-  })
-    .then((res) => res.json());
+  });
+};
+
+export const getPDFReport = (userId, email) => {
+  return fetch(`${pdfUrl}?userid=${userId}&email=${email}`, {
+    headers: {
+      Authorisation: getAuthorisation()
+    },
+    method: 'GET',
+    mode: 'cors'
+  });
 };

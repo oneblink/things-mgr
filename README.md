@@ -33,6 +33,11 @@ Specify URLs for the HTTP APIs used to manage entities.
 Specify a URL for the HTTP APIs used to retrieve and trigger events.
 
 
+#### PDF_HTTP_GET_API
+
+Specify a URL for the HTTP APIs used to generate PDF reports.
+
+
 #### SUBSCRIBE_HTTP_POST_API
 
 Specify a URL for the HTTP APIs used to manage subscriptions.

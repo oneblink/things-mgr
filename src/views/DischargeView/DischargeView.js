@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import Divider from 'material-ui/lib/divider';
 import DropDownMenu from 'material-ui/lib/drop-down-menu';
@@ -11,8 +11,8 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 import {
-  dischargeSetRecipient, dischargeSetUser, dischargeSubmit,
-  getRecipient, getUser
+  dischargeReport, dischargeSetRecipient, dischargeSetUser, dischargeSubmit,
+  getReader, getRecipient, getUser, getUserTag
 } from '../../redux/modules/discharge';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
@@ -27,13 +27,16 @@ const DIVIDER_STYLE = {
 
 export class SubscriptionView extends React.Component {
   static propTypes = {
+    dischargeReport: PropTypes.func.isRequired,
     dischargeSetRecipient: PropTypes.func.isRequired,
     dischargeSetUser: PropTypes.func.isRequired,
     dischargeSubmit: PropTypes.func.isRequired,
     readersRequest: PropTypes.func.isRequired,
+    reader: PropTypes.string,
     recipient: PropTypes.string,
     tagsRequest: PropTypes.func.isRequired,
     user: PropTypes.string,
+    userTag: PropTypes.instanceOf(Map),
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
@@ -47,8 +50,8 @@ export class SubscriptionView extends React.Component {
 
   render () {
     const {
-      dischargeSetRecipient, dischargeSetUser, dischargeSubmit,
-      recipient, user, users
+      dischargeReport, dischargeSetRecipient, dischargeSetUser, dischargeSubmit,
+      reader, recipient, user, userTag, users
     } = this.props;
 
     const pickerProps = {
@@ -58,6 +61,7 @@ export class SubscriptionView extends React.Component {
     };
 
     const dischargeProps = {
+      disabled: !user || reader === 'D3',
       label: 'Discharge',
       onMouseUp: () => dischargeSubmit(),
       primary: true
@@ -71,9 +75,19 @@ export class SubscriptionView extends React.Component {
     };
 
     const reportProps = {
+      disabled: !recipient || !user,
       label: 'Send Report',
+      onMouseUp: () => dischargeReport(),
       primary: true
     };
+
+    let dischargeMessage = 'Patient discharge has been approved?';
+    if (user && !userTag) {
+      dischargeMessage = 'Patient not associated with a tag';
+    }
+    if (user && reader === 'D3') {
+      dischargeMessage = 'Patient has been discharged';
+    }
 
     return (
       <div>
@@ -90,7 +104,7 @@ export class SubscriptionView extends React.Component {
 
           <Divider style={DIVIDER_STYLE} />
 
-          <p>Patient discharge has been approved?</p>
+          <p>{dischargeMessage}</p>
           <div className={classes.buttons}>
             <RaisedButton {...dischargeProps} />
           </div>
@@ -107,11 +121,14 @@ export class SubscriptionView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  reader: getReader(state),
   recipient: getRecipient(state),
   user: getUser(state),
+  userTag: getUserTag(state),
   users: getSortedUsersPatients(state)
 });
 export default connect((mapStateToProps), {
+  dischargeReport,
   dischargeSetRecipient,
   dischargeSetUser,
   dischargeSubmit,
