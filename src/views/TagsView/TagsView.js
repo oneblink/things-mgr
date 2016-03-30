@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 import classnames from 'classnames';
 
 import {
   Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
 } from 'material-ui/lib/table';
 
-import { getTagsMap, tagsRequest } from '../../redux/modules/tags';
-import { usersRequest } from '../../redux/modules/users';
+import { getTags, tagsRequest } from '../../redux/modules/tags';
+import { getUsersMap, usersRequest } from '../../redux/modules/users';
 
 import classes from './TagsView.css';
 
@@ -30,8 +30,9 @@ const TD_PROPS = {
 
 export class TagsView extends React.Component {
   static propTypes = {
-    tagsMap: PropTypes.instanceOf(Map),
+    tags: PropTypes.instanceOf(List),
     tagsRequest: PropTypes.func.isRequired,
+    usersMap: PropTypes.instanceOf(Map),
     usersRequest: PropTypes.func.isRequired
   };
 
@@ -53,7 +54,7 @@ export class TagsView extends React.Component {
   }
 
   render () {
-    const { tagsMap } = this.props;
+    const { tags, usersMap } = this.props;
 
     return (
       <div className={classnames([classes.self])}>
@@ -65,12 +66,16 @@ export class TagsView extends React.Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
-            {tagsMap.map((name, id) => (
-              <TableRow key={id}>
-                <TableRowColumn {...TD_PROPS}>{id}</TableRowColumn>
-                <TableRowColumn {...TD_PROPS}>{name}</TableRowColumn>
-              </TableRow>
-            ))}
+            {tags.map((tag) => {
+              const id = tag.get('id');
+              const name = usersMap.get(tag.getIn(['links', 'users'])) || '';
+              return (
+                <TableRow key={id}>
+                  <TableRowColumn {...TD_PROPS}>{id}</TableRowColumn>
+                  <TableRowColumn {...TD_PROPS}>{name}</TableRowColumn>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
@@ -79,7 +84,8 @@ export class TagsView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  tagsMap: getTagsMap(state)
+  tags: getTags(state),
+  usersMap: getUsersMap(state)
 });
 export default connect((mapStateToProps), {
   tagsRequest,
