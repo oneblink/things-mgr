@@ -6,7 +6,7 @@ import { List } from 'immutable';
 import Paper from 'material-ui/lib/paper';
 
 import {
-  countBeacons, countWifi, eventsRequest, getEvents
+  countBeacons, countWifi, countWifiDwellers, eventsRequest, getEvents
 } from '../../redux/modules/events';
 import { readersRequest } from '../../redux/modules/readers';
 import { tagsRequest } from '../../redux/modules/tags';
@@ -33,6 +33,7 @@ export class DashboardView extends React.Component {
     numPatients: PropTypes.number,
     numStaff: PropTypes.number,
     numWifi: PropTypes.number,
+    numWifiDwellers: PropTypes.number,
     readersRequest: PropTypes.func.isRequired,
     tagsRequest: PropTypes.func.isRequired,
     usersRequest: PropTypes.func.isRequired
@@ -61,7 +62,8 @@ export class DashboardView extends React.Component {
 
   render () {
     const {
-      events, numAssets, numBeacons, numPatients, numStaff, numWifi
+      events, numAssets, numBeacons, numPatients, numStaff,
+      numWifi, numWifiDwellers
     } = this.props;
 
     return (
@@ -97,7 +99,7 @@ export class DashboardView extends React.Component {
           </Paper>
           <Paper className={classes.indicator}>
             <label className={classes.indicatorName}>WiFi Devices<br />dwelling</label>
-            <label className={classes.indicatorValue}>{numWifi}</label>
+            <label className={classes.indicatorValue}>{numWifiDwellers}</label>
           </Paper>
         </div>
       </div>
@@ -111,7 +113,8 @@ const mapStateToProps = (state) => ({
   numBeacons: countBeacons(state),
   numStaff: countUsersStaff(state),
   numPatients: countUsersPatients(state),
-  numWifi: countWifi(state)
+  numWifi: countWifi(state),
+  numWifiDwellers: countWifiDwellers(state)
 });
 export default connect((mapStateToProps), {
   eventsRequest,

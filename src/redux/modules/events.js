@@ -68,27 +68,46 @@ export const getRecentBeaconEvent = createSelector(
   }
 );
 
-export const getRecentWifiEvent = createSelector(
+export const getRecentWifiEvents = createSelector(
   [getWifiEvents],
-  (events) => {
-    const event = events.first();
-    if (event) {
-      const date = new Date(event.get('date'));
-      const now = new Date();
-      if (date > now - 5 * 60 * 1e3) {
-        return event;
-      }
-    }
-    return null;
-  }
+  (events) => events.filter((event) => {
+    const date = new Date(event.get('date'));
+    const now = new Date();
+    return date > now - 15 * 60 * 1e3;
+  })
 );
+
+export const getRecentWifiEvent = createSelector(
+  [getRecentWifiEvents],
+  (events) => events.first() || null
+);
+
+const getEventPayload = (event) => event.getIn(['tags', 'payload']);
 
 export const countBeacons = createSelector(
   [getRecentBeaconEvent],
-  (event) => event ? event.getIn(['tags', 'payload']).count() : 0
+  (event) => event ? getEventPayload(event).count() : 0
 );
 
 export const countWifi = createSelector(
   [getRecentWifiEvent],
-  (event) => event ? event.getIn(['tags', 'payload']).count() : 0
+  (event) => event ? getEventPayload(event).count() : 0
+);
+
+const mapPayloadToMAC = (payload) => payload.get('MAC');
+
+export const countWifiDwellers = createSelector(
+  [getRecentWifiEvents],
+  (events) => {
+    if (events.size < 2) {
+      return 0;
+    }
+    const first = events.first();
+    const rest = events.rest();
+    const currentMACs = getEventPayload(first).map(mapPayloadToMAC);
+    const olderMACs = [].concat(...rest.map((event) => {
+      return getEventPayload(event).map(mapPayloadToMAC);
+    }).toJS());
+    return currentMACs.count((mac) => olderMACs.includes(mac));
+  }
 );
