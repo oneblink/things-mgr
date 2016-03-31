@@ -24,33 +24,11 @@
   }
 }
 
-.indicator {
-  align-items: center;
-  display: flex;
-  flex: 1 1 10em;
-  flex-direction: column;
-  justify-content: space-around;
-  margin: 1em;
-  padding: 2em;
-  text-align: center;
-}
-
-.logHeading,
-.indicatorName {
+.logHeading {
   color: #555;
   font-size: x-large;
   font-weight: normal;
   text-align: center;
-}
-
-.indicatorValue {
-  color: #4285bc;
-  font-size: 500%;
-}
-
-.indicatorName,
-.indicatorValue {
-  margin: 0.2em;
 }
 
 .logs {

@@ -1,0 +1,27 @@
+.self {
+  align-items: center;
+  display: flex;
+  flex: 1 1 10em;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 1em;
+  padding: 2em;
+  text-align: center;
+}
+
+.title,
+.value {
+  margin: 0.2em;
+}
+
+.title {
+  color: #555;
+  font-size: x-large;
+  font-weight: normal;
+  text-align: center;
+}
+
+.value {
+  color: #4285bc;
+  font-size: 500%;
+}

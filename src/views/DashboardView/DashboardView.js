@@ -4,8 +4,6 @@ import classnames from 'classnames';
 import { List } from 'immutable';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import Paper from 'material-ui/lib/paper';
-
 import {
   countBeacons, countWifi, countWifiDwellers, eventsRequest, getEvents
 } from '../../redux/modules/events';
@@ -17,6 +15,7 @@ import {
 } from '../../redux/modules/users';
 
 import Event from '../../components/Event/Event';
+import { Indicator } from '../../components/Indicator/Indicator';
 
 import classes from './DashboardView.css';
 
@@ -79,18 +78,15 @@ export class DashboardView extends React.Component {
     return (
       <div className={classnames([classes.self])}>
         <div className={classes.indicators}>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Assets<br />on-site</label>
-            <label className={classes.indicatorValue}>{numAssets}</label>
-          </Paper>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Patients<br />registered</label>
-            <label className={classes.indicatorValue}>{numPatients}</label>
-          </Paper>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Staff<br />on-site</label>
-            <label className={classes.indicatorValue}>{numStaff}</label>
-          </Paper>
+          <Indicator className={classes.indicator} value={numAssets}>
+            Assets<br />on-site
+          </Indicator>
+          <Indicator className={classes.indicator} value={numPatients}>
+            Patients<br />registered
+          </Indicator>
+          <Indicator className={classes.indicator} value={numStaff}>
+            Staff<br />on-site
+          </Indicator>
         </div>
         <div className={classes.logs}>
           <h1 className={classes.logHeading}>Recent Events</h1>
@@ -101,18 +97,15 @@ export class DashboardView extends React.Component {
           </ReactCSSTransitionGroup>
         </div>
         <div className={classes.indicators}>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>Staff<br />nearby</label>
-            <label className={classes.indicatorValue}>{numBeacons}</label>
-          </Paper>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>WiFi Devices<br />nearby</label>
-            <label className={classes.indicatorValue}>{numWifi}</label>
-          </Paper>
-          <Paper className={classes.indicator}>
-            <label className={classes.indicatorName}>WiFi Devices<br />dwelling</label>
-            <label className={classes.indicatorValue}>{numWifiDwellers}</label>
-          </Paper>
+          <Indicator className={classes.indicator} value={numBeacons}>
+            Staff<br />nearby
+          </Indicator>
+          <Indicator className={classes.indicator} value={numWifi}>
+            WiFi Devices<br />nearby
+          </Indicator>
+          <Indicator className={classes.indicator} value={numWifiDwellers}>
+            WiFi Devices<br />dwelling
+          </Indicator>
         </div>
       </div>
     );
