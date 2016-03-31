@@ -25,3 +25,14 @@
   color: #4285bc;
   font-size: 500%;
 }
+
+.valueEnter {
+  color: rgb(255, 64, 129);
+  opacity: 0.01;
+}
+.valueEnterActive {
+  color: #4285bc;
+  opacity: 1.0;
+  transition: color 1s ease-in,
+              opacity 1s ease-in;
+}
