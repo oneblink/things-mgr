@@ -43,7 +43,9 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
         return tagsMap.get(p.data.toLowerCase()) ||
           tagsMap.get(p.data.toUpperCase()) ||
           tagsMap.get(p.data.toLowerCase().replace(/^3000/, '')) ||
-          tagsMap.get(p.data.toUpperCase().replace(/^3000/, ''));
+          tagsMap.get(p.data.toUpperCase().replace(/^3000/, '')) ||
+          tagsMap.get(p.deviceid.toLowerCase()) ||
+          tagsMap.get(p.deviceid.toUpperCase());
       })
       .filter((x) => !!x)
       .join(', ');
