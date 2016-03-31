@@ -55,14 +55,14 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
     msg = `reader ${host} scanned ${devices} tags`;
     const readerName = readersMap.get(host);
     if (readerName) {
-      msg = `${devices} tags arrived at ${readerName}`;
+      msg = `${devices} tags in ${readerName}`;
     }
     const things = (payload || [])
       .map((p) => firstMatch(tagsMap, potentialIds(p)))
       .filter((x) => !!x)
       .join(', ');
     if (things) {
-      msg = `${things} arrived at ${readerName}`;
+      msg = `${things} in ${readerName}`;
     }
   }
   if (name === 'subscription-invite') {
