@@ -21,7 +21,9 @@ import classes from './DashboardView.css';
 
 const filterEvents = (event) => {
   const { name, tags: { messages, type } } = event;
-  return type !== 'wifi' && !(name === 'rfid-scan' && Array.isArray(messages) && !messages.length);
+  return type !== 'wifi' &&
+    !(name === 'rfid-scan' && Array.isArray(messages) && !messages.length) &&
+    name !== 'beacon-scan';
 };
 
 const TRANSITION_PROPS = {
