@@ -39,7 +39,12 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
       msg = `${devices} tags arrived at ${readerName}`;
     }
     const things = (payload || [])
-      .map((p) => tagsMap.get(p.data))
+      .map((p) => {
+        return tagsMap.get(p.data.toLowerCase()) ||
+          tagsMap.get(p.data.toUpperCase()) ||
+          tagsMap.get(p.data.toLowerCase().replace(/^3000/, '')) ||
+          tagsMap.get(p.data.toUpperCase().replace(/^3000/, ''));
+      })
       .filter((x) => !!x)
       .join(', ');
     if (things) {
