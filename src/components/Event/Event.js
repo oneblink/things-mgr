@@ -22,6 +22,25 @@ const TYPES = {
   wifi: 'WiFi devices'
 };
 
+const potentialIds = ({ deviceid = '', data = '' }) => [
+  data.toLowerCase(),
+  data.toUpperCase(),
+  data.toLowerCase().replace(/^3000/, ''),
+  data.toUpperCase().replace(/^3000/, ''),
+  deviceid.toLowerCase(),
+  deviceid.toUpperCase()
+];
+
+const firstMatch = (map, ids) => {
+  for (let id of ids) {
+    let value = map.get(id);
+    if (value) {
+      return value;
+    }
+  }
+  return null;
+};
+
 export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
   const { name, tags: { devices, host, messages, payload, tag, type, user } } = event;
   let msg = '';
@@ -32,21 +51,14 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
     if (thing) {
       msg = `${messages.length} notifications sent on behalf of ${thing}`;
     }
-  } else if (type === 'RFID' && host) {
+  } else if (type === 'RFID' || type === 'beacon' && host) {
     msg = `reader ${host} scanned ${devices} tags`;
     const readerName = readersMap.get(host);
     if (readerName) {
       msg = `${devices} tags arrived at ${readerName}`;
     }
     const things = (payload || [])
-      .map((p) => {
-        return tagsMap.get(p.data.toLowerCase()) ||
-          tagsMap.get(p.data.toUpperCase()) ||
-          tagsMap.get(p.data.toLowerCase().replace(/^3000/, '')) ||
-          tagsMap.get(p.data.toUpperCase().replace(/^3000/, '')) ||
-          tagsMap.get(p.deviceid.toLowerCase()) ||
-          tagsMap.get(p.deviceid.toUpperCase());
-      })
+      .map((p) => firstMatch(tagsMap, potentialIds(p)))
       .filter((x) => !!x)
       .join(', ');
     if (things) {
