@@ -11,6 +11,7 @@ import DashboardView from 'views/DashboardView/DashboardView';
 import DischargeView from 'views/DischargeView/DischargeView';
 import LoginView from 'views/LoginView/LoginView';
 import ReadersView from 'views/ReadersView/ReadersView';
+import RegisterView from 'views/RegisterView/RegisterView';
 import SearchView from 'views/SearchView/SearchView';
 import SubscriptionView from 'views/SubscriptionView/SubscriptionView';
 import TagsView from 'views/TagsView/TagsView';
@@ -22,6 +23,7 @@ export default (store) => {
       <Route path='/' component={CoreLayout}>
         <IndexRedirect to='/login' />
         <Route path='login' component={LoginView} />
+        <Route path='register' component={RegisterView} />
         <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
         <Route path='discharge' component={DischargeView} />
@@ -48,6 +50,7 @@ export default (store) => {
           <Route path='people' component={UsersView} />
           <Route path='readers' component={ReadersView} />
         </Route>
+        <Route path='register' component={RegisterView} />
         <Route path='search' component={SearchView} />
         <Route path='subscription' component={SubscriptionView} />
         <Route path='discharge' component={DischargeView} />

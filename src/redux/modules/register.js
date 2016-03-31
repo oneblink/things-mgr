@@ -12,6 +12,12 @@ export const registerSetTag = (tag) => ({
   payload: tag
 });
 
+export const REGISTER_SET_TYPE = 'REGISTER_SET_TYPE';
+export const registerSetType = (type) => ({
+  type: REGISTER_SET_TYPE,
+  payload: type
+});
+
 export const REGISTER_SET_FIRSTNAME = 'REGISTER_SET_FIRSTNAME';
 export const registerSetFirstname = (firstname) => ({
   type: REGISTER_SET_FIRSTNAME,
@@ -36,7 +42,8 @@ export const registerSubmit = () => (dispatch, getState) => {
     dispatch(usersNew());
     dispatch(usersEdit(getState().get('users').size - 1, {
       firstname: user.get('firstname'),
-      lastname: user.get('lastname')
+      lastname: user.get('lastname'),
+      type: user.get('type')
     }));
     user = getState().get('users').last();
   } else {
@@ -107,9 +114,20 @@ const lastNameReducer = (state = '', action) => {
   return state;
 };
 
+const typeReducer = (state = 'patient', action) => {
+  if (action.type === REGISTER_CLEAR) {
+    return 'patient';
+  }
+  if (action.type === REGISTER_SET_TYPE) {
+    return action.payload;
+  }
+  return state;
+};
+
 export const userReducer = combineReducers({
   firstname: firstNameReducer,
-  lastname: lastNameReducer
+  lastname: lastNameReducer,
+  type: typeReducer
 });
 
 export const registerReducer = combineReducers({

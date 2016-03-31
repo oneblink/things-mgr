@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import classnames from 'classnames';
 
 import AutoComplete from 'material-ui/lib/auto-complete';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import FlatButton from 'material-ui/lib/flat-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Paper from 'material-ui/lib/paper';
@@ -11,9 +12,9 @@ import TextField from 'material-ui/lib/text-field';
 
 import {
   registerSetFirstname, registerSetLastname,
-  registerSetTag, registerSubmit
+  registerSetTag, registerSetType, registerSubmit
 } from '../../redux/modules/register';
-import { getUsers, usersRequest } from '../../redux/modules/users';
+import { USERS_TYPES, getUsers, usersRequest } from '../../redux/modules/users';
 
 import classes from './RegisterView.css';
 
@@ -24,6 +25,7 @@ export class RegisterView extends React.Component {
     registerSetFirstname: PropTypes.func.isRequired,
     registerSetLastname: PropTypes.func.isRequired,
     registerSetTag: PropTypes.func.isRequired,
+    registerSetType: PropTypes.func.isRequired,
     registerSubmit: PropTypes.func.isRequired,
     tag: PropTypes.string,
     users: PropTypes.instanceOf(List),
@@ -42,8 +44,8 @@ export class RegisterView extends React.Component {
   render () {
     const {
       registerSetFirstname, registerSetLastname,
-      registerSetTag, registerSubmit,
-      firstname, lastname, tag, users
+      registerSetTag, registerSetType, registerSubmit,
+      firstname, lastname, tag, type, users
     } = this.props;
 
     const tagProps = {
@@ -81,9 +83,20 @@ export class RegisterView extends React.Component {
       searchText: lastname
     };
 
+    const typeProps = {
+      onChange: (event, index, value) => registerSetType(value),
+      value: type
+    };
+
     return (
       <Paper className={classnames([classes.self])}>
         <TextField {...tagProps} />
+        <br />
+        <DropDownMenu {...typeProps}>
+          {USERS_TYPES.map((type) => (
+            <MenuItem key={type} primaryText={type} value={type} />
+          ))}
+        </DropDownMenu>
         <br />
         <AutoComplete {...firstnameProps} {...personProps} />
         <br />
@@ -101,12 +114,14 @@ const mapStateToProps = (state) => ({
   tag: state.getIn(['register', 'tag']),
   firstname: state.getIn(['register', 'user', 'firstname']),
   lastname: state.getIn(['register', 'user', 'lastname']),
+  type: state.getIn(['register', 'user', 'type']),
   users: getUsers(state)
 });
 export default connect((mapStateToProps), {
   registerSetFirstname,
   registerSetLastname,
   registerSetTag,
+  registerSetType,
   registerSubmit,
   usersRequest
 })(RegisterView);
