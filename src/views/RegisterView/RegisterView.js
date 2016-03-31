@@ -28,6 +28,7 @@ export class RegisterView extends React.Component {
     registerSetType: PropTypes.func.isRequired,
     registerSubmit: PropTypes.func.isRequired,
     tag: PropTypes.string,
+    type: PropTypes.string,
     users: PropTypes.instanceOf(List),
     usersRequest: PropTypes.func.isRequired
   };
