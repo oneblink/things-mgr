@@ -1,20 +1,14 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
-import timeAgo from 'damals';
 
 import { getReadersMap } from '../../redux/modules/readers';
 import { getTagsMap } from '../../redux/modules/tags';
 import { getUsersMap } from '../../redux/modules/users';
 
+import { TimeAgo } from '../TimeAgo/TimeAgo.js';
+
 import classes from './Event.css';
-
-const SECOND = 1e3;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-
-const ELAPSED_MIN = MINUTE;
-const ELAPSED_MAX = HOUR;
 
 const TYPES = {
   beacon: 'Beacons',
@@ -80,23 +74,16 @@ export const Event = ({ event, readersMap, tagsMap, usersMap }) => {
     }
   }
 
-  const date = new Date(event.date);
-  const elapsed = (new Date()) - date;
-  // clamp elapsed between 1 minute and 1 hour
-  const clampedElapsed = Math.max(Math.min(elapsed, ELAPSED_MAX), ELAPSED_MIN);
   const timeProps = {
     className: classes.time,
-    dateTime: event.date,
-    style: {
-      opacity: Math.max(0.2, 1 - (clampedElapsed / ELAPSED_MAX))
-    }
+    value: event.date
   };
 
   return (
     <div className={classes.self} title={JSON.stringify(event)}>
       <span>{msg}</span>
       {' '}
-      <time {...timeProps}>{timeAgo(date)}</time>
+      <TimeAgo {...timeProps} />
       <div className={classes.clearfix}></div>
     </div>
   );
