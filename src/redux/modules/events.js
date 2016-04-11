@@ -28,7 +28,17 @@ export const eventsRequestError = (error) => ({
 
 export const eventsReducer = (state = new List(), action) => {
   if (action.type === EVENTS_REQUEST_SUCCESS) {
-    return fromJS(action.payload);
+    const incoming = fromJS(action.payload);
+    const latest = getLatestEvent(state);
+    if (!latest) {
+      // no events, so seed with payload
+      return incoming;
+    }
+    // only add events we don't have yet
+    const newEvents = incoming.takeUntil((event) => event._id === latest._id);
+    // use the last 120 of all the events we have now
+    const allEvents = newEvents.concat(state);
+    return allEvents.size > 120 ? allEvents.setSize(120) : allEvents;
   }
   if (action.type === EVENTS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
@@ -37,6 +47,8 @@ export const eventsReducer = (state = new List(), action) => {
 };
 
 export const getEvents = (state) => state.get('events');
+
+export const getLatestEvent = (state) => state.first();
 
 export const getEventsByTagsType = createSelector(
   [getEvents],
