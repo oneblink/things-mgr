@@ -46,7 +46,7 @@ export const eventsReducer = (state = new List(), action) => {
   return state;
 };
 
-export const getEvents = (state) => state.get('events');
+export const getEvents = (state) => state.get('events') || new List();
 
 export const getLatestEvent = (state) => state.first();
 

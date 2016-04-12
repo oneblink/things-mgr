@@ -83,7 +83,7 @@ export const readersReducer = (state = initialState, action) => {
   return state;
 };
 
-export const getReaders = (state) => state.get('readers');
+export const getReaders = (state) => state.get('readers') || new List();
 
 export const getReadersMap = createSelector(
   [getReaders],
