@@ -1,6 +1,10 @@
 import md5 from 'md5';
 
 import { store } from '../redux/store';
+import { eventsRequest } from '../redux/modules/events.js';
+import { getReaders, readersRequest } from '../redux/modules/readers.js';
+import { tagsRequest } from '../redux/modules/tags.js';
+import { usersRequest } from '../redux/modules/users.js';
 import { isTelephone } from './string';
 
 // register environment variables in config/_base.js
@@ -202,6 +206,7 @@ export const postDischarge = (rfid) => {
   });
 };
 
+// getPDFReport (userId: String, email: String) => Promise
 export const getPDFReport = (userId, email) => {
   return fetch(`${pdfUrl}?userid=${userId}&email=${email}`, {
     headers: {
@@ -210,4 +215,36 @@ export const getPDFReport = (userId, email) => {
     method: 'GET',
     mode: 'cors'
   });
+};
+
+// only make network request for readers when we have none
+// populateReaders (dispatch: Function, getState: Function) => Promise
+const populateReaders = (dispatch, getState) => {
+  const readersCount = getReaders(getState()).size;
+  return readersCount ? Promise.resolve : readersRequest()(dispatch, getState);
+};
+
+// refreshUsers () => Promise
+export const refreshUsers = () => {
+  const { dispatch, getState } = store;
+  return usersRequest()(dispatch, getState);
+};
+
+// refreshTags () => Promise
+export const refreshTags = () => {
+  const { dispatch, getState } = store;
+  // tags link to readers and users, so get them first
+  return Promise.all([
+    populateReaders(dispatch, getState),
+    refreshUsers()
+  ])
+    .then(() => tagsRequest()(dispatch, getState));
+};
+
+// refreshEvents () => Promise
+export const refreshEvents = () => {
+  const { dispatch, getState } = store;
+  // events link to tags, so get them first
+  return refreshTags()
+    .then(() => eventsRequest()(dispatch, getState));
 };

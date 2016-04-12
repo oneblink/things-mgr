@@ -7,8 +7,9 @@ import {
   Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
 } from 'material-ui/lib/table';
 
-import { getTags, tagsRequest } from '../../redux/modules/tags';
-import { getUsersMap, usersRequest } from '../../redux/modules/users';
+import { getTags } from '../../redux/modules/tags';
+import { getUsersMap } from '../../redux/modules/users';
+import { refreshTags } from '../../lib/api.js';
 
 import classes from './TagsView.css';
 
@@ -31,21 +32,17 @@ const TD_PROPS = {
 export class TagsView extends React.Component {
   static propTypes = {
     tags: PropTypes.instanceOf(List),
-    tagsRequest: PropTypes.func.isRequired,
-    usersMap: PropTypes.instanceOf(Map),
-    usersRequest: PropTypes.func.isRequired
+    usersMap: PropTypes.instanceOf(Map)
   };
 
   componentDidMount () {
     // automatically refresh listing
-    this.props.tagsRequest();
-    this.props.usersRequest();
-    // automatically refresh listing every 30 seconds
+    refreshTags();
+    // automatically refresh listing every 15 seconds
     this.setState({
       timer: setInterval(() => {
-        this.props.tagsRequest();
-        this.props.usersRequest();
-      }, 30e3)
+        refreshTags();
+      }, 15e3)
     });
   }
 
@@ -87,7 +84,4 @@ const mapStateToProps = (state) => ({
   tags: getTags(state),
   usersMap: getUsersMap(state)
 });
-export default connect((mapStateToProps), {
-  tagsRequest,
-  usersRequest
-})(TagsView);
+export default connect((mapStateToProps), {})(TagsView);

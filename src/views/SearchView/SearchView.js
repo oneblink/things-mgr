@@ -16,9 +16,8 @@ import {
   getFilter, getFilterType, getFilteredRows,
   searchSetFilter, searchSetFilterType, searchSetSortColumn, searchSetSortDirection
 } from '../../redux/modules/search';
-import { readersRequest } from '../../redux/modules/readers';
-import { tagsRequest } from '../../redux/modules/tags';
-import { USERS_TYPES, usersRequest } from '../../redux/modules/users';
+import { USERS_TYPES } from '../../redux/modules/users';
+import { refreshTags } from '../../lib/api.js';
 
 import classes from './SearchView.css';
 
@@ -58,14 +57,11 @@ export class SearchView extends React.Component {
   static propTypes = {
     filter: PropTypes.string,
     filterType: PropTypes.string,
-    readersRequest: PropTypes.func.isRequired,
     rows: PropTypes.instanceOf(List),
     searchSetFilter: PropTypes.func.isRequired,
     searchSetFilterType: PropTypes.func.isRequired,
     searchSetSortColumn: PropTypes.func.isRequired,
-    searchSetSortDirection: PropTypes.func.isRequired,
-    tagsRequest: PropTypes.func.isRequired,
-    usersRequest: PropTypes.func.isRequired
+    searchSetSortDirection: PropTypes.func.isRequired
   };
 
   constructor () {
@@ -75,17 +71,13 @@ export class SearchView extends React.Component {
   }
 
   componentDidMount () {
-    // automatically refresh user listing
-    this.props.readersRequest();
-    this.props.tagsRequest();
-    this.props.usersRequest();
-    // automatically refresh user listing every 30 seconds
+    // automatically refresh listing
+    refreshTags();
+    // automatically refresh listing every 15 seconds
     this.setState({
       timer: setInterval(() => {
-        this.props.readersRequest();
-        this.props.tagsRequest();
-        this.props.usersRequest();
-      }, 30e3)
+        refreshTags();
+      }, 15e3)
     });
   }
 
@@ -164,11 +156,8 @@ const mapStateToProps = (state) => ({
   rows: getFilteredRows(state)
 });
 export default connect((mapStateToProps), {
-  readersRequest,
   searchSetFilter,
   searchSetFilterType,
   searchSetSortColumn,
-  searchSetSortDirection,
-  tagsRequest,
-  usersRequest
+  searchSetSortDirection
 })(SearchView);

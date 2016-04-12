@@ -5,14 +5,12 @@ import { List } from 'immutable';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {
-  countBeacons, countWifi, countWifiDwellers, eventsRequest, getEvents
+  countBeacons, countWifi, countWifiDwellers, getEvents
 } from '../../redux/modules/events';
-import { readersRequest } from '../../redux/modules/readers';
-import { tagsRequest } from '../../redux/modules/tags';
 import {
-  countUsersAssets, countUsersStaff, countUsersPatients,
-  usersRequest
+  countUsersAssets, countUsersStaff, countUsersPatients
 } from '../../redux/modules/users';
+import { refreshEvents } from '../../lib/api.js';
 
 import Event from '../../components/Event/Event';
 import { Indicator } from '../../components/Indicator/Indicator';
@@ -38,31 +36,21 @@ const TRANSITION_PROPS = {
 export class DashboardView extends React.Component {
   static propTypes = {
     events: PropTypes.instanceOf(List),
-    eventsRequest: PropTypes.func.isRequired,
     numAssets: PropTypes.number,
     numBeacons: PropTypes.number,
     numPatients: PropTypes.number,
     numStaff: PropTypes.number,
     numWifi: PropTypes.number,
-    numWifiDwellers: PropTypes.number,
-    readersRequest: PropTypes.func.isRequired,
-    tagsRequest: PropTypes.func.isRequired,
-    usersRequest: PropTypes.func.isRequired
+    numWifiDwellers: PropTypes.number
   };
 
   componentDidMount () {
     // automatically refresh user listing
-    this.props.eventsRequest();
-    this.props.readersRequest();
-    this.props.tagsRequest();
-    this.props.usersRequest();
-    // automatically refresh user listing every 30 seconds
+    refreshEvents();
+    // automatically refresh user listing every 15 seconds
     this.setState({
       timer: setInterval(() => {
-        this.props.eventsRequest();
-        this.props.readersRequest();
-        this.props.tagsRequest();
-        this.props.usersRequest();
+        refreshEvents();
       }, 15e3)
     });
   }
@@ -123,9 +111,4 @@ const mapStateToProps = (state) => ({
   numWifi: countWifi(state),
   numWifiDwellers: countWifiDwellers(state)
 });
-export default connect((mapStateToProps), {
-  eventsRequest,
-  readersRequest,
-  tagsRequest,
-  usersRequest
-})(DashboardView);
+export default connect((mapStateToProps), {})(DashboardView);
