@@ -2,6 +2,7 @@ import md5 from 'md5';
 
 import { store } from '../redux/store';
 import { eventsRequest } from '../redux/modules/events.js';
+import { hasCredentials } from '../redux/modules/login.js';
 import { getReaders, readersRequest } from '../redux/modules/readers.js';
 import { tagsRequest } from '../redux/modules/tags.js';
 import { usersRequest } from '../redux/modules/users.js';
@@ -217,21 +218,28 @@ export const getPDFReport = (userId, email) => {
   });
 };
 
+const decorateWithLoginGuard = (fn) => (...args) => {
+  if (!hasCredentials(store.getState())) {
+    return Promise.resolve();
+  }
+  return fn(...args);
+};
+
 // only make network request for readers when we have none
 // populateReaders (dispatch: Function, getState: Function) => Promise
-const populateReaders = (dispatch, getState) => {
+const populateReaders = decorateWithLoginGuard((dispatch, getState) => {
   const readersCount = getReaders(getState()).size;
   return readersCount ? Promise.resolve : readersRequest()(dispatch, getState);
-};
+});
 
 // refreshUsers () => Promise
-export const refreshUsers = () => {
+export const refreshUsers = decorateWithLoginGuard(() => {
   const { dispatch, getState } = store;
   return usersRequest()(dispatch, getState);
-};
+});
 
 // refreshTags () => Promise
-export const refreshTags = () => {
+export const refreshTags = decorateWithLoginGuard(() => {
   const { dispatch, getState } = store;
   // tags link to readers and users, so get them first
   return Promise.all([
@@ -239,12 +247,12 @@ export const refreshTags = () => {
     refreshUsers()
   ])
     .then(() => tagsRequest()(dispatch, getState));
-};
+});
 
 // refreshEvents () => Promise
-export const refreshEvents = () => {
+export const refreshEvents = decorateWithLoginGuard(() => {
   const { dispatch, getState } = store;
   // events link to tags, so get them first
   return refreshTags()
     .then(() => eventsRequest()(dispatch, getState));
-};
+});
