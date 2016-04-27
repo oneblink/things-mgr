@@ -27,8 +27,8 @@ const potentialIds = ({ deviceid = '', data = '' }) => [
   data.toUpperCase(),
   data.toLowerCase().replace(/^3000/, ''),
   data.toUpperCase().replace(/^3000/, ''),
-  deviceid.toLowerCase(),
-  deviceid.toUpperCase()
+  ('' + deviceid).toLowerCase(),
+  ('' + deviceid).toUpperCase()
 ];
 
 const firstMatch = (map, ids) => {
