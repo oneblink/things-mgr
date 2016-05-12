@@ -29,17 +29,22 @@ export const eventsRequestError = (error) => ({
 });
 
 // potentialIds (payload: { deviceid: String, data: String }) => String[]
-const potentialIds = ({ deviceid = '', data = '' }) => [
-  data.toLowerCase(),
-  data.toUpperCase(),
-  data.toLowerCase().replace(/^3000/, ''),
-  data.toUpperCase().replace(/^3000/, ''),
-  deviceid.toLowerCase(),
-  deviceid.toUpperCase()
-];
+export const potentialIds = ({ deviceid, data }) => {
+  // these now come through as `null` sometimes :S
+  deviceid = typeof deviceid === 'string' ? deviceid : '' + deviceid;
+  data = typeof data === 'string' ? data : '' + data;
+  return [
+    data.toLowerCase(),
+    data.toUpperCase(),
+    data.toLowerCase().replace(/^3000/, ''),
+    data.toUpperCase().replace(/^3000/, ''),
+    deviceid.toLowerCase(),
+    deviceid.toUpperCase()
+  ];
+};
 
 // firstMatch (map: Map, ids: String[]) => Map
-const firstMatch = (map, ids) => {
+export const firstMatch = (map, ids) => {
   for (let id of ids) {
     let value = map.get(id);
     if (value) {
@@ -92,6 +97,7 @@ export const eventsReducer = (state = new List(), action) => {
   }
   if (action.type === EVENTS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };

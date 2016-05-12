@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
 
+import { firstMatch, potentialIds } from '../../redux/modules/events.js';
 import { getReadersMap } from '../../redux/modules/readers';
 import { getTagsMap } from '../../redux/modules/tags';
 import { getUsersMap } from '../../redux/modules/users';
@@ -14,25 +15,6 @@ const TYPES = {
   beacon: 'Beacons',
   RFID: 'RFID tags',
   wifi: 'WiFi devices'
-};
-
-const potentialIds = ({ deviceid = '', data = '' }) => [
-  data.toLowerCase(),
-  data.toUpperCase(),
-  data.toLowerCase().replace(/^3000/, ''),
-  data.toUpperCase().replace(/^3000/, ''),
-  ('' + deviceid).toLowerCase(),
-  ('' + deviceid).toUpperCase()
-];
-
-const firstMatch = (map, ids) => {
-  for (let id of ids) {
-    let value = map.get(id);
-    if (value) {
-      return value;
-    }
-  }
-  return null;
 };
 
 export const Event = ({ event, readersMap, tagsMap, usersMap }) => {

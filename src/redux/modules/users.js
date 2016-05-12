@@ -107,6 +107,7 @@ export const usersReducer = (state = initialState, action) => {
   }
   if (action.type === USERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };

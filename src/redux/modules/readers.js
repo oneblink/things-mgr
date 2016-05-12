@@ -79,6 +79,7 @@ export const readersReducer = (state = initialState, action) => {
   }
   if (action.type === READERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };
