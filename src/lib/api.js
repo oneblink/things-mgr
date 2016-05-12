@@ -229,7 +229,7 @@ const decorateWithLoginGuard = (fn) => (...args) => {
 // populateReaders (dispatch: Function, getState: Function) => Promise
 const populateReaders = decorateWithLoginGuard((dispatch, getState) => {
   const readersCount = getReaders(getState()).size;
-  return readersCount ? Promise.resolve : readersRequest()(dispatch, getState);
+  return readersCount ? Promise.resolve() : readersRequest()(dispatch, getState);
 });
 
 // refreshUsers () => Promise
