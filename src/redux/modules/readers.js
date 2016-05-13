@@ -1,4 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
@@ -79,11 +79,12 @@ export const readersReducer = (state = initialState, action) => {
   }
   if (action.type === READERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };
 
-export const getReaders = (state) => state.get('readers');
+export const getReaders = (state) => state.get('readers') || new List();
 
 export const getReadersMap = createSelector(
   [getReaders],

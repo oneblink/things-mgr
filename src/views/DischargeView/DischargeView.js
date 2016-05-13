@@ -14,9 +14,8 @@ import {
   dischargeReport, dischargeSetRecipient, dischargeSetUser, dischargeSubmit,
   getReader, getRecipient, getUser, getUserTag
 } from '../../redux/modules/discharge';
-import { readersRequest } from '../../redux/modules/readers';
-import { tagsRequest } from '../../redux/modules/tags';
-import { getSortedUsersPatients, usersRequest } from '../../redux/modules/users';
+import { getSortedUsersPatients } from '../../redux/modules/users';
+import { refreshTags } from '../../lib/api.js';
 
 import classes from './DischargeView.css';
 
@@ -31,21 +30,16 @@ export class SubscriptionView extends React.Component {
     dischargeSetRecipient: PropTypes.func.isRequired,
     dischargeSetUser: PropTypes.func.isRequired,
     dischargeSubmit: PropTypes.func.isRequired,
-    readersRequest: PropTypes.func.isRequired,
     reader: PropTypes.string,
     recipient: PropTypes.string,
-    tagsRequest: PropTypes.func.isRequired,
     user: PropTypes.string,
     userTag: PropTypes.instanceOf(Map),
-    users: PropTypes.instanceOf(List),
-    usersRequest: PropTypes.func.isRequired
+    users: PropTypes.instanceOf(List)
   };
 
   componentDidMount () {
     // automatically refresh listings
-    this.props.readersRequest();
-    this.props.tagsRequest();
-    this.props.usersRequest();
+    refreshTags();
   }
 
   render () {
@@ -131,8 +125,5 @@ export default connect((mapStateToProps), {
   dischargeReport,
   dischargeSetRecipient,
   dischargeSetUser,
-  dischargeSubmit,
-  readersRequest,
-  tagsRequest,
-  usersRequest
+  dischargeSubmit
 })(SubscriptionView);

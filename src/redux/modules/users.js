@@ -1,4 +1,4 @@
-import { List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
@@ -107,6 +107,7 @@ export const usersReducer = (state = initialState, action) => {
   }
   if (action.type === USERS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };
@@ -128,7 +129,7 @@ const compareNames = (a, b) => {
   return compareStrings(a.get('firstname'), b.get('firstname'));
 };
 
-export const getUsers = (state) => state.get('users');
+export const getUsers = (state) => state.get('users') || new List();
 
 export const getSortedUsers = createSelector(
   [getUsers],

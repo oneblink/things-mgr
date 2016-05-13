@@ -94,11 +94,12 @@ export const tagsReducer = (state = initialState, action) => {
   }
   if (action.type === TAGS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };
 
-export const getTags = (state) => state.get('tags');
+export const getTags = (state) => state.get('tags') || new List();
 
 export const getTagsMap = createSelector(
   [getTags, getUsersMap],

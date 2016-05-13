@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import { createSelector } from 'reselect';
 
 import { getEntities } from '../../lib/api';
 
@@ -78,3 +79,13 @@ export const loginReducer = (state = initialState, action) => {
   }
   return state;
 };
+
+export const getUsername = (state) => state.getIn(['login', 'username']);
+export const getPassword = (state) => state.getIn(['login', 'password']);
+
+export const hasCredentials = createSelector(
+  [getUsername, getPassword],
+  (user, pass) => !!(user && pass)
+);
+
+export const getLoginState = (state) => state.getIn(['login', 'state']);

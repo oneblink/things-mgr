@@ -2,6 +2,8 @@ import { List, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEventsAndDispatch } from '../../lib/api';
+import { getTagsMap } from './tags';
+import { store } from '../store';
 
 export const EVENTS_REQUEST = 'EVENTS_REQUEST';
 export const eventsRequest = () => (dispatch, getState) => {
@@ -26,17 +28,89 @@ export const eventsRequestError = (error) => ({
   error: true
 });
 
+// potentialIds (payload: { deviceid: String, data: String }) => String[]
+export const potentialIds = ({ deviceid, data }) => {
+  // these now come through as `null` sometimes :S
+  let result = [];
+  if (data) {
+    result.push(...[
+      data.toLowerCase(),
+      data.toUpperCase(),
+      data.toLowerCase().replace(/^3000/, ''),
+      data.toUpperCase().replace(/^3000/, '')
+    ]);
+  }
+  if (deviceid) {
+    result.push(...[
+      deviceid.toLowerCase(),
+      deviceid.toUpperCase()
+    ]);
+  }
+  return result;
+};
+
+// firstMatch (map: Map, ids: String[]) => Map
+export const firstMatch = (map, ids) => {
+  for (let id of ids) {
+    let value = map.get(id);
+    if (value) {
+      return value;
+    }
+  }
+  return null;
+};
+
+// ensurePayloadUser (tagsMap: Map) => (payload: Map) => Map
+const ensurePayloadUser = (tagsMap) => (payload) => {
+  if (payload.get('user')) {
+    return payload;
+  }
+  const user = firstMatch(tagsMap, potentialIds(payload));
+  if (user) {
+    console.log(payload.toJS(), user);
+  }
+  return user ? payload.set('user', user) : payload;
+};
+
+// ensureEventUser (tagsMap: Map) => (event: Map) => Map
+const ensureEventUser = (tagsMap) => (event) => {
+  if (event.getIn(['tags', 'user'])) {
+    return event;
+  }
+  // ensure each payload refers to a user
+  const payloads = event.getIn(['tags', 'payload']);
+  if (payloads && payloads.size) {
+    return event.setIn(['tags', 'payload'], payloads.map(ensurePayloadUser(tagsMap)));
+  }
+  return event;
+};
+
 export const eventsReducer = (state = new List(), action) => {
   if (action.type === EVENTS_REQUEST_SUCCESS) {
-    return fromJS(action.payload);
+    const incoming = fromJS(action.payload);
+    const latest = getLatestEvent(state);
+    const tagsMap = getTagsMap(store.getState());
+    if (!latest) {
+      // no events, so seed with payload
+      return incoming.map(ensureEventUser(tagsMap));
+    }
+    // only add events we don't have yet
+    let newEvents = incoming.takeUntil((event) => event._id === latest._id);
+    newEvents = newEvents.map(ensureEventUser(tagsMap));
+    // use the last 120 of all the events we have now
+    const allEvents = newEvents.concat(state);
+    return allEvents.size > 120 ? allEvents.setSize(120) : allEvents;
   }
   if (action.type === EVENTS_REQUEST_ERROR) {
     console.log(action.type, action.payload);
+    console.error(action.payload);
   }
   return state;
 };
 
-export const getEvents = (state) => state.get('events');
+export const getEvents = (state) => state.get('events') || new List();
+
+export const getLatestEvent = (state) => state.first();
 
 export const getEventsByTagsType = createSelector(
   [getEvents],
