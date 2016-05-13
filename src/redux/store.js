@@ -1,4 +1,4 @@
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import createHistory from 'history/lib/createHashHistory';
 import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
@@ -19,7 +19,7 @@ const createRouterStateSelector = () => {
 };
 
 // Configure history for react-router
-const browserHistory = useRouterHistory(createBrowserHistory)({
+const browserHistory = useRouterHistory(createHistory)({
   basename: __BASENAME__
 });
 
