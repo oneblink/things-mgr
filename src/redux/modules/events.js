@@ -31,16 +31,22 @@ export const eventsRequestError = (error) => ({
 // potentialIds (payload: { deviceid: String, data: String }) => String[]
 export const potentialIds = ({ deviceid, data }) => {
   // these now come through as `null` sometimes :S
-  deviceid = typeof deviceid === 'string' ? deviceid : '' + deviceid;
-  data = typeof data === 'string' ? data : '' + data;
-  return [
-    data.toLowerCase(),
-    data.toUpperCase(),
-    data.toLowerCase().replace(/^3000/, ''),
-    data.toUpperCase().replace(/^3000/, ''),
-    deviceid.toLowerCase(),
-    deviceid.toUpperCase()
-  ];
+  let result = [];
+  if (data) {
+    result.push(...[
+      data.toLowerCase(),
+      data.toUpperCase(),
+      data.toLowerCase().replace(/^3000/, ''),
+      data.toUpperCase().replace(/^3000/, '')
+    ]);
+  }
+  if (deviceid) {
+    result.push(...[
+      deviceid.toLowerCase(),
+      deviceid.toUpperCase()
+    ]);
+  }
+  return result;
 };
 
 // firstMatch (map: Map, ids: String[]) => Map
