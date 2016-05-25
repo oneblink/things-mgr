@@ -85,17 +85,19 @@ const ensureEventUser = (tagsMap) => (event) => {
   return event;
 };
 
+// state entries are newest to oldest
 export const eventsReducer = (state = new List(), action) => {
   if (action.type === EVENTS_REQUEST_SUCCESS) {
+    // incoming entries are newest to oldest
     const incoming = fromJS(action.payload);
-    const latest = getLatestEvent(state);
     const tagsMap = getTagsMap(store.getState());
-    if (!latest) {
+    if (!getLatestEvent(state)) {
       // no events, so seed with payload
       return incoming.map(ensureEventUser(tagsMap));
     }
     // only add events we don't have yet
-    let newEvents = incoming.takeUntil((event) => event._id === latest._id);
+    let oldIds = state.map((event) => event.get('_id'));
+    let newEvents = incoming.filter((event) => !oldIds.includes(event.get('_id')));
     newEvents = newEvents.map(ensureEventUser(tagsMap));
     // use the last 120 of all the events we have now
     const allEvents = newEvents.concat(state);
