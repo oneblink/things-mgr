@@ -182,13 +182,17 @@ export const postDischarge = (rfid) => {
   const data = {
     host: 'D3',
     key: '6281ABC1-6108-49FE-B58A-16E53C01D0D6',
-    type: 'RFID',
+    uuid: 'rfid',
+    type: 'rfid',
     subtype: 'scan',
     action: 'store',
     visit: '300',
     payload: JSON.stringify([{
-      deviceid: 'NNYC',
-      data: rfid
+      deviceid: '',
+      data: JSON.stringify({
+        ant: 'D3',
+        tid: rfid
+      })
     }]),
     latitude: '-33.427380',
     longitude: '151.342950'
