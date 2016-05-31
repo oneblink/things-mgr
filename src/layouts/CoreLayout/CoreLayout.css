@@ -11,6 +11,7 @@
 }
 
 .appbar {
+  align-items: center;
   background-color: #fff !important;
   flex: 0 0 auto;
 }

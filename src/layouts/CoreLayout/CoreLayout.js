@@ -7,6 +7,7 @@ import 'react-data-grid/themes/react-data-grid.css';
 import AppBar from 'material-ui/lib/app-bar';
 import FlatButton from 'material-ui/lib/flat-button';
 
+import BusStatus from '../../components/BusStatus/BusStatus.js';
 import NavTabs from '../../components/NavTabs/NavTabs';
 
 import '../../styles/core.css';
@@ -23,11 +24,17 @@ import classes from './CoreLayout.css';
 // define it with a plain javascript function...
 function CoreLayout ({ children }) {
   const appProps = {
+    children: [
+      <Link to='/login'><FlatButton label='Login' /></Link>
+    ],
     className: classes.appbar,
-    iconElementRight: <Link to='/login'><FlatButton label='Login' /></Link>,
     showMenuIconButton: false,
     title: 'Royal Western Hospital'
   };
+
+  if (process.env.USE_CASE === 'dashboard') {
+    appProps.children.unshift(<a><BusStatus className={classes.busStatus} /></a>);
+  }
 
   const selfClasses = [classes.self];
   const viewClasses = [classes.view];

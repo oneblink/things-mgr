@@ -11,8 +11,10 @@ import { syncLoginWithStorage } from './lib/storage';
 // keep login details persisted to storage
 syncLoginWithStorage(store);
 
-// connect to BusMQ once we have details
-syncBusWithStore(store);
+if (process.env.USE_CASE === 'dashboard') {
+  // connect to BusMQ once we have details
+  syncBusWithStore(store);
+}
 
 // required for Material UI components
 injectTapEventPlugin();

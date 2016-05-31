@@ -2,7 +2,10 @@
 
 import busmq from 'busmq/busmq.js';
 
-import { getBusmq, busmqSetLastMessageDate } from '../redux/modules/busmq.js';
+import {
+  busmqSetStatus, busmqSetLastMessageDate,
+  getBusmq
+} from '../redux/modules/busmq.js';
 import { eventsRequestSuccess } from '../redux/modules/events.js';
 
 const TOPIC = 'ipx.event';
@@ -24,19 +27,17 @@ function onChange (store, { SECRET, WSS_URL }) {
       pubsub = ps;
 
       [
-        'ready', 'subscribed', 'unsubscribed'
+        'ready', 'subscribed', 'unsubscribed',
+        'message', 'error'
       ].forEach((event) => {
-        pubsub.on(event, () => console.log(`pubsub [${TOPIC}]: event = ${event}`));
+        pubsub.on(event, () => store.dispatch(busmqSetStatus(event)));
       });
 
       [
         'reconnecting', 'reconnected'
       ].forEach((event) => {
-        pubsub.fed.on(event, () => console.log(`pubsub.fed [${TOPIC}]: event = ${event}`));
+        pubsub.fed.on(event, () => store.dispatch(busmqSetStatus(event)));
       });
-
-      pubsub.on('message', (msg) => console.log(`pubsub [${TOPIC}]: msg = ${msg}`));
-      pubsub.on('error', (err) => console.error(`pubsub [${TOPIC}]: err = ${err}`));
 
       pubsub.on('message', (msg) => {
         store.dispatch(busmqSetLastMessageDate());
@@ -52,6 +53,28 @@ function onChange (store, { SECRET, WSS_URL }) {
       });
 
       pubsub.subscribe();
+    });
+
+    // basic "marco" -> "polo" heartbeat every 45 seconds
+    bus.pubsub('system.marco.polo', (err, ps) => {
+      if (err) {
+        console.error(`unable setup "system.marco.polo" bus via ${WSS_URL}`);
+        console.error(err);
+        return;
+      }
+
+      ps.on('message', (msg) => {
+        store.dispatch(busmqSetLastMessageDate());
+        if (msg === 'marco') {
+          ps.publish('polo');
+        }
+      });
+
+      ps.subscribe();
+
+      setInterval(() => {
+        ps.publish('marco');
+      }, 45e3);
     });
   }
   if (bus && !(SECRET && WSS_URL)) {

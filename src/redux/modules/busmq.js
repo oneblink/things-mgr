@@ -12,11 +12,19 @@ export const busmqSetLastMessageDate = (config) => ({
   type: BUSMQ_SET_LAST_MESSAGE_DATE
 });
 
+export const BUSMQ_SET_STATUS = 'BUSMQ_SET_STATUS';
+export const busmqSetStatus = (status) => ({
+  type: BUSMQ_SET_STATUS,
+  payload: status
+});
+
 const ACTION_HANDLERS = {
 
   [BUSMQ_SET_CONFIG]: (state, action) => state.merge(action.payload),
 
-  [BUSMQ_SET_LAST_MESSAGE_DATE]: (state, action) => state.set('lastMessageDate', (new Date()).toISOString())
+  [BUSMQ_SET_LAST_MESSAGE_DATE]: (state, action) => state.set('lastMessageDate', (new Date()).toISOString()),
+
+  [BUSMQ_SET_STATUS]: (state, action) => state.set('status', action.payload)
 
 };
 
@@ -32,14 +40,7 @@ export const getBusmqLastMessageDate = createSelector(
   (busmq) => busmq.get('lastMessageDate')
 );
 
-export const getBusmqSinceLastMessage = createSelector(
-  [getBusmqLastMessageDate],
-  (lastMessageDate) => {
-    if (!lastMessageDate) {
-      return Infinity;
-    }
-    const then = new Date(lastMessageDate);
-    const now = new Date();
-    return now - then;
-  }
+export const getBusmqStatus = createSelector(
+  [getBusmq],
+  (busmq) => busmq.get('status')
 );
