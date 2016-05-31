@@ -201,6 +201,12 @@ export const getPDFReport = (userId, email) => {
   return fetch(`${PDF_HTTP_GET_API}?userid=${userId}&email=${email}`, assignFetchDefaults({}));
 };
 
+// getBusMQConfig () => Promise
+export const getBusMQConfig = () => {
+  return fetch(BUSMQ_HTTP_GET_API, assignFetchDefaults({}))
+    .then((res) => res.json());
+};
+
 const decorateWithLoginGuard = (fn) => (...args) => {
   if (!hasCredentials(store.getState())) {
     return Promise.resolve();

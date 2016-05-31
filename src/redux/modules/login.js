@@ -1,7 +1,8 @@
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 
-import { getEntities } from '../../lib/api';
+import { getBusMQConfig } from '../../lib/api';
+import { busmqSetConfig } from './busmq.js';
 
 export const LOGIN_CLEAR = 'LOGIN_CLEAR';
 export const loginClear = () => ({ type: LOGIN_CLEAR });
@@ -21,7 +22,7 @@ export const loginSetPassword = (password) => ({
 export const LOGIN_SUBMIT = 'LOGIN_SUBMIT';
 export const loginSubmit = () => (dispatch, getState) => {
   dispatch({ type: LOGIN_SUBMIT });
-  return getEntities('readers')
+  return getBusMQConfig()
     .then((data) => {
       const err = data.error || data.errors;
       if (err && err.includes('password')) {
@@ -29,6 +30,7 @@ export const loginSubmit = () => (dispatch, getState) => {
         return;
       }
       dispatch(loginSubmitSuccess());
+      dispatch(busmqSetConfig(data.data));
     })
     .catch((err) => loginSubmitError(err));
 };

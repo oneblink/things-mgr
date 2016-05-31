@@ -2,7 +2,9 @@ import localforage from 'localforage';
 import debounce from 'lodash.debounce';
 
 import { refreshEvents } from './api.js';
-import { loginSetPassword, loginSetUsername } from '../redux/modules/login';
+import {
+  loginSetPassword, loginSetUsername, loginSubmit
+} from '../redux/modules/login.js';
 
 const storage = localforage.createInstance({ name: 'login' });
 
@@ -11,6 +13,7 @@ const fromStorage = (store) => {
     .then((username) => store.dispatch(loginSetUsername(username)))
     .then(() => storage.getItem('password'))
     .then((password) => store.dispatch(loginSetPassword(password)))
+    .then(() => store.dispatch(loginSubmit()))
     .then(refreshEvents);
 };
 
