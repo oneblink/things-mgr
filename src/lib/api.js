@@ -9,12 +9,13 @@ import { usersRequest } from '../redux/modules/users.js';
 import { isTelephone } from './string';
 
 // register environment variables in config/_base.js
-const eventsUrl = process.env.EVENTS_HTTP_GET_API;
-const triggerUrl = process.env.EVENT_HTTP_POST_API;
-const getUrl = process.env.ENTITY_HTTP_GET_API;
-const postUrl = process.env.ENTITY_HTTP_POST_API;
-const pdfUrl = process.env.PDF_HTTP_GET_API;
-const subscribeUrl = process.env.SUBSCRIBE_HTTP_POST_API;
+const {
+  BUSMQ_HTTP_GET_API,
+  ENTITY_HTTP_GET_API, ENTITY_HTTP_POST_API,
+  EVENTS_HTTP_GET_API, EVENT_HTTP_POST_API,
+  PDF_HTTP_GET_API,
+  SUBSCRIBE_HTTP_POST_API
+} = process.env;
 
 // getAuthorisation () => String
 const getAuthorisation = () => {
@@ -25,15 +26,17 @@ const getAuthorisation = () => {
   return `bearer ${username} ${md5(password)}`;
 };
 
+const assignFetchDefaults = (options = {}) => Object.assign({}, {
+  headers: {
+    Authorisation: getAuthorisation()
+  },
+  method: 'GET',
+  mode: 'cors'
+}, options);
+
 // getEvents () => Promise
 export const getEvents = () => {
-  return fetch(eventsUrl, {
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'GET',
-    mode: 'cors'
-  })
+  return fetch(EVENTS_HTTP_GET_API, assignFetchDefaults({}))
     .then((res) => res.json());
 };
 
@@ -59,13 +62,7 @@ export const getEventsAndDispatch = ({ actionSuccess, actionError, dispatch }) =
 
 // getEntities (type: String) => Promise
 export const getEntities = (type) => {
-  return fetch(`${getUrl}?entity=${type}`, {
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'GET',
-    mode: 'cors'
-  })
+  return fetch(`${ENTITY_HTTP_GET_API}?entity=${type}`, assignFetchDefaults({}))
     .then((res) => res.json());
 };
 
@@ -92,14 +89,10 @@ export const getEntitiesAndDispatch = ({ actionSuccess, actionError, dispatch, t
 export const postEntities = (type, data) => {
   const formData = new FormData();
   formData.append('args', JSON.stringify({ [type]: data }));
-  return fetch(`${postUrl}?entity=${type}`, {
+  return fetch(`${ENTITY_HTTP_POST_API}?entity=${type}`, assignFetchDefaults({
     body: formData,
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'POST',
-    mode: 'cors'
-  })
+    method: 'POST'
+  }))
     .then((res) => res.json());
 };
 
@@ -145,14 +138,10 @@ export const postSubscriptions = (data) => {
   };
   const formData = new FormData();
   formData.append('args', JSON.stringify(resources));
-  return fetch(`${subscribeUrl}?`, {
+  return fetch(`${SUBSCRIBE_HTTP_POST_API}?`, assignFetchDefaults({
     body: formData,
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'POST',
-    mode: 'cors'
-  })
+    method: 'POST'
+  }))
     .then((res) => res.json());
 };
 
@@ -201,25 +190,15 @@ export const postDischarge = (rfid) => {
   Object.keys(data).forEach((key) => {
     formData.append(key, data[key]);
   });
-  return fetch(triggerUrl, {
+  return fetch(EVENT_HTTP_POST_API, assignFetchDefaults({
     body: formData,
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'POST',
-    mode: 'cors'
-  });
+    method: 'POST'
+  }));
 };
 
 // getPDFReport (userId: String, email: String) => Promise
 export const getPDFReport = (userId, email) => {
-  return fetch(`${pdfUrl}?userid=${userId}&email=${email}`, {
-    headers: {
-      Authorisation: getAuthorisation()
-    },
-    method: 'GET',
-    mode: 'cors'
-  });
+  return fetch(`${PDF_HTTP_GET_API}?userid=${userId}&email=${email}`, assignFetchDefaults({}));
 };
 
 const decorateWithLoginGuard = (fn) => (...args) => {

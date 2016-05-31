@@ -78,16 +78,26 @@ Edit at Your Own Risk
 // Environment
 // ------------------------------------
 // N.B.: globals added here must _also_ be added to .eslintrc
+const {
+  BUSMQ_HTTP_GET_API,
+  ENTITY_HTTP_GET_API, ENTITY_HTTP_POST_API,
+  EVENTS_HTTP_GET_API, EVENT_HTTP_POST_API,
+  PDF_HTTP_GET_API,
+  SUBSCRIBE_HTTP_POST_API,
+  USE_CASE
+} = process.env;
+
 config.globals = {
   'process.env'  : {
     'NODE_ENV' : JSON.stringify(config.env),
-    'ENTITY_HTTP_GET_API': JSON.stringify(process.env.ENTITY_HTTP_GET_API),
-    'ENTITY_HTTP_POST_API': JSON.stringify(process.env.ENTITY_HTTP_POST_API),
-    'EVENTS_HTTP_GET_API': JSON.stringify(process.env.EVENTS_HTTP_GET_API),
-    EVENT_HTTP_POST_API: JSON.stringify(process.env.EVENT_HTTP_POST_API),
-    PDF_HTTP_GET_API: JSON.stringify(process.env.PDF_HTTP_GET_API),
-    'SUBSCRIBE_HTTP_POST_API': JSON.stringify(process.env.SUBSCRIBE_HTTP_POST_API),
-    USE_CASE: JSON.stringify(process.env.USE_CASE)
+    BUSMQ_HTTP_GET_API: `"${BUSMQ_HTTP_GET_API}"`,
+    ENTITY_HTTP_GET_API: `"${ENTITY_HTTP_GET_API}"`,
+    ENTITY_HTTP_POST_API: `"${ENTITY_HTTP_POST_API}"`,
+    EVENTS_HTTP_GET_API: `"${EVENTS_HTTP_GET_API}"`,
+    EVENT_HTTP_POST_API: `"${EVENT_HTTP_POST_API}"`,
+    PDF_HTTP_GET_API: `"${PDF_HTTP_GET_API}"`,
+    SUBSCRIBE_HTTP_POST_API: `"${SUBSCRIBE_HTTP_POST_API}"`,
+    USE_CASE: `"${USE_CASE}"`
   },
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',

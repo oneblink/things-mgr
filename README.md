@@ -23,6 +23,11 @@ Specify the scenario so build process tailors the output:
 - **manager**: all screens
 
 
+### BUSMQ_HTTP_GET_API
+
+Specify the URL to use when retrieving the BusMQ configuration.
+
+
 #### ENTITY_HTTP_GET_API and ENTITY_HTTP_POST_API
 
 Specify URLs for the HTTP APIs used to manage entities.
