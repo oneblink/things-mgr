@@ -64,6 +64,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "busmq": "1.5.4",
     "classnames": "2.2.3",
     "counterpart": "0.17.2",
     "damals": "0.9.4",

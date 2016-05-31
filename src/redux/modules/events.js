@@ -85,6 +85,18 @@ const ensureEventUser = (tagsMap) => (event) => {
   return event;
 };
 
+function sortNewestDateFirst (a, b) {
+  const aDate = a.get('date');
+  const bDate = a.get('date');
+  if (aDate === bDate) {
+    return 0;
+  }
+  if (aDate > bDate) {
+    return -1;
+  }
+  return 1;
+}
+
 // state entries are newest to oldest
 export const eventsReducer = (state = new List(), action) => {
   if (action.type === EVENTS_REQUEST_SUCCESS) {
@@ -100,7 +112,8 @@ export const eventsReducer = (state = new List(), action) => {
     let newEvents = incoming.filter((event) => !oldIds.includes(event.get('_id')));
     newEvents = newEvents.map(ensureEventUser(tagsMap));
     // use the last 120 of all the events we have now
-    const allEvents = newEvents.concat(state);
+    const allEvents = newEvents.concat(state)
+      .sort(sortNewestDateFirst);
     return allEvents.size > 120 ? allEvents.setSize(120) : allEvents;
   }
   if (action.type === EVENTS_REQUEST_ERROR) {
