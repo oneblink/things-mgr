@@ -47,11 +47,11 @@ export class DashboardView extends React.Component {
   componentDidMount () {
     // automatically refresh user listing
     refreshEvents();
-    // automatically refresh user listing every 15 seconds
+    // automatically refresh user listing every 60 seconds
     this.setState({
       timer: setInterval(() => {
         refreshEvents();
-      }, 15e3)
+      }, 60e3)
     });
   }
 
