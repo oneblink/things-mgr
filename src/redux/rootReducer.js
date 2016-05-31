@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 
 import counter from './modules/counter';
+import { busmqReducer as busmq } from './modules/busmq.js';
 import { dischargeReducer as discharge } from './modules/discharge';
 import { eventsReducer as events } from './modules/events';
 import { loginReducer as login } from './modules/login';
@@ -13,6 +14,7 @@ import { tagsReducer as tags } from './modules/tags';
 import { usersReducer as users } from './modules/users';
 
 export default combineReducers({
+  busmq,
   counter,
   discharge,
   events,
