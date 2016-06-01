@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import {
   Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
-} from 'material-ui/lib/table';
+} from 'material-ui/Table';
 
 import { getTags } from '../../redux/modules/tags';
 import { getUsersMap } from '../../redux/modules/users';

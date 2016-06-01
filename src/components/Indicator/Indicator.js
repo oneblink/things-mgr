@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 
 import classes from './Indicator.css';
 

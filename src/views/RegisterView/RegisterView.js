@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
-import AutoComplete from 'material-ui/lib/auto-complete';
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
-import FlatButton from 'material-ui/lib/flat-button';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Paper from 'material-ui/lib/paper';
-import TextField from 'material-ui/lib/text-field';
+import AutoComplete from 'material-ui/AutoComplete';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import FlatButton from 'material-ui/FlatButton';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 
 import {
   registerSetFirstname, registerSetLastname,

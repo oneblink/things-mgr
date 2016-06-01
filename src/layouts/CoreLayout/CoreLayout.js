@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import 'normalize.css/normalize.css';
 import 'react-data-grid/themes/react-data-grid.css';
 
-import AppBar from 'material-ui/lib/app-bar';
-import FlatButton from 'material-ui/lib/flat-button';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 
 import BusStatus from '../../components/BusStatus/BusStatus.js';
 import NavTabs from '../../components/NavTabs/NavTabs';

@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { List } from 'immutable';
 
-import ContentAdd from 'material-ui/lib/svg-icons/content/add';
-import ContentSend from 'material-ui/lib/svg-icons/content/send';
-import Divider from 'material-ui/lib/divider';
-import DropDownMenu from 'material-ui/lib/drop-down-menu';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
-import { List as MDList, ListItem } from 'material-ui/lib/lists';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Paper from 'material-ui/lib/paper';
-import TextField from 'material-ui/lib/text-field';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import Divider from 'material-ui/Divider';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import { List as MDList, ListItem } from 'material-ui/List';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 
 import { isTelephone } from '../../lib/string';
 import {

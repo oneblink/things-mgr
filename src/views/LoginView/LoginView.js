@@ -4,10 +4,10 @@ import { Link } from 'react-router';
 import { Map } from 'immutable';
 import classnames from 'classnames';
 
-import FlatButton from 'material-ui/lib/flat-button';
-import Paper from 'material-ui/lib/paper';
-import Snackbar from 'material-ui/lib/snackbar';
-import TextField from 'material-ui/lib/text-field';
+import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
 
 import {
   LOGIN_STATE_CHECKING, LOGIN_STATE_IN,

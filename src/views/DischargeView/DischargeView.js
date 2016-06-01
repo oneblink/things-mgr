@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { List, Map } from 'immutable';
 
-import Divider from 'material-ui/lib/divider';
-import DropDownMenu from 'material-ui/lib/drop-down-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Paper from 'material-ui/lib/paper';
-import TextField from 'material-ui/lib/text-field';
-import RaisedButton from 'material-ui/lib/raised-button';
+import Divider from 'material-ui/Divider';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {
   dischargeReport, dischargeSetRecipient, dischargeSetUser, dischargeSubmit,

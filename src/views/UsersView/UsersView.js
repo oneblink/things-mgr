@@ -6,9 +6,9 @@ import classnames from 'classnames';
 import ReactDataGrid from 'react-data-grid/addons';
 const { DropDownEditor } = ReactDataGrid.Editors;
 
-import ContentAdd from 'material-ui/lib/svg-icons/content/add';
-import ContentSave from 'material-ui/lib/svg-icons/content/save';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentSave from 'material-ui/svg-icons/content/save';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import {
   USERS_TYPES,

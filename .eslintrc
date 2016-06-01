@@ -6,6 +6,7 @@
     "semistandard"
   ],
   "plugins" : [
+    "babel",
     "flow-vars"
   ],
   "env"     : {
@@ -20,7 +21,9 @@
     "__BASENAME__" : false
   },
   "rules": {
+    "generator-star-spacing": 0,
     "max-len": [2, 120, 2],
+    "babel/generator-star-spacing": [2, { "before": true, "after": true }],
     "flow-vars/define-flow-type": 1,
     "flow-vars/use-flow-type": 1
   }

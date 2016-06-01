@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Map } from 'immutable';
 
-import { Tab, Tabs } from 'material-ui/lib/tabs';
+import { Tab, Tabs } from 'material-ui/Tabs';
 
 import classes from './NavTabs.css';
 

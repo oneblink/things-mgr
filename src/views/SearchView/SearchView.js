@@ -4,12 +4,12 @@ import { List } from 'immutable';
 import classnames from 'classnames';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import {
   Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
-} from 'material-ui/lib/table';
-import TextField from 'material-ui/lib/text-field';
+} from 'material-ui/table';
+import TextField from 'material-ui/TextField';
 
 import {
   SORT_ASCENDING, SORT_DESCENDING, SORT_NONE,
