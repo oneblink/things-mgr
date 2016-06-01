@@ -25,7 +25,7 @@ import classes from './CoreLayout.css';
 function CoreLayout ({ children }) {
   const appProps = {
     children: [
-      <Link to='/login'><FlatButton label='Login' /></Link>
+      <Link key='l' to='/login'><FlatButton label='Login' /></Link>
     ],
     className: classes.appbar,
     showMenuIconButton: false,
@@ -33,7 +33,7 @@ function CoreLayout ({ children }) {
   };
 
   if (process.env.USE_CASE === 'dashboard') {
-    appProps.children.unshift(<a><BusStatus className={classes.busStatus} /></a>);
+    appProps.children.unshift(<a key='s'><BusStatus className={classes.busStatus} /></a>);
   }
 
   const selfClasses = [classes.self];
