@@ -52,6 +52,7 @@ const config = {
     'redux',
     'redux-immutable',
     'redux-thunk',
+    'text-encoding',
     'whatwg-fetch'
   ],
 

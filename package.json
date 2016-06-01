@@ -93,6 +93,7 @@
     "redux-immutable": "3.0.6",
     "redux-thunk": "^2.0.0",
     "reselect": "2.5.1",
+    "text-encoding": "0.6.0",
     "whatwg-fetch": "1.0.0"
   },
   "devDependencies": {
