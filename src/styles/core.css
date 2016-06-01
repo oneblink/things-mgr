@@ -17,3 +17,8 @@ body {
 *:after {
   box-sizing: inherit;
 }
+
+/* fix for Normalize.css 4 vs Material UI 0.15 */
+span[type=button] {
+  appearance: none;
+}
