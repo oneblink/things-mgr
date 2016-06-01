@@ -71,6 +71,7 @@ function onChange (store, { SECRET, WSS_URL }) {
       });
 
       ps.subscribe();
+      ps.publish('marco');
 
       setInterval(() => {
         ps.publish('marco');
