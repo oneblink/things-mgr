@@ -2,6 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
+import { insertUpdate } from '../../lib/resource.js';
 
 export const READERS_EDIT = 'READERS_EDIT';
 export const readersEdit = (index, changes) => ({
@@ -11,6 +12,12 @@ export const readersEdit = (index, changes) => ({
 
 export const READERS_NEW = 'READERS_NEW';
 export const readersNew = () => ({ type: READERS_NEW });
+
+export const READERS_INSERT_UPDATE = 'READERS_INSERT_UPDATE';
+export const readersInsertUpdate = (id, resource) => ({
+  type: READERS_INSERT_UPDATE,
+  payload: { id, resource }
+});
 
 export const READERS_REQUEST = 'READERS_REQUEST';
 export const readersRequest = () => (dispatch, getState) => {
@@ -63,6 +70,14 @@ export const readersSubmitError = (error) => ({
 
 const initialState = new List();
 
+const ACTION_HANDLERS = {
+
+  [READERS_INSERT_UPDATE]: (state, { payload: { id, resource } }) => {
+    return insertUpdate(state, id, resource);
+  }
+
+};
+
 export const readersReducer = (state = initialState, action) => {
   if (action.type === READERS_EDIT) {
     const { index, changes } = action.payload;
@@ -81,7 +96,9 @@ export const readersReducer = (state = initialState, action) => {
     console.log(action.type, action.payload);
     console.error(action.payload);
   }
-  return state;
+
+  const handler = ACTION_HANDLERS[action.type];
+  return handler ? handler(state, action) : state;
 };
 
 export const getReaders = (state) => state.get('readers') || new List();

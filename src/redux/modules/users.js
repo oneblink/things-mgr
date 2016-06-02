@@ -2,6 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
+import { insertUpdate } from '../../lib/resource.js';
 
 export const USERS_EDIT = 'USERS_EDIT';
 export const usersEdit = (index, changes) => ({
@@ -11,6 +12,12 @@ export const usersEdit = (index, changes) => ({
 
 export const USERS_NEW = 'USERS_NEW';
 export const usersNew = () => ({ type: USERS_NEW });
+
+export const USERS_INSERT_UPDATE = 'USERS_INSERT_UPDATE';
+export const usersInsertUpdate = (id, resource) => ({
+  type: USERS_INSERT_UPDATE,
+  payload: { id, resource }
+});
 
 export const USERS_REQUEST = 'USERS_REQUEST';
 export const usersRequest = () => (dispatch, getState) => {
@@ -72,6 +79,14 @@ const INFO_KEYS = ['address', 'email', 'photo', 'type'];
 
 const initialState = new List();
 
+const ACTION_HANDLERS = {
+
+  [USERS_INSERT_UPDATE]: (state, { payload: { id, resource } }) => {
+    return insertUpdate(state, id, resource);
+  }
+
+};
+
 export const usersReducer = (state = initialState, action) => {
   if (action.type === USERS_EDIT) {
     const { index, changes } = action.payload;
@@ -109,7 +124,9 @@ export const usersReducer = (state = initialState, action) => {
     console.log(action.type, action.payload);
     console.error(action.payload);
   }
-  return state;
+
+  const handler = ACTION_HANDLERS[action.type];
+  return handler ? handler(state, action) : state;
 };
 
 const compareStrings = (a, b) => {

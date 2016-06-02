@@ -7,6 +7,7 @@ import {
   getBusmq
 } from '../redux/modules/busmq.js';
 import { eventsRequestSuccess } from '../redux/modules/events.js';
+import { handleIpxDb } from './bus.ipx.db.js';
 
 const TOPIC = 'ipx.event';
 
@@ -76,6 +77,21 @@ function onChange (store, { SECRET, WSS_URL }) {
       setInterval(() => {
         ps.publish('marco');
       }, 45e3);
+    });
+
+    bus.pubsub('ipx.db', (err, ps) => {
+      if (err) {
+        console.error(`unable setup "ipx.db" bus via ${WSS_URL}`);
+        console.error(err);
+        return;
+      }
+
+      ps.on('message', (msg) => {
+        store.dispatch(busmqSetLastMessageDate());
+        handleIpxDb(store, JSON.parse(msg));
+      });
+
+      ps.subscribe();
     });
   }
   if (bus && !(SECRET && WSS_URL)) {

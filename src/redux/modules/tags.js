@@ -2,12 +2,19 @@ import { List, Map, fromJS } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getEntitiesAndDispatch, postEntitiesAndDispatch } from '../../lib/api';
+import { insertUpdate } from '../../lib/resource.js';
 import { getUsersMap } from './users';
 
 export const TAGS_EDIT = 'TAGS_EDIT';
 export const tagsEdit = (index, changes) => ({
   type: TAGS_EDIT,
   payload: { index, changes }
+});
+
+export const TAGS_INSERT_UPDATE = 'TAGS_INSERT_UPDATE';
+export const tagsInsertUpdate = (id, resource) => ({
+  type: TAGS_INSERT_UPDATE,
+  payload: { id, resource }
 });
 
 export const TAGS_NEW = 'TAGS_NEW';
@@ -64,6 +71,14 @@ export const tagsSubmitError = (error) => ({
 
 const initialState = new List();
 
+const ACTION_HANDLERS = {
+
+  [TAGS_INSERT_UPDATE]: (state, { payload: { id, resource } }) => {
+    return insertUpdate(state, id, resource);
+  }
+
+};
+
 export const tagsReducer = (state = initialState, action) => {
   if (action.type === TAGS_EDIT) {
     const { index, changes } = action.payload;
@@ -96,7 +111,9 @@ export const tagsReducer = (state = initialState, action) => {
     console.log(action.type, action.payload);
     console.error(action.payload);
   }
-  return state;
+
+  const handler = ACTION_HANDLERS[action.type];
+  return handler ? handler(state, action) : state;
 };
 
 export const getTags = (state) => state.get('tags') || new List();
