@@ -17,13 +17,6 @@ import { Indicator } from '../../components/Indicator/Indicator';
 
 import classes from './DashboardView.css';
 
-const filterEvents = (event) => {
-  const { name, tags: { messages, type } } = event;
-  return type !== 'wifi' &&
-    !(name === 'rfid-scan' && Array.isArray(messages) && !messages.length) &&
-    name !== 'beacon-scan';
-};
-
 const TRANSITION_PROPS = {
   transitionEnterTimeout: 1000,
   transitionLeave: false,
@@ -81,7 +74,7 @@ export class DashboardView extends React.Component {
         <div className={classes.logs}>
           <h1 className={classes.logHeading}>Recent Events</h1>
           <ReactCSSTransitionGroup {...TRANSITION_PROPS}>
-            {events.toJS().filter(filterEvents).map((event) => (
+            {events.toJS().filter(Event.canRender).map((event) => (
               <Event key={event._id} event={event} />
             ))}
           </ReactCSSTransitionGroup>

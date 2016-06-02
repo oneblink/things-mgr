@@ -78,6 +78,14 @@ Event.propTypes = {
   usersMap: PropTypes.instanceOf(Map)
 };
 
+Event.canRender = ({ name, tags: { devices, host, messages, payload, tag, type, user } }) => !!(
+  (name === 'rfid-scan' && Array.isArray(messages) && messages.length) ||
+  (type === 'RFID' || type === 'beacon' && host) ||
+  // (type === 'humid' && Array.isArray(payload) && payload.length) ||
+  (name === 'subscription-invite') ||
+  (name === 'subscribed' && type)
+);
+
 const mapStateToProps = (state) => ({
   readersMap: getReadersMap(state),
   tagsMap: getTagsMap(state),

@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { getEventsAndDispatch } from '../../lib/api';
 import { getTagsMap } from './tags';
 import { store } from '../store';
+import { Event } from '../../components/Event/Event.js';
 
 export const EVENTS_REQUEST = 'EVENTS_REQUEST';
 export const eventsRequest = () => (dispatch, getState) => {
@@ -97,11 +98,20 @@ function sortNewestDateFirst (a, b) {
   return 1;
 }
 
+// is this event useful outside of the event log (e.g. widgets) ?
+const isUseful = ({ name, tags: { devices, host, messages, payload, tag, type, user } }) => !!(
+  (type === 'beacon' || type === 'wifi')
+);
+
+function filterUseful (event) {
+  return Event.canRender(event) || isUseful(event);
+} 
+
 // state entries are newest to oldest
 export const eventsReducer = (state = new List(), action) => {
   if (action.type === EVENTS_REQUEST_SUCCESS) {
     // incoming entries are newest to oldest
-    const incoming = fromJS(action.payload);
+    const incoming = fromJS(action.payload.filter(filterUseful));
     const tagsMap = getTagsMap(store.getState());
     if (!getLatestEvent(state)) {
       // no events, so seed with payload
