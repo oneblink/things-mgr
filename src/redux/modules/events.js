@@ -105,7 +105,7 @@ const isUseful = ({ name, tags: { devices, host, messages, payload, tag, type, u
 
 function filterUseful (event) {
   return Event.canRender(event) || isUseful(event);
-} 
+}
 
 // state entries are newest to oldest
 export const eventsReducer = (state = new List(), action) => {
