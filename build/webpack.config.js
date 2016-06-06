@@ -105,7 +105,9 @@ webpackConfig.eslint = {
 
 // noParse: pre-built modules
 webpackConfig.module.noParse = [
-  /\/localforage\/dist\/localforage\.js/
+  /\/busmq\/.*\.js/,
+  /\/localforage\/dist\/localforage\.js/,
+  // /\/text-encoding\/.*\.js/,
 ]
 
 // ------------------------------------
