@@ -8,7 +8,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import {
   Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
-} from 'material-ui/table';
+} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 
 import {
