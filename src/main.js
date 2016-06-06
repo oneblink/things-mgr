@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import Root from './containers/Root';
+import './lib/polyfill-text-encoding.js';
 
+import Root from './containers/Root';
 import { history, routes, store } from './redux/store';
 import { syncBusWithStore } from './lib/bus.js';
 import { syncLoginWithStorage } from './lib/storage';

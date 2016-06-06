@@ -57,8 +57,7 @@ webpackConfig.plugins = [
     }
   }),
   new webpack.ProvidePlugin({
-    fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
-    TextDecoder: 'imports?this=>global!exports?module.exports.TextDecoder!text-encoding'
+    fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
   })
 ];
 
