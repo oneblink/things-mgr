@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+
 import fs from 'fs';
 import _debug from 'debug';
 import config from './_base';
