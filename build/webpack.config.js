@@ -104,6 +104,11 @@ webpackConfig.eslint = {
   emitWarning: __DEV__
 };
 
+// noParse: pre-built modules
+webpackConfig.module.noParse = [
+  /\/localforage\/dist\/localforage\.js/
+]
+
 // ------------------------------------
 // Loaders
 // ------------------------------------
